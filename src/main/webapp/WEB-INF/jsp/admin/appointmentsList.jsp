@@ -5,42 +5,38 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
 <petclinic:layout pageName="pets">
-    <h2>Pets</h2>
+    <h2>Appointments</h2>
 
-    <table id="petsTable" class="table table-striped">
+    <table id="appointmentsTable" class="table table-striped">
         <thead>
         <tr>
-            <th>Name</th>
-            <th>Type</th>
             <th>Owner</th>
+            <th>Veterinarian</th>
+            <th>Date</th>
+            <th>Urgent</th>
             <th></th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${pets}" var="pet">
+        <c:forEach items="${appointments}" var="appointment">
             <tr>
                 <td>
-                    <c:out value="${pet.name}"/>
+                    <c:out value="${appointment.owner.firstName} ${appointment.owner.lastName}"/>
                 </td>
                 <td>
-                    <c:out value="${pet.type}"/>
+                    <c:out value="${appointment.vet.firstName} ${appointment.vet.lastName}"/>
                 </td>
                  <td>
-                    <c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/>
+                    <c:out value="${appointment.date}"/>
                 </td>
                 <td>
-                <a href='<spring:url value="/pets/${pet.id}"/>'>See more</a>
+                    <c:out value="${appointment.urgent}"/>
+                </td>
+                <td>
+                <a href='<spring:url value="/admin/appointment/${appointment.id}"/>'>See more</a>
                </td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
-    <!-- <table class="table-buttons">
-        <tr>
-            <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
-            </td>            
-        </tr>
-    </table> -->
 </petclinic:layout>

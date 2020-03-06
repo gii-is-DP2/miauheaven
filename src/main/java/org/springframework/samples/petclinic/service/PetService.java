@@ -24,7 +24,6 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.PetRepository;
-import org.springframework.samples.petclinic.repository.PetRepository2;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
@@ -44,14 +43,11 @@ public class PetService {
 
 	private VisitRepository	visitRepository;
 
-	private PetRepository2	petRepository2;
-
 
 	@Autowired
-	public PetService(final PetRepository petRepository, final VisitRepository visitRepository, final PetRepository2 petRepository2) {
+	public PetService(final PetRepository petRepository, final VisitRepository visitRepository) {
 		this.petRepository = petRepository;
 		this.visitRepository = visitRepository;
-		this.petRepository2 = petRepository2;
 	}
 
 	@Transactional(readOnly = true)
@@ -84,7 +80,7 @@ public class PetService {
 	}
 
 	public Iterable<Pet> findAllPets() {
-		return this.petRepository2.findAll();
+		return this.petRepository.findAll();
 	}
 
 }
