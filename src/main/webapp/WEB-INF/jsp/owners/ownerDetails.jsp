@@ -37,6 +37,18 @@
         <spring:param name="ownerId" value="${owner.id}"/>
     </spring:url>
     <a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New Pet</a>
+    
+    	<spring:url value="{ownerId}/animalshelter/animalshelterList" var="animalshelterUrl">
+		<spring:param name="ownerId" value="${owner.id}" />
+	</spring:url>
+	<a href="${fn:escapeXml(animalshelterUrl)}" class="btn btn-default">Animal shelters</a>
+    
+    
+    	<spring:url value="{ownerId}/animalshelter/new" var="animalshelternewUrl">
+		<spring:param name="ownerId" value="${owner.id}" />
+	</spring:url>
+	<a href="${fn:escapeXml(animalshelternewUrl)}" class="btn btn-default">Become an Animal Shelter</a>
+    
 
     <br/>
     <br/>
