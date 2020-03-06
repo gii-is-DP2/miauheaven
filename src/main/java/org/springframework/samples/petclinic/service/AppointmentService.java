@@ -16,12 +16,11 @@
 
 package org.springframework.samples.petclinic.service;
 
-import java.util.Collection;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.Vet;
-import org.springframework.samples.petclinic.repository.VetRepository;
+import org.springframework.samples.petclinic.model.Appointment;
+import org.springframework.samples.petclinic.repository.AppointmentRepository;
+import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,24 +31,20 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  */
 @Service
-public class VetService {
+public class AppointmentService {
 
-	private VetRepository vetRepository;
+	private AppointmentRepository appointmentRepository;
 
 
 	@Autowired
-	public VetService(final VetRepository vetRepository) {
-		this.vetRepository = vetRepository;
+	public AppointmentService(final AppointmentRepository appointmentRepository) {
+		this.appointmentRepository = appointmentRepository;
 	}
 
-	@Transactional(readOnly = true)
-	public Vet findVetById(final int id) throws DataAccessException {
-		return this.vetRepository.findById(id);
-	}
+	@Transactional(rollbackFor = DuplicatedPetNameException.class)
+	public void saveAppointment(final Appointment appointment) throws DataAccessException {
 
-	@Transactional(readOnly = true)
-	public Collection<Vet> findVets() throws DataAccessException {
-		return this.vetRepository.findAll();
+		this.appointmentRepository.save(appointment);
 	}
 
 }
