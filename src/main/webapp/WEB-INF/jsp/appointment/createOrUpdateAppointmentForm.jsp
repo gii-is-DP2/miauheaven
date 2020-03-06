@@ -24,7 +24,6 @@
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Date" name="date" />
                 <petclinic:inputField label="Cause" name="cause" />
-                 <input type="hidden" name="id" value="1"/>
                 <label for="urgent">¿Its urgent?:</label>
 				<select name="urgent">
 	 				<option value="1">Yes</option>
