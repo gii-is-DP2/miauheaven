@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,12 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.repository;
 
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 
@@ -33,27 +35,33 @@ import org.springframework.samples.petclinic.model.PetType;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface PetRepository {
+public interface PetRepository extends CrudRepository<Pet, Integer> {
 
 	/**
 	 * Retrieve all <code>PetType</code>s from the data store.
+	 *
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */
+	@Query("Select a.type from Pet a ")
 	List<PetType> findPetTypes() throws DataAccessException;
 
 	/**
 	 * Retrieve a <code>Pet</code> from the data store by id.
-	 * @param id the id to search for
+	 *
+	 * @param id
+	 *            the id to search for
 	 * @return the <code>Pet</code> if found
-	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
+	 * @throws org.springframework.dao.DataRetrievalFailureException
+	 *             if not found
 	 */
 	Pet findById(int id) throws DataAccessException;
 
 	/**
 	 * Save a <code>Pet</code> to the data store, either inserting or updating it.
-	 * @param pet the <code>Pet</code> to save
+	 *
+	 * @param pet
+	 *            the <code>Pet</code> to save
 	 * @see BaseEntity#isNew
 	 */
-	void save(Pet pet) throws DataAccessException;
 
 }

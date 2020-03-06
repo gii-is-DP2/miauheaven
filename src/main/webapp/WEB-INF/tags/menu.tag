@@ -34,17 +34,28 @@
 					<span>Find owners</span>
 				</petclinic:menuItem>
 				
+				<sec:authorize access="hasAuthority('veterinarian')">
 				<petclinic:menuItem active="${name eq 'pets'}" url="/pets"
 					title="find pets for Vets">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Pets for vets</span>
 				</petclinic:menuItem>
-
+				</sec:authorize>
+				
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
+				
+				
+				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'admin'}" url="/admin/appointment"
+					title="See appointments">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>See appointments</span>
+				</petclinic:menuItem>
+				</sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">
