@@ -48,8 +48,10 @@ public class AnimalshelterService {
 
 
 	@Autowired
-	public AnimalshelterService(final AnimalshelterRepository AnimalshelterRepository) {
+	public AnimalshelterService(final AnimalshelterRepository AnimalshelterRepository, final OwnerRepository ownerRepository) {
 		this.animalshelterRepository = AnimalshelterRepository;
+		this.ownerRepository = ownerRepository;
+
 	}
 
 	@Transactional(readOnly = true)
@@ -59,7 +61,6 @@ public class AnimalshelterService {
 
 	public void saveAnimalshelter(@Valid final Animalshelter animalshelter, final Owner owner) {
 		//creating owner
-		animalshelter.setId(3);
 		this.animalshelterRepository.save(animalshelter);
 		owner.setFirstName(animalshelter.getName());
 		owner.setLastName("Shelter");

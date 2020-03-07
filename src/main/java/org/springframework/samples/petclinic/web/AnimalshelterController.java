@@ -30,7 +30,9 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +57,10 @@ public class AnimalshelterController {
 		this.ownerService = ownerService;
 	}
 
+	@InitBinder("owner")
+	public void setAllowedFields(final WebDataBinder dataBinder) {
+		dataBinder.setDisallowedFields("id");
+	}
 	@GetMapping(value = {
 		"/owners/{ownerId}/animalshelter/animalshelterList"
 	})
@@ -74,7 +80,6 @@ public class AnimalshelterController {
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Animalshelter animalshelter = new Animalshelter();
 		animalshelter.setOwner(owner);
-		animalshelter.setId(3);
 		model.put("animalshelter", animalshelter);
 		return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 	}
@@ -86,7 +91,6 @@ public class AnimalshelterController {
 			return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 		} else {
 			animalshelter.setOwner(owner);
-			animalshelter.setId(3);
 			owner.setId(ownerId);
 			this.animalshelterService.saveAnimalshelter(animalshelter, owner);
 			return "redirect:/owners/" + owner.getId();

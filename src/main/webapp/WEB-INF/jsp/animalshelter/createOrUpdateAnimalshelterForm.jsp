@@ -11,6 +11,8 @@
         <c:if test="${animalshelter['new']}">New </c:if> Animal Shelter
     </h2>
     <form:form modelAttribute="animalshelter" class="form-horizontal" id="add-animalshelter-form">
+        <input type="hidden" name="id" value="${owner.id}" />
+    
         <div class="form-group has-feedback">
             <petclinic:inputField label="Name" name="name"/>
             <petclinic:inputField label="CIF" name="cif"/>
