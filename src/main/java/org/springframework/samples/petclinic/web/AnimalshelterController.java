@@ -80,7 +80,6 @@ public class AnimalshelterController {
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Animalshelter animalshelter = new Animalshelter();
 		animalshelter.setOwner(owner);
-		animalshelter.setId(3);
 		model.put("animalshelter", animalshelter);
 		return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 	}
@@ -92,7 +91,6 @@ public class AnimalshelterController {
 			return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 		} else {
 			animalshelter.setOwner(owner);
-			animalshelter.setId(3);
 			owner.setId(ownerId);
 			this.animalshelterService.saveAnimalshelter(animalshelter, owner);
 			return "redirect:/owners/" + owner.getId();
