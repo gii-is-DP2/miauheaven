@@ -23,4 +23,5 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Integ
 
 	Appointment findOneById(int id);
 
+
 }

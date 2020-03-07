@@ -16,17 +16,13 @@
 
 package org.springframework.samples.petclinic.model;
 
-import java.time.LocalDate;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,34 +31,25 @@ import lombok.EqualsAndHashCode;
  *
  * @author Ken Krebs
  */
+@Entity
 @Data
 @EqualsAndHashCode(callSuper = false)
-@Entity
-@Table(name = "appointments")
-public class Appointment extends BaseEntity {
+@Table(name = "animalshelters")
+public class Animalshelter extends BaseEntity {
 
-	@Column(name = "date")
-	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private LocalDate	date;
-
-	@Column(name = "cause")
+	@Column(name = "name")
 	@NotEmpty
-	private String		cause;
+	private String	name;
 
-	@Column(name = "urgent")
-	@NotNull
-	private Boolean		urgent;
+	@Column(name = "cif")
+	@NotEmpty
+	private String	cif;
 
-	@Column(name = "vet_id", insertable = false, updatable = false)
-	@NotNull
-	private int			vet_id;
-	@OneToOne(cascade = CascadeType.ALL)
-	private Owner		owner;
+	@Column(name = "place")
+	@NotEmpty
+	private String	place;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private Vet			vet;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	private Pet			pet;
+	private Owner	owner;
 
 }
