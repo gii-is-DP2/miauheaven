@@ -47,4 +47,15 @@ public class AppointmentService {
 		this.appointmentRepository.save(appointment);
 	}
 
+	@Transactional
+	public Iterable<Appointment> findAll() {
+		return this.appointmentRepository.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	public Appointment findOneById(final int appointmentId) throws DataAccessException {
+		return this.appointmentRepository.findOneById(appointmentId);
+	}
+
+
 }

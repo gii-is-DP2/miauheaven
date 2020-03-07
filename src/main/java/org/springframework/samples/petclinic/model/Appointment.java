@@ -27,7 +27,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -57,7 +56,6 @@ public class Appointment extends BaseEntity {
 	@Column(name = "vet_id", insertable = false, updatable = false)
 	@NotNull
 	private int			vet_id;
-
 	@OneToOne(cascade = CascadeType.ALL)
 	private Owner		owner;
 

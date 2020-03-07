@@ -72,3 +72,5 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animales', '12345678A', '41410 La Celada',11);
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
+

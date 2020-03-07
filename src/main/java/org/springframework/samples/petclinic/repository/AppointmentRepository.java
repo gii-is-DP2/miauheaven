@@ -21,4 +21,7 @@ import org.springframework.samples.petclinic.model.Appointment;
 
 public interface AppointmentRepository extends CrudRepository<Appointment, Integer> {
 
+	Appointment findOneById(int id);
+
+
 }
