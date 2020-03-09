@@ -3,6 +3,7 @@ package org.springframework.samples.petclinic.web;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -26,11 +27,11 @@ public class QuestionnaireController {
 
 
 	@GetMapping(path = "/new")
-	public String crearCuestionario(final ModelMap modelMap) {
+	public String crearCuestionario(final Map<String, Object> model) {
 		String vista = "questionnaire/editQuestionnaire";
 		Questionnaire q = new Questionnaire();
 		//QuestionnaireController.rellenaPreguntas(q);
-		modelMap.addAttribute("questionnaire", q);
+		model.put("questionnaire", q);
 		return vista;
 	}
 
