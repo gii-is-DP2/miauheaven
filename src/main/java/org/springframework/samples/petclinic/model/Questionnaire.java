@@ -18,7 +18,7 @@ public class Questionnaire extends NamedEntity {
 	private String	ingresos;
 	private String	horasLibres;
 	private String	convivencia;
-	private Integer	puntuación;
+	private Integer	puntuacion;
 
 	//Relaciones
 

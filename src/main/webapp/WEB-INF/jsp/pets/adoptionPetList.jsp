@@ -11,16 +11,19 @@
 	<table id="adoptionPetListTable" class="table table-striped">
 		<thead>
 			<tr>
-				<th style="width: 150px">Name</th>
-				<th style="width: 200px">birthDate</th>
+				<th style="width: 35%">Name</th>
+				<th style="width: 35%">birthDate</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${pets}" var="pet">
 				<tr>
-				<td>
-					<td><c:out value="${pet.name}" /></td>
+					<td width><c:out value="${pet.name}" /></td>
 					<td><c:out value="${pet.birthDate}" /></td>
+					  <spring:url value="questionnaire/new/{petId}" var="questUrl">
+        				<spring:param name="petId" value="${pet.id}"/>
+    					</spring:url>
+					<td> <a href="${fn:escapeXml(questUrl)}" class="btn btn-default">Adopt it</a>
 
 				</tr>
 			</c:forEach>

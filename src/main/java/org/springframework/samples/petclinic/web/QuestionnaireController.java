@@ -8,39 +8,56 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.model.QuestionnaireValidator;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/questionnaire")
+@RequestMapping("owners/{ownerId}/questionnaire")
 public class QuestionnaireController {
 
 	@Autowired
 	QuestionnaireService questService;
 
 
-	@GetMapping(path = "/new")
-	public String crearCuestionario(final Map<String, Object> model) {
-		String vista = "questionnaire/editQuestionnaire";
+	@GetMapping(path = "/new/{petId}")
+	public String crearCuestionario(final Map<String, Object> model, @PathVariable("petId") final int petId) {
+		String vista = "questionnaire/createOrUpdateQuestionnaire";
 		Questionnaire q = new Questionnaire();
+		q.setPet(this.questService.findPetById(petId));
 		//QuestionnaireController.rellenaPreguntas(q);
 		model.put("questionnaire", q);
 		return vista;
 	}
 
-	@PostMapping(path = "/save")
-	public String salvaCuestionario(@Valid final Questionnaire cuestionario, final BindingResult result, final ModelMap modelMap) {
-		String vista = "pets/adoptionPetList";
+	@PostMapping(path = "/new/{petId}")
+	public String salvaCuestionario(@Valid final Questionnaire cuestionario, @PathVariable("ownerId") final int ownerId, @PathVariable("petId") final int petId, final BindingResult result, final ModelMap modelMap) {
+		String vista = "redirect:/owners/{ownerId}";
+		Pet pet = this.questService.findPetById(petId);
+		cuestionario.setPet(pet);
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		Owner o = this.questService.findOwnerByUsername(username);
+		cuestionario.setOwner(o);
+		cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
+		Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);
+		cuestionario.setPuntuacion(puntuacion);
+		cuestionario.setUmbral(QuestionnaireValidator.estableceUmbral());
 		if (result.hasErrors()) {
 			modelMap.addAttribute("questionnaire", cuestionario);
-			return "questionnaire/editQuestionnaire";
+			return "questionnaire/createOrUpdateQuestionnaire";
 		} else {
 			this.questService.saveQuest(cuestionario);
 			modelMap.addAttribute("message", "Questionnaire successfully saved!");

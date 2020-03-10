@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,11 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.springframework.samples.petclinic.repository;
 
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.Owner;
 
@@ -37,25 +39,35 @@ public interface OwnerRepository {
 	/**
 	 * Retrieve <code>Owner</code>s from the data store by last name, returning all owners
 	 * whose last name <i>starts</i> with the given name.
-	 * @param lastName Value to search for
+	 *
+	 * @param lastName
+	 *            Value to search for
 	 * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty
-	 * <code>Collection</code> if none found)
+	 *         <code>Collection</code> if none found)
 	 */
 	Collection<Owner> findByLastName(String lastName) throws DataAccessException;
 
 	/**
 	 * Retrieve an <code>Owner</code> from the data store by id.
-	 * @param id the id to search for
+	 *
+	 * @param id
+	 *            the id to search for
 	 * @return the <code>Owner</code> if found
-	 * @throws org.springframework.dao.DataRetrievalFailureException if not found
+	 * @throws org.springframework.dao.DataRetrievalFailureException
+	 *             if not found
 	 */
 	Owner findById(int id) throws DataAccessException;
 
 	/**
 	 * Save an <code>Owner</code> to the data store, either inserting or updating it.
-	 * @param owner the <code>Owner</code> to save
+	 *
+	 * @param owner
+	 *            the <code>Owner</code> to save
 	 * @see BaseEntity#isNew
 	 */
 	void save(Owner owner) throws DataAccessException;
+
+	@Query("select o from Owner o where o.user.username=?1")
+	Owner findByUsername(String username) throws DataAccessException;
 
 }

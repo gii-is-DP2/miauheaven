@@ -15,21 +15,7 @@
         <form:form modelAttribute="questionnaire"
                    class="form-horizontal">
             <input type="hidden" name="id" value="${questionnaire.id}"/>
-           <div class="form-group has-feedback">
-                 <%-- <div class="form-group">
-                    <label class="col-sm-2 control-label">Owner</label>
-                    <div class="col-sm-10">
-                        <c:out value="${questionnaire.owner.firstName} ${questionnaire.owner.lastName}"/>
-                    </div>
-                </div>
-                  <div class="form-group">
-                    <label class="col-sm-2 control-label">Pet</label>
-                    <div class="col-sm-10">
-                        <c:out value="${questionnaire.pet.name}"/>
-                    </div>
-                </div>  --%> 
-                <petclinic:inputField label="Name" name="name"/>
-                <petclinic:inputField label="Owner" name="owner"/>
+           <div class="form-group has-feedback"> 
                 <div class="control-group">
                 <petclinic:selectField label="¿Dónde vives?" name="vivienda" size="3" names="${viviendas}"></petclinic:selectField>
                 <petclinic:selectField label="¿Cómo considerarías tus ingresos mensuales?" name="ingresos" size="3" names="${ingresos}"></petclinic:selectField>
@@ -41,7 +27,7 @@
                 <div class="col-sm-offset-2 col-sm-10">
                     <c:choose>
                         <c:when test="${questionnaire['new']}">
-                            <button class="btn btn-default" type="submit">Add Questionnaire</button>
+                            <button class="btn btn-default" type="submit">Create adoption Questionnaire</button>
                         </c:when>
                         <c:otherwise>
                             <button class="btn btn-default" type="submit">Update Pet</button>
