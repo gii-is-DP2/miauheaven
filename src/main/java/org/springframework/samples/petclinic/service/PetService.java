@@ -17,6 +17,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -81,6 +82,11 @@ public class PetService {
 
 	public Iterable<Pet> findAllPets() {
 		return this.petRepository.findAll();
+	}
+
+	@Transactional(readOnly = true)
+	public Collection<Pet> findAdoptionPets() throws DataAccessException {
+		return this.petRepository.findAll().stream().filter(x -> x.getOwner().getLastName().equals("Shelter")).collect(Collectors.toList());
 	}
 
 }

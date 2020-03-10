@@ -8,6 +8,12 @@ INSERT INTO authorities VALUES ('owner1','owner');
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
 
+-- Animal shelters' Users
+INSERT INTO users(username,password,enabled) VALUES ('shelter1','shelter1',TRUE);
+INSERT INTO authorities VALUES ('shelter1','animalshelter');
+INSERT INTO users(username,password,enabled) VALUES ('shelter2','shelter2',TRUE);
+INSERT INTO authorities VALUES ('shelter2','animalshelter');
+
 INSERT INTO vets VALUES (1, 'James', 'Carter');
 INSERT INTO vets VALUES (2, 'Helen', 'Leary');
 INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
@@ -42,6 +48,8 @@ INSERT INTO owners VALUES (7, 'Jeff', 'Black', '1450 Oak Blvd.', 'Monona', '6085
 INSERT INTO owners VALUES (8, 'Maria', 'Escobito', '345 Maple St.', 'Madison', '6085557683', 'owner1');
 INSERT INTO owners VALUES (9, 'David', 'Schroeder', '2749 Blackhawk Trail', 'Madison', '6085559435', 'owner1');
 INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Waunakee', '6085555487', 'owner1');
+INSERT INTO owners VALUES (11, 'Pichú Animales', 'Animal Shelter', '41410 La Celada', 'Seville', '610839583', 'shelter1');
+INSERT INTO owners VALUES (12, 'Arca Sevilla', 'Animal Shelter', '41500 Alcalá de Guadaíra', 'Seville', '6085555487', 'shelter2');
 
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
@@ -62,5 +70,7 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (2, 8, '2013-01-02',
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (3, 8, '2013-01-03', 'neutered');
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04', 'spayed');
 
+INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animales', '12345678A', '41410 La Celada',11);
+INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
 
