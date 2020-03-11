@@ -20,17 +20,17 @@ public class AdminController {
 	private static final String			APPOINTMENT_LIST	= "admin/appointmentsList";
 	private static final String			APPOINTMENT_SHOW	= "admin/appointmentsShow";
 	private static final String			PETS_LIST			= "admin/petList";
- 	private static final String			PETS_SHOW			= "admin/petShow";
+	private static final String			PETS_SHOW			= "admin/petShow";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
+
 
 	@Autowired
 	public AdminController(final AppointmentService appointmentService, final PetService petService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
 	}
-	
 
 	@GetMapping(value = "/appointment")
 	public String appointmentList(final Map<String, Object> model) {
@@ -46,21 +46,23 @@ public class AdminController {
 		return AdminController.APPOINTMENT_SHOW;
 
 	}
-	
-	@GetMapping(value = {"/pets"})
-	 	public String showPetList(final Map<String, Object> model) {
-	 		Iterable<Pet> pets = this.petService.findAllPets();
-	 		model.put("pets", pets);
-	 		return AdminController.PETS_LIST;
-	 	}
 
-	 	@GetMapping(value = {"/pets/{petId}"
-	 	})
-	 	public String showPet(final Map<String, Object> model, @PathVariable("petId") final int petId) {
-	 		Pet pet = this.petService.findPetById(petId);
-	 		model.put("pet", pet);
-	 		return AdminController.PETS_SHOW;
-	 	}
-	
+	@GetMapping(value = {
+		"/pets"
+	})
+	public String showPetList(final Map<String, Object> model) {
+		Iterable<Pet> pets = this.petService.findAllPets();
+		model.put("pets", pets);
+		return AdminController.PETS_LIST;
+	}
+
+	@GetMapping(value = {
+		"/pets/{petId}"
+	})
+	public String showPet(final Map<String, Object> model, @PathVariable("petId") final int petId) {
+		Pet pet = this.petService.findPetById(petId);
+		model.put("pet", pet);
+		return AdminController.PETS_SHOW;
+	}
 
 }

@@ -43,7 +43,7 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('admin')">
-				<petclinic:menuItem active="${name eq 'pets'}" url="/pets"
+				<petclinic:menuItem active="${name eq 'pets'}" url="/admin/pets"
 					title="find pets for Admin">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Pets for admin</span>
