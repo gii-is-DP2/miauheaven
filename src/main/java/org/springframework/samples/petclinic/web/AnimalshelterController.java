@@ -24,8 +24,10 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Animalshelter;
+import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AnimalshelterService;
+import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +35,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -46,18 +47,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class AnimalshelterController {
 
+	private static final String			NOTIFICATION_LIST					= "animalshelter/notification/notificationList";
+	private static final String			NOTIFICATION_SHOW					= "animalshelter/notification/notificationShow";
+	private static final String			VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM	= "animalshelter/createOrUpdateAnimalshelterForm";
+
 	private final AnimalshelterService	animalshelterService;
 	private final OwnerService			ownerService;
-	private static final String			VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM	= "animalshelter/createOrUpdateAnimalshelterForm";
+	private final NotificationService	notificationService;
 
 
 	@Autowired
-	public AnimalshelterController(final AnimalshelterService clinicService, final OwnerService ownerService) {
+	public AnimalshelterController(final AnimalshelterService clinicService, final OwnerService ownerService, final NotificationService notificationService) {
 		this.animalshelterService = clinicService;
 		this.ownerService = ownerService;
+		this.notificationService = notificationService;
 	}
 
-	@InitBinder("owner")
+	@InitBinder("/owner")
 	public void setAllowedFields(final WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
@@ -71,10 +77,12 @@ public class AnimalshelterController {
 		return "animalshelter/animalshelterList";
 	}
 
-	@ModelAttribute("owner")
-	public Owner findOwner(@PathVariable("ownerId") final int ownerId) {
-		return this.ownerService.findOwnerById(ownerId);
-	}
+	/*
+	 * @ModelAttribute("/owner")
+	 * public Owner findOwner(@PathVariable("ownerId") final int ownerId) {
+	 * return this.ownerService.findOwnerById(ownerId);
+	 * }
+	 */
 
 	@GetMapping(value = "/owners/{ownerId}/animalshelter/new")
 	public String initCreationForm(final Owner owner, final ModelMap model) {
@@ -95,6 +103,25 @@ public class AnimalshelterController {
 			this.animalshelterService.saveAnimalshelter(animalshelter, owner);
 			return "redirect:/owners/" + owner.getId();
 		}
+	}
+
+	// ------------------------------------------------ Notification --------------------------------------------
+
+	@GetMapping("/animalshelter/notification/")
+	public String notificationList(final Map<String, Object> model) {
+		Iterable<Notification> notifications = this.notificationService.findAllForAnimalShelters();
+		model.put("notifications", notifications);
+		return AnimalshelterController.NOTIFICATION_LIST;
+	}
+
+	@GetMapping("/animalshelter/notification/{notificationId}")
+	public String notificationShow(final Map<String, Object> model, @PathVariable final int notificationId) {
+		Notification notification = this.notificationService.findNotificationById(notificationId);
+		if (notification.getTarget().equals("animal_shelter")) {
+			model.put("notification", notification);
+			return AnimalshelterController.NOTIFICATION_SHOW;
+		}
+		return "redirect:/oups";
 	}
 
 }
