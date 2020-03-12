@@ -12,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.NotificationService;
-import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
-import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,20 +36,13 @@ public class AdminController {
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
-	private final OwnerService			ownerService;
-	private final VetService			vetService;
-	private final AnimalshelterService	animalShelterService;
 	private final NotificationService	notificationService;
 
 
 	@Autowired
-	public AdminController(final AppointmentService appointmentService, final PetService petService, final OwnerService ownerService, final VetService vetService, final AnimalshelterService animalShelterService,
-		final NotificationService notificationService) {
+	public AdminController(final AppointmentService appointmentService, final PetService petService, final NotificationService notificationService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
-		this.ownerService = ownerService;
-		this.vetService = vetService;
-		this.animalShelterService = animalShelterService;
 		this.notificationService = notificationService;
 	}
 

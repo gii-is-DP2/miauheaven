@@ -152,7 +152,7 @@ public class OwnerController {
 
 	@GetMapping("owners/notification/")
 	public String notificationList(final Map<String, Object> model) {
-		Iterable<Notification> notifications = this.notificationService.findAllForOwner();
+		Iterable<Notification> notifications = this.notificationService.findAllForOwners();
 		model.put("notifications", notifications);
 		return OwnerController.NOTIFICATION_LIST;
 	}

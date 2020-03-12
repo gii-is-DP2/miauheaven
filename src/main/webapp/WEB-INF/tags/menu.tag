@@ -66,6 +66,14 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('veterinarian')">
+				<petclinic:menuItem active="${name eq 'notification'}" url="/vets/notification/"
+					title="Notifications for vets">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for vets</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>

@@ -10,6 +10,12 @@ public interface NotificationRepository extends CrudRepository<Notification, Int
 	Notification findById(int id);
 
 	@Query("select n from Notification n where n.target = 'owner'")
-	Iterable<Notification> findAllForOwner();
+	Iterable<Notification> findAllForOwners();
+
+	@Query("select n from Notification n where n.target = 'veterinarian'")
+	Iterable<Notification> findAllForVets();
+
+	@Query("select n from Notification n where n.target = 'animal_shelter'")
+	Iterable<Notification> findAllForAnimalShelters();
 
 }
