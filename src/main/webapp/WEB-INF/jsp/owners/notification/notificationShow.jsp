@@ -35,5 +35,4 @@
   
     </table>
     
-    <a href='<spring:url value="/admin/notification/delete/${notification.id}"/>'>Delete Notification</a>
 </petclinic:layout>

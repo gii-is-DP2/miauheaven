@@ -30,6 +30,11 @@ public class NotificationService {
 	}
 
 	@Transactional(readOnly = true)
+	public Iterable<Notification> findAllForOwner() throws DataAccessException {
+		return this.repository.findAllForOwner();
+	}
+
+	@Transactional(readOnly = true)
 	public Notification findNotificationById(final int id) throws DataAccessException {
 		return this.repository.findById(id);
 	}
