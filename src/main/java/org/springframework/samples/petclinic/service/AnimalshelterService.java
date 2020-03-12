@@ -71,4 +71,9 @@ public class AnimalshelterService {
 
 	}
 
+	@Transactional
+	public void save(final Animalshelter animalshelter) {
+		this.animalshelterRepository.save(animalshelter);
+	}
+
 }
