@@ -1,8 +1,10 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
@@ -87,6 +89,14 @@ public class QuestionnaireController {
 	public Collection<String> convivencia() {
 		Collection<String> res = Arrays.asList("Sí", "No");
 		return res;
+	}
+
+	@GetMapping(value = "/questionnaireList/{petId}")
+	public String showAnimalshelterList(final Map<String, Object> model, @PathVariable("petId") final int petId) {
+		List<Questionnaire> questionnaire = new ArrayList<Questionnaire>();
+		questionnaire.addAll(this.questService.findQuestionnaireByPetId(petId));
+		model.put("questionnaire", questionnaire);
+		return "questionnaire/questionnaireList";
 	}
 
 	/*

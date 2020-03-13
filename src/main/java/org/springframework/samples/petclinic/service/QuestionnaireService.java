@@ -1,6 +1,8 @@
 
 package org.springframework.samples.petclinic.service;
 
+import java.util.Collection;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -33,6 +35,10 @@ public class QuestionnaireService {
 
 	public Owner findOwnerByUsername(final String username) {
 		return this.owRepository.findByUsername(username);
+	}
+
+	public Collection<Questionnaire> findQuestionnaireByPetId(final int petId) {
+		return this.questionnaireRepository.findAllByPetId(petId);
 	}
 
 }

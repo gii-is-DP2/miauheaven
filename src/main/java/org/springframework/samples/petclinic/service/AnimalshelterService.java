@@ -71,4 +71,8 @@ public class AnimalshelterService {
 
 	}
 
+	public Owner findOwnerByUsername(final String username) {
+		return this.ownerRepository.findByUsername(username);
+	}
+
 }
