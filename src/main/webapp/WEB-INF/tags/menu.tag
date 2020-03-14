@@ -96,7 +96,7 @@
 				</petclinic:menuItem>
 
 				<sec:authorize access="hasAuthority('admin')">
-				<petclinic:menuItem active="${name eq 'admin'}" url="/admin/appointment"
+				<petclinic:menuItem active="${name eq 'admin'}" url="/admin/appointments"
 					title="See appointments">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>See appointments</span>
