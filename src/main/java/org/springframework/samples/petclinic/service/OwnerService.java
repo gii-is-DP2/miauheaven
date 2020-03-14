@@ -74,11 +74,8 @@ public class OwnerService {
 		this.authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
 	}
 
-
 	public Owner findOwnerByUsername(final String username) {
 		return this.ownerRepository.findByUsername(username);
 	}
-
-
 
 }

@@ -36,9 +36,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-
 import org.springframework.web.bind.annotation.ModelAttribute;
-
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,8 +49,6 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class OwnerController {
-
-
 
 	private static final String			VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
 	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
@@ -97,7 +93,6 @@ public class OwnerController {
 		model.put("owner", new Owner());
 		return "owners/findOwners";
 	}
-
 	@GetMapping(value = "/owners")
 	public String processFindForm(Owner owner, final BindingResult result, final Map<String, Object> model) {
 
@@ -108,6 +103,7 @@ public class OwnerController {
 
 		// find owners by last name
 		Collection<Owner> results = this.ownerService.findOwnerByLastName(owner.getLastName());
+
 		if (results.isEmpty()) {
 			// no owners found
 			result.rejectValue("lastName", "notFound", "not found");
@@ -155,7 +151,6 @@ public class OwnerController {
 		return mav;
 	}
 
-
 	@ModelAttribute("shelter")
 	public Integer findOwner() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -166,7 +161,7 @@ public class OwnerController {
 			res = o.getId();
 		}
 		return res;
-  }
+	}
 
 	// ------------------------------------------------ Notification ------------------------------------------
 

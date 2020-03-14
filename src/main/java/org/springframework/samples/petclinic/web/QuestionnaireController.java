@@ -14,6 +14,7 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.model.QuestionnaireValidator;
+import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,8 +32,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class QuestionnaireController {
 
 	@Autowired
-	QuestionnaireService questService;
+	private final QuestionnaireService	questService;
+	private final OwnerService			ownerService;
 
+
+	@Autowired
+	public QuestionnaireController(final OwnerService ownerService, final QuestionnaireService questService) {
+		this.ownerService = ownerService;
+		this.questService = questService;
+	}
 
 	@GetMapping(path = "/new/{petId}")
 	public String crearCuestionario(final Map<String, Object> model, @PathVariable("petId") final int petId) {
@@ -51,7 +59,7 @@ public class QuestionnaireController {
 		cuestionario.setPet(pet);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		String username = auth.getName();
-		Owner o = this.questService.findOwnerByUsername(username);
+		Owner o = this.ownerService.findOwnerByUsername(username);
 		cuestionario.setOwner(o);
 		cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
 		Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);

@@ -27,22 +27,14 @@ import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AnimalshelterService;
-
+import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import org.springframework.samples.petclinic.service.NotificationService;
-import org.springframework.samples.petclinic.service.OwnerService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-
-
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
-
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -60,35 +52,21 @@ public class AnimalshelterController {
 
 	private final AnimalshelterService	animalshelterService;
 
-
-
-
-	@Autowired
-	public AnimalshelterController(final AnimalshelterService clinicService) {
-		this.animalshelterService = clinicService;
-	}
-
-	@GetMapping(value = "/animalshelter")
-
-	private final OwnerService			ownerService;
 	private final NotificationService	notificationService;
 
 
 	@Autowired
-	public AnimalshelterController(final AnimalshelterService clinicService, final OwnerService ownerService, final NotificationService notificationService) {
+	public AnimalshelterController(final AnimalshelterService clinicService, final NotificationService notificationService) {
 		this.animalshelterService = clinicService;
-		this.ownerService = ownerService;
 		this.notificationService = notificationService;
 	}
-
-
+	@GetMapping(value = "/animalshelter")
 	public String showAnimalshelterList(final Map<String, Object> model) {
 		List<Animalshelter> animalshelters = new ArrayList<Animalshelter>();
 		animalshelters.addAll(this.animalshelterService.findAnimalshelters());
 		model.put("animalshelters", animalshelters);
 		return "animalshelter/animalshelterList";
 	}
-
 
 	@GetMapping(value = "/animalshelter/new")
 
@@ -98,8 +76,6 @@ public class AnimalshelterController {
 	 * return this.ownerService.findOwnerById(ownerId);
 	 * }
 	 */
-
-
 
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Animalshelter animalshelter = new Animalshelter();

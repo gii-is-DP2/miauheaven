@@ -4,39 +4,38 @@ package org.springframework.samples.petclinic.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.QuestionnaireRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class QuestionnaireService {
 
-	@Autowired
 	private QuestionnaireRepository	questionnaireRepository;
 
-	@Autowired
 	private PetRepository			petRepository;
 
+
 	@Autowired
-	private OwnerRepository			owRepository;
+	public QuestionnaireService(final PetRepository petRepository, final QuestionnaireRepository questionnaireRepository) {
+		this.petRepository = petRepository;
+		this.questionnaireRepository = questionnaireRepository;
 
-
+	}
+	@Transactional
 	public void saveQuest(final Questionnaire cuestionario) {
 		this.questionnaireRepository.save(cuestionario);
 	}
 
+	@Transactional
 	public Pet findPetById(final int petId) {
 		return this.petRepository.findById(petId);
 	}
 
-	public Owner findOwnerByUsername(final String username) {
-		return this.owRepository.findByUsername(username);
-	}
-
+	@Transactional
 	public Collection<Questionnaire> findQuestionnaireByPetId(final int petId) {
 		return this.questionnaireRepository.findAllByPetId(petId);
 	}
