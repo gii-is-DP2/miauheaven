@@ -19,8 +19,10 @@ package org.springframework.samples.petclinic.web;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Vets;
+import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.stereotype.Controller;
@@ -37,18 +39,21 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class VetController {
 
-	private static final String	PETS_LIST	= "vets/petList";
-	private static final String	PETS_SHOW	= "vets/petShow";
+	private static final String			PETS_LIST			= "vets/petList";
+	private static final String			PETS_SHOW			= "vets/petShow";
+	private static final String			NOTIFICATION_LIST	= "vets/notification/notificationList";
+	private static final String			NOTIFICATION_SHOW	= "vets/notification/notificationShow";
 
-	private final VetService	vetService;
-
-	private final PetService	petService;
+	private final VetService			vetService;
+	private final PetService			petService;
+	private final NotificationService	notificationService;
 
 
 	@Autowired
-	public VetController(final VetService clinicService, final PetService petService) {
+	public VetController(final VetService clinicService, final PetService petService, final NotificationService notificationService) {
 		this.vetService = clinicService;
 		this.petService = petService;
+		this.notificationService = notificationService;
 	}
 
 	@GetMapping(value = {
@@ -92,6 +97,25 @@ public class VetController {
 		Pet pet = this.petService.findPetById(petId);
 		model.put("pet", pet);
 		return VetController.PETS_SHOW;
+	}
+
+	// ------------------------------------------------ Notification --------------------------------------------
+
+	@GetMapping("vets/notification/")
+	public String notificationList(final Map<String, Object> model) {
+		Iterable<Notification> notifications = this.notificationService.findAllForVets();
+		model.put("notifications", notifications);
+		return VetController.NOTIFICATION_LIST;
+	}
+
+	@GetMapping("vets/notification/{notificationId}")
+	public String notificationShow(final Map<String, Object> model, @PathVariable final int notificationId) {
+		Notification notification = this.notificationService.findNotificationById(notificationId);
+		if (notification.getTarget().equals("veterinarian")) {
+			model.put("notification", notification);
+			return VetController.NOTIFICATION_SHOW;
+		}
+		return "redirect:/oups";
 	}
 
 }

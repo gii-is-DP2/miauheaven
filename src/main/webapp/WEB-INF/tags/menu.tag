@@ -42,6 +42,46 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'pets'}" url="/pets"
+					title="find pets for Admin">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Pets for admin</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'notification'}" url="/admin/notification/"
+					title="List of notifications">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>List of notifications</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'notification'}" url="/owners/notification/"
+					title="Notifications for owners">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for owners</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('veterinarian')">
+				<petclinic:menuItem active="${name eq 'notification'}" url="/vets/notification/"
+					title="Notifications for vets">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for vets</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('animalshelter')">
+				<petclinic:menuItem active="${name eq 'notification'}" url="/animalshelter/notification/"
+					title="Notifications for animal shelters">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for animal shelters</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>

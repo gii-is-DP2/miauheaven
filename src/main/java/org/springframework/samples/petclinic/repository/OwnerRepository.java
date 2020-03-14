@@ -21,6 +21,7 @@ import java.util.Collection;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.samples.petclinic.model.Owner;
 
 /**
@@ -34,7 +35,7 @@ import org.springframework.samples.petclinic.model.Owner;
  * @author Sam Brannen
  * @author Michael Isvy
  */
-public interface OwnerRepository {
+public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 
 	/**
 	 * Retrieve <code>Owner</code>s from the data store by last name, returning all owners
@@ -65,7 +66,8 @@ public interface OwnerRepository {
 	 *            the <code>Owner</code> to save
 	 * @see BaseEntity#isNew
 	 */
-	void save(Owner owner) throws DataAccessException;
+	//@Override
+	//void save(Owner owner) throws DataAccessException;
 
 	@Query("select o from Owner o where o.user.username=?1")
 	Owner findByUsername(String username) throws DataAccessException;
