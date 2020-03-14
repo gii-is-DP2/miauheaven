@@ -19,7 +19,6 @@
             <td><c:out value="${appointment.pet.name}"/></td>
         </tr>
         <tr>
-        <tr>
             <th>Pet type</th>
             <td><c:out value="${appointment.pet.type}"/></td>
         </tr>

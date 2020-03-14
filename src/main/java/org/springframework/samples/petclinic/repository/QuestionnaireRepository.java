@@ -10,4 +10,6 @@ public interface QuestionnaireRepository extends CrudRepository<Questionnaire, I
 
 	Collection<Questionnaire> findAllByPetId(int petId);
 
+	Questionnaire findById(int questId);
+
 }

@@ -122,7 +122,7 @@ public class Owner extends Person {
 
 	public void addPet(final Pet pet) {
 		this.getPetsInternal().add(pet);
-		pet.setOwner(this);
+		pet.changeOwner(this);
 	}
 
 	public boolean removePet(final Pet pet) {
@@ -131,7 +131,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
-	 * 
+	 *
 	 * @param name
 	 *            to test
 	 * @return true if pet name is already in use
@@ -154,7 +154,7 @@ public class Owner extends Person {
 
 	/**
 	 * Return the Pet with the given name, or null if none found for this Owner.
-	 * 
+	 *
 	 * @param name
 	 *            to test
 	 * @return true if pet name is already in use

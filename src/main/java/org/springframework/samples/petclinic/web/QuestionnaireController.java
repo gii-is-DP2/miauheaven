@@ -15,6 +15,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.model.QuestionnaireValidator;
 import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,18 +29,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("owners/{ownerId}/questionnaire")
+@RequestMapping("owners/adoptList/questionnaire/")
 public class QuestionnaireController {
+
+	private static final String			QUESTIONNAIRE_SHOW	= "questionnaire/questonnaireShow";
 
 	@Autowired
 	private final QuestionnaireService	questService;
 	private final OwnerService			ownerService;
+	private final PetService			petService;
 
 
 	@Autowired
-	public QuestionnaireController(final OwnerService ownerService, final QuestionnaireService questService) {
+	public QuestionnaireController(final OwnerService ownerService, final QuestionnaireService questService, final PetService petService) {
 		this.ownerService = ownerService;
 		this.questService = questService;
+		this.petService = petService;
 	}
 
 	@GetMapping(path = "/new/{petId}")
@@ -53,8 +58,7 @@ public class QuestionnaireController {
 	}
 
 	@PostMapping(path = "/new/{petId}")
-	public String salvaCuestionario(@Valid final Questionnaire cuestionario, @PathVariable("ownerId") final int ownerId, @PathVariable("petId") final int petId, final BindingResult result, final ModelMap modelMap) {
-		String vista = "redirect:/owners/{ownerId}";
+	public String salvaCuestionario(@Valid final Questionnaire cuestionario, @PathVariable("petId") final int petId, final BindingResult result, final ModelMap modelMap) {
 		Pet pet = this.questService.findPetById(petId);
 		cuestionario.setPet(pet);
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -71,7 +75,7 @@ public class QuestionnaireController {
 		} else {
 			this.questService.saveQuest(cuestionario);
 			modelMap.addAttribute("message", "Questionnaire successfully saved!");
-			return vista;
+			return "redirect:/owners/" + o.getId();
 		}
 
 	}
@@ -99,12 +103,32 @@ public class QuestionnaireController {
 		return res;
 	}
 
-	@GetMapping(value = "/questionnaireList/{petId}")
+	@GetMapping(value = "/{petId}")
 	public String showAnimalshelterList(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		List<Questionnaire> questionnaire = new ArrayList<Questionnaire>();
 		questionnaire.addAll(this.questService.findQuestionnaireByPetId(petId));
 		model.put("questionnaire", questionnaire);
 		return "questionnaire/questionnaireList";
+	}
+
+	@GetMapping(value = "/show/{questId}")
+	public String showQuestionnaire(final Map<String, Object> model, @PathVariable("questId") final int questId) {
+		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
+		model.put("questionnaire", questionnaire);
+		return QuestionnaireController.QUESTIONNAIRE_SHOW;
+	}
+
+	@GetMapping(value = "/accept/{questId}")
+	public String acceptAdoption(final Map<String, Object> model, @PathVariable("questId") final int questId) {
+		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
+		Pet pet = questionnaire.getPet();
+		Owner owner = questionnaire.getOwner();
+		owner.addPet(pet);
+		this.ownerService.saveOwner(owner);
+		this.petService.save(pet);
+
+		model.put("questionnaire", questionnaire);
+		return "redirect:/owners/" + owner.getId();
 	}
 
 	/*
