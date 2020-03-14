@@ -26,8 +26,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-	private static final String			APPOINTMENT_LIST	= "admin/notification/appointmentsList";
-	private static final String			APPOINTMENT_SHOW	= "admin/notification/appointmentsShow";
+	private static final String			APPOINTMENT_LIST	= "admin/appointment/appointmentsList";
+	private static final String			APPOINTMENT_SHOW	= "admin/appointment/appointmentsShow";
 	private static final String			PETS_LIST			= "admin/pet/petList";
 	private static final String			PETS_SHOW			= "admin/pet/petShow";
 	private static final String			NOTIFICATION_CREATE	= "admin/notification/notificationCreate";
@@ -131,14 +131,14 @@ public class AdminController {
 	}
 
 	// ------------------------------------------------ Appoitment --------------------------------------------
-	@GetMapping(value = "/appointment")
+	@GetMapping(value = "/appointments")
 	public String appointmentList(final Map<String, Object> model) {
 		Iterable<Appointment> appointments = this.appointmentService.findAll();
 		model.put("appointments", appointments);
 		return AdminController.APPOINTMENT_LIST;
 	}
 
-	@GetMapping(value = "/appointment/{appointmentId}")
+	@GetMapping(value = "/appointments/{appointmentId}")
 	public String appointmentShow(final Map<String, Object> model, @PathVariable("appointmentId") final int appointmentId) {
 		Appointment appointment = this.appointmentService.findOneById(appointmentId);
 		model.put("appointment", appointment);
