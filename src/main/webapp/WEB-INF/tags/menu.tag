@@ -88,13 +88,13 @@
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
-<!-- 				
+		
 				<petclinic:menuItem active="${name eq 'animalshelter'}" url="/animalshelter"
 					title="animalshelter">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Animal Shelter</span>
 				</petclinic:menuItem>
--->
+
 				<sec:authorize access="hasAuthority('admin')">
 				<petclinic:menuItem active="${name eq 'admin'}" url="/admin/appointment"
 					title="See appointments">

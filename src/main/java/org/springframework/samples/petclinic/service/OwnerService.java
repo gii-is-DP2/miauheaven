@@ -54,6 +54,7 @@ public class OwnerService {
 	}
 
 	@Transactional(readOnly = true)
+
 	public Iterable<Owner> findAllOwner() throws DataAccessException {
 		return this.ownerRepository.findAll();
 	}
@@ -72,5 +73,12 @@ public class OwnerService {
 		//creating authorities
 		this.authoritiesService.saveAuthorities(owner.getUser().getUsername(), "owner");
 	}
+
+
+	public Owner findOwnerByUsername(final String username) {
+		return this.ownerRepository.findByUsername(username);
+	}
+
+
 
 }

@@ -19,7 +19,12 @@ package org.springframework.samples.petclinic.repository;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
+
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.samples.petclinic.model.BaseEntity;
+
 import org.springframework.data.repository.CrudRepository;
+
 import org.springframework.samples.petclinic.model.Owner;
 
 /**
@@ -66,5 +71,8 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 	 */
 	//@Override
 	//void save(Owner owner) throws DataAccessException;
+
+	@Query("select o from Owner o where o.user.username=?1")
+	Owner findByUsername(String username) throws DataAccessException;
 
 }

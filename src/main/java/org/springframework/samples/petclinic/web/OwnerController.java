@@ -28,12 +28,17 @@ import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+
+import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -46,6 +51,8 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class OwnerController {
+
+
 
 	private static final String			VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
 	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
@@ -148,6 +155,19 @@ public class OwnerController {
 		return mav;
 	}
 
+
+	@ModelAttribute("shelter")
+	public Integer findOwner() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+		Integer res = 0;
+		if (!username.contains("admin")) {
+			Owner o = this.ownerService.findOwnerByUsername(username);
+			res = o.getId();
+		}
+		return res;
+  }
+
 	// ------------------------------------------------ Notification ------------------------------------------
 
 	@GetMapping("owners/notification/")
@@ -165,6 +185,7 @@ public class OwnerController {
 			return OwnerController.NOTIFICATION_SHOW;
 		}
 		return "redirect:/oups";
+
 	}
 
 }

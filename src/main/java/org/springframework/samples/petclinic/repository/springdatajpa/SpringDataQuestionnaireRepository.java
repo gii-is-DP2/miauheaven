@@ -16,25 +16,25 @@
 
 package org.springframework.samples.petclinic.repository.springdatajpa;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.repository.QuestionnaireRepository;
+import org.springframework.samples.petclinic.repository.VisitRepository;
 
 /**
- * Spring Data JPA specialization of the {@link PetRepository} interface
+ * Spring Data JPA specialization of the {@link VisitRepository} interface
  *
  * @author Michael Isvy
  * @since 15.1.2013
  */
-public interface SpringDataPetRepository extends PetRepository, Repository<Pet, Integer> {
+public interface SpringDataQuestionnaireRepository extends QuestionnaireRepository, Repository<Questionnaire, Integer> {
 
 	@Override
-	@Query("SELECT DISTINCT ptype FROM PetType ptype ORDER BY ptype.name")
-	List<PetType> findPetTypes() throws DataAccessException;
-
+	@Query("SELECT questionnaire FROM Questionnaire questionnaire where questionnaire.pet.id=:id")
+	Collection<Questionnaire> findAllByPetId(@Param("id") int id) throws DataAccessException;
 }

@@ -27,15 +27,22 @@ import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AnimalshelterService;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+
+
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -52,6 +59,17 @@ public class AnimalshelterController {
 	private static final String			VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM	= "animalshelter/createOrUpdateAnimalshelterForm";
 
 	private final AnimalshelterService	animalshelterService;
+
+
+
+
+	@Autowired
+	public AnimalshelterController(final AnimalshelterService clinicService) {
+		this.animalshelterService = clinicService;
+	}
+
+	@GetMapping(value = "/animalshelter")
+
 	private final OwnerService			ownerService;
 	private final NotificationService	notificationService;
 
@@ -63,19 +81,16 @@ public class AnimalshelterController {
 		this.notificationService = notificationService;
 	}
 
-	@InitBinder("/owner")
-	public void setAllowedFields(final WebDataBinder dataBinder) {
-		dataBinder.setDisallowedFields("id");
-	}
-	@GetMapping(value = {
-		"/owners/{ownerId}/animalshelter/animalshelterList"
-	})
+
 	public String showAnimalshelterList(final Map<String, Object> model) {
 		List<Animalshelter> animalshelters = new ArrayList<Animalshelter>();
 		animalshelters.addAll(this.animalshelterService.findAnimalshelters());
 		model.put("animalshelters", animalshelters);
 		return "animalshelter/animalshelterList";
 	}
+
+
+	@GetMapping(value = "/animalshelter/new")
 
 	/*
 	 * @ModelAttribute("/owner")
@@ -84,7 +99,8 @@ public class AnimalshelterController {
 	 * }
 	 */
 
-	@GetMapping(value = "/owners/{ownerId}/animalshelter/new")
+
+
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Animalshelter animalshelter = new Animalshelter();
 		animalshelter.setOwner(owner);
@@ -92,16 +108,18 @@ public class AnimalshelterController {
 		return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping(value = "/owners/{ownerId}/animalshelter/new")
-	public String processCreationForm(final Owner owner, @Valid final Animalshelter animalshelter, @PathVariable("ownerId") final int ownerId, final BindingResult result, final ModelMap model) {
+	@PostMapping(value = "/animalshelter/new")
+	public String processCreationForm(@Valid final Animalshelter animalshelter, final BindingResult result, final ModelMap model) {
 		if (result.hasErrors()) {
 			model.put("animalshelter", animalshelter);
 			return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 		} else {
-			animalshelter.setOwner(owner);
-			owner.setId(ownerId);
-			this.animalshelterService.saveAnimalshelter(animalshelter, owner);
-			return "redirect:/owners/" + owner.getId();
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.animalshelterService.findOwnerByUsername(username);
+			animalshelter.setOwner(o);
+			this.animalshelterService.saveAnimalshelter(animalshelter, o);
+			return "redirect:/animalshelter";
 		}
 	}
 
