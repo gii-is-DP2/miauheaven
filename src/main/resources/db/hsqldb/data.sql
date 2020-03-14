@@ -95,3 +95,10 @@ INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animale
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
 
+INSERT INTO notification(id,title,date,message,target) VALUES (1, '¡Bienvenidos propietarios de animales!', '2013-01-04 12:32', 'Quiero daros la bienvenida a todos los propietarios de animales','owner');
+INSERT INTO notification(id,title,date,message,target, url) VALUES (2, '¡Mira esta página de amazonas!', '2020-02-15 16:32', 'Puede que si te interesa el mundo de la monta a la amazona quieras visitar esta página web','owner','https://www.asociacionandaluzademontaalaamazona.com/');
+INSERT INTO notification(id,title,date,message,target) VALUES (3, '¡Bienvenidos veterinarios!', '2013-01-04 12:32', 'Quiero daros la bienvenida a todos los veterinarios','veterinarian');
+INSERT INTO notification(id,title,date,message,target, url) VALUES (4, '¡Mira esta página de veterinarios!', '2020-02-10 16:32', 'Creemos que os puede interesar leer la página de wikipedia de veterinaria','veterinarian','https://es.wikipedia.org/wiki/Medicina_veterinaria');
+INSERT INTO notification(id,title,date,message,target) VALUES (5, '¡Bienvenidas protectoras!', '2013-01-04 12:32', 'Quiero daros la biemvenida a todas las protectoras','animal_shelter');
+INSERT INTO notification(id,title,date,message,target, url) VALUES (6, '¡Mira esta página de información sobre protectoras!', '2020-02-20 11:32', 'Creemos que os puede interesar leer esta página con información sobre protectora de animales','animal_shelter','http://www.upv.es/proanimales/protectoras.htm');
+

@@ -22,8 +22,10 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.core.Authentication;
@@ -34,7 +36,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+
 import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,14 +52,20 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class OwnerController {
 
-	private static final String	VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
 
-	private final OwnerService	ownerService;
+
+	private static final String			VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
+	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
+	private static final String			NOTIFICATION_SHOW					= "owners/notification/notificationShow";
+
+	private final OwnerService			ownerService;
+	private final NotificationService	notificationService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService) {
+	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService) {
 		this.ownerService = ownerService;
+		this.notificationService = notificationService;
 	}
 
 	@InitBinder
@@ -145,6 +155,7 @@ public class OwnerController {
 		return mav;
 	}
 
+
 	@ModelAttribute("shelter")
 	public Integer findOwner() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -155,6 +166,26 @@ public class OwnerController {
 			res = o.getId();
 		}
 		return res;
+  }
+
+	// ------------------------------------------------ Notification ------------------------------------------
+
+	@GetMapping("owners/notification/")
+	public String notificationList(final Map<String, Object> model) {
+		Iterable<Notification> notifications = this.notificationService.findAllForOwners();
+		model.put("notifications", notifications);
+		return OwnerController.NOTIFICATION_LIST;
+	}
+
+	@GetMapping("owners/notification/{notificationId}")
+	public String notificationShow(final Map<String, Object> model, @PathVariable final int notificationId) {
+		Notification notification = this.notificationService.findNotificationById(notificationId);
+		if (notification.getTarget().equals("owner")) {
+			model.put("notification", notification);
+			return OwnerController.NOTIFICATION_SHOW;
+		}
+		return "redirect:/oups";
+
 	}
 
 }

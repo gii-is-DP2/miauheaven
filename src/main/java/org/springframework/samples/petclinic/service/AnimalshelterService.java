@@ -71,8 +71,14 @@ public class AnimalshelterService {
 
 	}
 
+
 	public Owner findOwnerByUsername(final String username) {
 		return this.ownerRepository.findByUsername(username);
+  	}
+
+	@Transactional
+	public void save(final Animalshelter animalshelter) {
+		this.animalshelterRepository.save(animalshelter);
 	}
 
 }

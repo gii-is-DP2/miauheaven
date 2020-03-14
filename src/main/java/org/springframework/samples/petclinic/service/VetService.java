@@ -52,4 +52,9 @@ public class VetService {
 		return this.vetRepository.findAll();
 	}
 
+	@Transactional
+	public void save(final Vet vet) {
+		this.vetRepository.save(vet);
+	}
+
 }
