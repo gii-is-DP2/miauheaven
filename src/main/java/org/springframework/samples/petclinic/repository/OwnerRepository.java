@@ -46,6 +46,7 @@ public interface OwnerRepository extends CrudRepository<Owner, Integer> {
 	 * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty
 	 *         <code>Collection</code> if none found)
 	 */
+
 	Collection<Owner> findByLastName(String lastName) throws DataAccessException;
 
 	/**
