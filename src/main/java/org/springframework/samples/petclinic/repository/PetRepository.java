@@ -68,5 +68,4 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 
 	@Override
 	Collection<Pet> findAll() throws DataAccessException;
-
 }

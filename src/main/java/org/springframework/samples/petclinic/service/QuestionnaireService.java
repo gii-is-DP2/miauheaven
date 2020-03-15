@@ -40,4 +40,9 @@ public class QuestionnaireService {
 		return this.questionnaireRepository.findAllByPetId(petId);
 	}
 
+	@Transactional
+	public Questionnaire findQuestionnaireById(final int questId) {
+		return this.questionnaireRepository.findById(questId);
+	}
+
 }

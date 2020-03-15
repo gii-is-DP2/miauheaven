@@ -24,9 +24,13 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -53,15 +57,20 @@ public class OwnerController {
 	private static final String			VIEWS_OWNER_CREATE_OR_UPDATE_FORM	= "owners/createOrUpdateOwnerForm";
 	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW					= "owners/notification/notificationShow";
+	private static final String			ADOPTION_PET_LIST					= "owners/pet/adoptionPetList";
 
 	private final OwnerService			ownerService;
 	private final NotificationService	notificationService;
+	private final PetService			petService;
+	private final QuestionnaireService	questService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService) {
+	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService) {
 		this.ownerService = ownerService;
 		this.notificationService = notificationService;
+		this.petService = petService;
+		this.questService = questService;
 	}
 
 	@InitBinder
@@ -165,6 +174,28 @@ public class OwnerController {
 			res = o.getId();
 		}
 		return res;
+	}
+
+	// ------------------------------------------------ Adopt -------------------------------------------------
+
+	@GetMapping("/owners/adoptList/")
+	public String adoptList(final Map<String, Object> model) {
+		Collection<Pet> pets = this.petService.findAdoptionPets();
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner owner = this.ownerService.findOwnerByUsername(name);
+		for (Pet p : pets) {
+			Collection<Questionnaire> quests = this.questService.findQuestionnaireByPetId(p.getId());
+
+			for (Questionnaire q : quests) {
+				if (q.getOwner().equals(owner)) {
+					pets.remove(p);
+					break;
+				}
+			}
+		}
+
+		model.put("pets", pets);
+		return OwnerController.ADOPTION_PET_LIST;
 	}
 
 	// ------------------------------------------------ Notification ------------------------------------------

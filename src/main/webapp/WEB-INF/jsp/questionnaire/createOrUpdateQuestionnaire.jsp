@@ -10,7 +10,7 @@
     <jsp:body>
     
         <h2>
-            <c:if test="${questionnaire['new']}">New </c:if> Questionnaire
+            <c:if test="${questionnaire['new']}">New </c:if> Questionnaire for <c:out value="${questionnaire.pet.name}"/>
         </h2>
         <form:form modelAttribute="questionnaire"
                    class="form-horizontal">

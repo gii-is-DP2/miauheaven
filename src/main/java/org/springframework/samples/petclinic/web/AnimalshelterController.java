@@ -49,6 +49,7 @@ public class AnimalshelterController {
 	private static final String			NOTIFICATION_LIST					= "animalshelter/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW					= "animalshelter/notification/notificationShow";
 	private static final String			VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM	= "animalshelter/createOrUpdateAnimalshelterForm";
+	private static final String			ANIMAL_SHELTER_SHOW					= "animalshelter/animalshelter/animalshelterShow";
 
 	private final AnimalshelterService	animalshelterService;
 
@@ -97,6 +98,14 @@ public class AnimalshelterController {
 			this.animalshelterService.saveAnimalshelter(animalshelter, o);
 			return "redirect:/animalshelter";
 		}
+	}
+
+	@GetMapping("/owners/myAnimalShelter")
+	public String findMyAnimalShelter(final Map<String, Object> model) {
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner owner = this.animalshelterService.findOwnerByUsername(name);
+		model.put("owner", owner);
+		return AnimalshelterController.ANIMAL_SHELTER_SHOW;
 	}
 
 	// ------------------------------------------------ Notification --------------------------------------------
