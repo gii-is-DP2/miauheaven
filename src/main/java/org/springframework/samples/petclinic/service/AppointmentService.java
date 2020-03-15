@@ -33,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AppointmentService {
 
-	private AppointmentRepository appointmentRepository;
+	private final AppointmentRepository appointmentRepository;
 
 
 	@Autowired
@@ -46,16 +46,26 @@ public class AppointmentService {
 
 		this.appointmentRepository.save(appointment);
 	}
+	//	public LocalDate getFecha(Appointment ap) {
+	//		Date date = new Date();
+	//		
+	//		return date;
+	//		
+	//	}
 
 	@Transactional
 	public Iterable<Appointment> findAll() {
 		return this.appointmentRepository.findAll();
 	}
 
+	@Transactional
+	public Iterable<Appointment> findAllByVet(final int vetId) {
+		return this.appointmentRepository.findAllByVet(vetId);
+	}
+
 	@Transactional(readOnly = true)
 	public Appointment findOneById(final int appointmentId) throws DataAccessException {
 		return this.appointmentRepository.findOneById(appointmentId);
 	}
-
 
 }
