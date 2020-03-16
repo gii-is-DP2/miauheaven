@@ -4,6 +4,7 @@ package org.springframework.samples.petclinic.service;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.repository.PetRepository;
@@ -26,6 +27,10 @@ public class QuestionnaireService {
 
 	}
 	@Transactional
+	public Iterable<Questionnaire> findAll() {
+		return this.questionnaireRepository.findAll();
+	}
+	@Transactional
 	public void saveQuest(final Questionnaire cuestionario) {
 		this.questionnaireRepository.save(cuestionario);
 	}
@@ -40,4 +45,8 @@ public class QuestionnaireService {
 		return this.questionnaireRepository.findAllByPetId(petId);
 	}
 
+	@Transactional(readOnly = true)
+	public Questionnaire findOneById(final int questionnaireId) throws DataAccessException {
+		return this.questionnaireRepository.findOneById(questionnaireId);
+	}
 }

@@ -9,5 +9,6 @@ import org.springframework.samples.petclinic.model.Questionnaire;
 public interface QuestionnaireRepository extends CrudRepository<Questionnaire, Integer> {
 
 	Collection<Questionnaire> findAllByPetId(int petId);
-
+	
+	Questionnaire findOneById(int questionnaireId);
 }

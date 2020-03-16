@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,17 +35,21 @@ public class AdminController {
 	private static final String			NOTIFICATION_CREATE	= "admin/notification/notificationCreate";
 	private static final String			NOTIFICATION_LIST	= "admin/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW	= "admin/notification/notificationShow";
+	private static final String			QUESTIONNAIRE_LIST	= "admin/questionnaire/questionnaireList";
+	private static final String			QUESTIONNAIRE_SHOW	= "admin/questionnaire/questionnaireShow";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
+	private final QuestionnaireService  questionnaireService;
 
 
 	@Autowired
-	public AdminController(final AppointmentService appointmentService, final PetService petService, final NotificationService notificationService) {
+	public AdminController(final AppointmentService appointmentService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
 		this.notificationService = notificationService;
+		this.questionnaireService = questionnaireService;
 	}
 
 	// ------------------------------------------------ Notification ------------------------------------------
@@ -143,6 +149,21 @@ public class AdminController {
 		Appointment appointment = this.appointmentService.findOneById(appointmentId);
 		model.put("appointment", appointment);
 		return AdminController.APPOINTMENT_SHOW;
+
+	}
+	
+	@GetMapping(value = "/questionnaires")
+	public String questionnaireList(final Map<String, Object> model) {
+		Iterable<Questionnaire> questionnaires  = this.questionnaireService.findAll();
+		model.put("questionnaires", questionnaires);
+		return AdminController.QUESTIONNAIRE_LIST;
+	}
+	
+	@GetMapping(value = "/questionnaires/{questionnaireId}")
+	public String questionnaireShow(final Map<String, Object> model, @PathVariable("questionnaireId") final int questionnaireId) {
+		Questionnaire questionnaire = this.questionnaireService.findOneById(questionnaireId);
+		model.put("questionnaire", questionnaire);
+		return AdminController.QUESTIONNAIRE_SHOW;
 
 	}
 
