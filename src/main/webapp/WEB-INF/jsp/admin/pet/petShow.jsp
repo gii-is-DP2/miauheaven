@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags" %>
 
-<petclinic:layout pageName="owners">
+<petclinic:layout pageName="pets">
 
     <h2>Pet Information</h2>
 
@@ -25,6 +25,21 @@
         <tr>
             <th>Birth date</th>
             <td><c:out value="${pet.birthDate}"/></td>
+        
         </tr>
+           <tr>
+                        <th>Visits</th>
+            
+             <c:forEach items="${pet.visits}" var="visit">
+              <tr>
+                <td>
+                    <c:out value="${visit.date}"/>
+                </td>
+                 <td>
+                    <c:out value="${visit.description}"/>
+                </td>
+                 </tr>
+        </c:forEach>
+         </tr>
     </table>
 </petclinic:layout>

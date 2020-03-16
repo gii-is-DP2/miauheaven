@@ -26,6 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
+<<<<<<< HEAD
+	private static final String			APPOINTMENT_LIST	= "admin/appointmentsList";
+	private static final String			APPOINTMENT_SHOW	= "admin/appointmentsShow";
+	private static final String			PETS_LIST			= "admin/petList";
+	private static final String			PETS_SHOW			= "admin/petShow";
+=======
 	private static final String			APPOINTMENT_LIST	= "admin/appointment/appointmentsList";
 	private static final String			APPOINTMENT_SHOW	= "admin/appointment/appointmentsShow";
 	private static final String			PETS_LIST			= "admin/pet/petList";
@@ -33,10 +39,12 @@ public class AdminController {
 	private static final String			NOTIFICATION_CREATE	= "admin/notification/notificationCreate";
 	private static final String			NOTIFICATION_LIST	= "admin/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW	= "admin/notification/notificationShow";
+>>>>>>> master
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
+
 
 
 	@Autowired
