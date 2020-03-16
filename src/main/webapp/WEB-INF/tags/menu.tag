@@ -118,7 +118,14 @@
 					<span>See appointments</span>
 				</petclinic:menuItem>
 				</sec:authorize>
-
+				
+				<sec:authorize access="hasAuthority('veterinarian')">
+				<petclinic:menuItem active="${name eq 'appointments'}" url="/vets/appointment"
+					title="See appointments">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>See appointments</span>
+				</petclinic:menuItem>
+				</sec:authorize>
 
 				<petclinic:menuItem active="${name eq 'error'}" url="/oups"
 					title="trigger a RuntimeException to see how it is handled">

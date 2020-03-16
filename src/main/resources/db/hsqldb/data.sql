@@ -25,6 +25,16 @@ INSERT INTO authorities VALUES ('owner10','owner');
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet2','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet2','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet3','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet3','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet4','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet4','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet5','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet5','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet6','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet6','veterinarian');
 
 -- Animal shelters' Users
 INSERT INTO users(username,password,enabled) VALUES ('shelter1','shelter1',TRUE);
@@ -32,12 +42,12 @@ INSERT INTO authorities VALUES ('shelter1','animalshelter');
 INSERT INTO users(username,password,enabled) VALUES ('shelter2','shelter2',TRUE);
 INSERT INTO authorities VALUES ('shelter2','animalshelter');
 
-INSERT INTO vets VALUES (1, 'James', 'Carter');
-INSERT INTO vets VALUES (2, 'Helen', 'Leary');
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+INSERT INTO vets VALUES (1, 'James', 'Carter', 'vet1');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'vet2');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'vet3');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', 'vet4');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'vet5');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');
@@ -94,6 +104,9 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animales', '12345678A', '41410 La Celada',11);
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (2, 'Operacion','2020-05-01','true', 2, 3, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (3, 'Revision','2020-12-18','false', 5, 11, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (4, 'Cita ya pasada','2019-12-18','false', 5, 11, 1);
 
 INSERT INTO notification(id,title,date,message,target) VALUES (1, '¡Bienvenidos propietarios de animales!', '2013-01-04 12:32', 'Quiero daros la bienvenida a todos los propietarios de animales','owner');
 INSERT INTO notification(id,title,date,message,target, url) VALUES (2, '¡Mira esta página de amazonas!', '2020-02-15 16:32', 'Puede que si te interesa el mundo de la monta a la amazona quieras visitar esta página web','owner','https://www.asociacionandaluzademontaalaamazona.com/');

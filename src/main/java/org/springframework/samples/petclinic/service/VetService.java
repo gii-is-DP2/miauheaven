@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class VetService {
 
-	private VetRepository vetRepository;
+	private final VetRepository vetRepository;
 
 
 	@Autowired
@@ -57,4 +57,7 @@ public class VetService {
 		this.vetRepository.save(vet);
 	}
 
+	public Vet finVetByUsername(final String username) {
+		return this.vetRepository.findByUsername(username);
+	}
 }
