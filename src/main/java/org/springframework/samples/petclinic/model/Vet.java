@@ -44,6 +44,7 @@ import org.springframework.beans.support.PropertyComparator;
  * @author Arjen Poutsma
  */
 @Entity
+
 @Table(name = "vets")
 public class Vet extends Person {
 
@@ -57,8 +58,9 @@ public class Vet extends Person {
 
 
 	protected Set<Specialty> getSpecialtiesInternal() {
-		if (this.specialties == null)
+		if (this.specialties == null) {
 			this.specialties = new HashSet<>();
+		}
 		return this.specialties;
 	}
 
@@ -86,4 +88,11 @@ public class Vet extends Person {
 		return this.firstName + "," + this.lastName;
 	}
 
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(final User user) {
+		this.user = user;
+	}
 }

@@ -13,7 +13,8 @@
 	</spring:url>
 	<a href="${fn:escapeXml(animalshelternewUrl)}" class="btn btn-default">Become an Animal Shelter</a>
     
-	
+	<br>
+	<br>
 
 	<table id="animalsheltersTable" class="table table-striped">
 		<thead>

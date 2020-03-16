@@ -115,3 +115,8 @@ INSERT INTO notification(id,title,date,message,target, url) VALUES (4, '¡Mira e
 INSERT INTO notification(id,title,date,message,target) VALUES (5, '¡Bienvenidas protectoras!', '2013-01-04 12:32', 'Quiero daros la biemvenida a todas las protectoras','animal_shelter');
 INSERT INTO notification(id,title,date,message,target, url) VALUES (6, '¡Mira esta página de información sobre protectoras!', '2020-02-20 11:32', 'Creemos que os puede interesar leer esta página con información sobre protectora de animales','animal_shelter','http://www.upv.es/proanimales/protectoras.htm');
 
+INSERT INTO questionnaires(id,name,umbral,vivienda,ingresos,horas_Libres,convivencia,puntuacion,pet_id,owner_id) VALUES (1, 'Quest-George Franklin',4,'Casa','Altos', 'Entre 3 y 6 horas','Sí',5,14,1);
+INSERT INTO questionnaires(id,name,umbral,vivienda,ingresos,horas_Libres,convivencia,puntuacion,pet_id,owner_id) VALUES (2, 'Quest-Betty Davis',4,'Apartamento','Bajos', 'Menos de 3 horas','No',0,15,2);
+
+INSERT INTO records(id,owner_id,animalshelter_id) VALUES (1, 1, 11);
+

@@ -19,6 +19,7 @@ package org.springframework.samples.petclinic.web;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -26,14 +27,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.model.Record;
 import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.NotificationService;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.QuestionnaireService;
+import org.springframework.samples.petclinic.service.RecordService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -55,11 +62,19 @@ public class AnimalshelterController {
 
 	private final NotificationService	notificationService;
 
+	private final OwnerService			ownerService;
+	private final RecordService			recordService;
+	private final QuestionnaireService	questService;
+
 
 	@Autowired
-	public AnimalshelterController(final AnimalshelterService clinicService, final NotificationService notificationService) {
+	public AnimalshelterController(final AnimalshelterService clinicService, final NotificationService notificationService, final QuestionnaireService questService, final OwnerService ownerService, final RecordService recordService) {
 		this.animalshelterService = clinicService;
 		this.notificationService = notificationService;
+		this.recordService = recordService;
+		this.questService = questService;
+		this.ownerService = ownerService;
+
 	}
 	@GetMapping(value = "/animalshelter")
 	public String showAnimalshelterList(final Map<String, Object> model) {
@@ -106,6 +121,60 @@ public class AnimalshelterController {
 		Owner owner = this.animalshelterService.findOwnerByUsername(name);
 		model.put("owner", owner);
 		return AnimalshelterController.ANIMAL_SHELTER_SHOW;
+	}
+
+	// ------------------------------------------------ Records ------------------------------------------
+
+	@ModelAttribute("quests")
+	public List<Questionnaire> findQuests() {
+		return this.questService.findAll();
+	}
+	@ModelAttribute("owners")
+	public List<Owner> findOwners() {
+		List<Questionnaire> quests = this.questService.findAll();
+		List<Owner> res = new ArrayList<>();
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		List<Record> records = this.recordService.findAllByUsename(name);
+
+		for (Questionnaire quest : quests) {
+			res.add(quest.getOwner());
+		}
+		for (Owner record : records.stream().map(x -> x.getOwner()).collect(Collectors.toList())) {
+			res.remove(record);
+		}
+		return res;
+	}
+
+	@GetMapping(value = "/owners/myAnimalShelter/records")
+	public String showRecodsList(final Map<String, Object> model) {
+		List<Record> records = new ArrayList<>();
+		records.addAll(this.recordService.findAll());
+		model.put("records", records);
+		return "records/recordList";
+	}
+
+	@GetMapping(value = "/owners/myAnimalShelter/records/new")
+	public String initRecordForm(final Map<String, Object> model) {
+		Record record = new Record();
+		model.put("record", record);
+		return "records/createOrUpdateRecordForm";
+	}
+
+	@PostMapping(value = "/owners/myAnimalShelter/records/new")
+	public String processRecordForm(@Valid final Record record, final BindingResult result) {
+		if (result.hasErrors()) {
+			return "records/createOrUpdateRecordForm";
+		} else {
+			Owner ow = this.ownerService.findOwnerById(record.getOwner_id());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
+			record.setOwner(ow);
+			record.setAnimalshelter(animalshelter);
+			this.recordService.saveRecord(record);
+
+			return "redirect:/owners/myAnimalShelter/records";
+		}
 	}
 
 	// ------------------------------------------------ Notification --------------------------------------------

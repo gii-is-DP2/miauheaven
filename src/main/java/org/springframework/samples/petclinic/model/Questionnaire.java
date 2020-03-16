@@ -16,6 +16,7 @@ import lombok.Setter;
 @Table(name = "questionnaires")
 @Getter
 @Setter
+@Table(name = "questionnaires")
 public class Questionnaire extends NamedEntity {
 
 	private Integer	umbral;
