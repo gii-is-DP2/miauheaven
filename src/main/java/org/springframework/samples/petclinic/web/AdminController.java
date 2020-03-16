@@ -26,12 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-<<<<<<< HEAD
-	private static final String			APPOINTMENT_LIST	= "admin/appointmentsList";
-	private static final String			APPOINTMENT_SHOW	= "admin/appointmentsShow";
-	private static final String			PETS_LIST			= "admin/petList";
-	private static final String			PETS_SHOW			= "admin/petShow";
-=======
 	private static final String			APPOINTMENT_LIST	= "admin/appointment/appointmentsList";
 	private static final String			APPOINTMENT_SHOW	= "admin/appointment/appointmentsShow";
 	private static final String			PETS_LIST			= "admin/pet/petList";
@@ -39,12 +33,10 @@ public class AdminController {
 	private static final String			NOTIFICATION_CREATE	= "admin/notification/notificationCreate";
 	private static final String			NOTIFICATION_LIST	= "admin/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW	= "admin/notification/notificationShow";
->>>>>>> master
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
-
 
 
 	@Autowired
@@ -96,36 +88,6 @@ public class AdminController {
 
 			Calendar calendar = Calendar.getInstance();
 			notification.setDate(calendar.getTime());
-
-			/*
-			 * switch (notification.getTarget()) {
-			 *
-			 * case "owner":
-			 * Iterable<Owner> owners = this.ownerService.findAllOwner();
-			 * for (Owner i : owners) {
-			 * i.addNotification(notification);
-			 * this.ownerService.saveOwner(i);
-			 * }
-			 * break;
-			 *
-			 * case "veterinarian":
-			 * Iterable<Vet> vets = this.vetService.findVets();
-			 * for (Vet i : vets) {
-			 * i.addNotification(notification);
-			 * this.vetService.save(i);
-			 * }
-			 * break;
-			 *
-			 * case "animal shelter":
-			 * Iterable<Animalshelter> animalShelters = this.animalShelterService.findAnimalshelters();
-			 * for (Animalshelter i : animalShelters) {
-			 * i.addNotification(notification);
-			 * this.animalShelterService.save(i);
-			 * }
-			 * break;
-			 * }
-			 */
-
 			this.notificationService.save(notification);
 			return "redirect:/admin/notification/";
 		}
