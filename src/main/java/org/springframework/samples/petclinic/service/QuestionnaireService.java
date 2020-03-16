@@ -27,10 +27,7 @@ public class QuestionnaireService {
 		this.questionnaireRepository = questionnaireRepository;
 
 	}
-	@Transactional
-	public Iterable<Questionnaire> findAll() {
-		return this.questionnaireRepository.findAll();
-	}
+
 	@Transactional
 	public void saveQuest(final Questionnaire cuestionario) {
 		this.questionnaireRepository.save(cuestionario);
@@ -46,7 +43,6 @@ public class QuestionnaireService {
 		return this.questionnaireRepository.findAllByPetId(petId);
 	}
 
-
 	@Transactional(readOnly = true)
 	public Questionnaire findOneById(final int questionnaireId) throws DataAccessException {
 		return this.questionnaireRepository.findOneById(questionnaireId);
@@ -60,6 +56,5 @@ public class QuestionnaireService {
 	public List<Questionnaire> findAll() {
 		return (List<Questionnaire>) this.questionnaireRepository.findAll();
 	}
-
 
 }

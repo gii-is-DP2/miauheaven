@@ -10,10 +10,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Entity
-@Table(name = "questionnaires")
 @Getter
 @Setter
 @Table(name = "questionnaires")
