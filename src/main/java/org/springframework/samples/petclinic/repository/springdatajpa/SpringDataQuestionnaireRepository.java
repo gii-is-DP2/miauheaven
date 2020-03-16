@@ -18,26 +18,23 @@ package org.springframework.samples.petclinic.repository.springdatajpa;
 
 import java.util.Collection;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.repository.QuestionnaireRepository;
+import org.springframework.samples.petclinic.repository.VisitRepository;
 
 /**
- * Spring Data JPA specialization of the {@link OwnerRepository} interface
+ * Spring Data JPA specialization of the {@link VisitRepository} interface
  *
  * @author Michael Isvy
  * @since 15.1.2013
  */
-public interface SpringDataOwnerRepository extends OwnerRepository, Repository<Owner, Integer> {
+public interface SpringDataQuestionnaireRepository extends QuestionnaireRepository, Repository<Questionnaire, Integer> {
 
 	@Override
-	@Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
-	Collection<Owner> findByLastName(@Param("lastName") String lastName);
-
-	@Override
-	@Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
-	Owner findById(@Param("id") int id);
-
+	@Query("SELECT questionnaire FROM Questionnaire questionnaire where questionnaire.pet.id=:id")
+	Collection<Questionnaire> findAllByPetId(@Param("id") int id) throws DataAccessException;
 }

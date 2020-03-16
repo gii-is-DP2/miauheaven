@@ -50,21 +50,69 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'notificationList'}" url="/admin/notification/"
+					title="List of notifications">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>List of notifications</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'adoptionPetList'}" url="/owners/adoptList/"
+					title="Notifications for owners">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Adopt a pet</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'notificationList'}" url="/owners/notification/"
+					title="Notifications for owners">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for owners</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('veterinarian')">
+				<petclinic:menuItem active="${name eq 'notificationList'}" url="/vets/notification/"
+					title="Notifications for vets">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for vets</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('animalshelter')">
+				<petclinic:menuItem active="${name eq 'notificationList'}" url="/animalshelter/notification/"
+					title="Notifications for animal shelters">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Notifications for animal shelters</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('animalshelter')">
+				<petclinic:menuItem active="${name eq 'myAnimalShelter'}" url="/owners/myAnimalShelter"
+					title="Notifications for animal shelters">
+					<span class="glyphicon glyphicon-user icon-size" aria-hidden="true"></span>
+					<span>My animal shelter</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Veterinarians</span>
 				</petclinic:menuItem>
 
-<!-- 				
+		
 				<petclinic:menuItem active="${name eq 'animalshelter'}" url="/animalshelter"
 					title="animalshelter">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Animal Shelter</span>
 				</petclinic:menuItem>
--->
+
 				<sec:authorize access="hasAuthority('admin')">
-				<petclinic:menuItem active="${name eq 'admin'}" url="/admin/appointment"
+				<petclinic:menuItem active="${name eq 'appointments'}" url="/admin/appointments"
 					title="See appointments">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>See appointments</span>

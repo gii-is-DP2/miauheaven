@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
-<petclinic:layout pageName="owners">
+<petclinic:layout pageName="myAnimalShelter">
 
 	<h2>Owner Information</h2>
 
@@ -38,7 +38,11 @@
 	</spring:url>
 	<a href="${fn:escapeXml(addUrl)}" class="btn btn-default">Add New Pet</a>
 
-	
+	<spring:url value="{ownerId}/adoptionPetList" var="adoptionPetListUrl">
+		<spring:param name="ownerId" value="${owner.id}" />
+	</spring:url>
+	<a href="${fn:escapeXml(adoptionPetListUrl)}" class="btn btn-default">Adoption Pets</a>
+
 
 
 
@@ -64,10 +68,6 @@
 						<dt>Type</dt>
 						<dd>
 							<c:out value="${pet.type.name}" />
-						</dd>
-						<dt>Genre</dt>
-						<dd>
-							<c:out value="${pet.genre}" />
 						</dd>
 					</dl>
 				</td>
@@ -98,14 +98,14 @@
 									<spring:param name="ownerId" value="${owner.id}" />
 									<spring:param name="petId" value="${pet.id}" />
 								</spring:url> <a href="${fn:escapeXml(appointmentUrl)}">Add Appointment</a></td>
- 						<c:if test = "${owner.id == shelter}">
+ 						
       
-							<td><spring:url value="{ownerId}/questionnaire/questionnaireList/{petId}" var="questionnaireListUrl">
+							<td><spring:url value="adoptList/questionnaire/{petId}" var="questionnaireListUrl">
 									<spring:param name="petId" value="${pet.id}" />
-																		<spring:param name="ownerId" value="${owner.id}" />
+									<spring:param name="ownerId" value="${owner.id}" />
 									
 								</spring:url> <a href="${fn:escapeXml(questionnaireListUrl)}">See applications</a></td>
-								</c:if>
+								
 						</tr>
 					</table>
 				</td>

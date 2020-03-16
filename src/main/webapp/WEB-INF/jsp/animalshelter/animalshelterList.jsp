@@ -7,6 +7,13 @@
 
 <petclinic:layout pageName="animalshelters">
 	<h2>Animal Shelter</h2>
+	
+	  
+    	<spring:url value="animalshelter/new" var="animalshelternewUrl">
+	</spring:url>
+	<a href="${fn:escapeXml(animalshelternewUrl)}" class="btn btn-default">Become an Animal Shelter</a>
+    
+	
 
 	<table id="animalsheltersTable" class="table table-striped">
 		<thead>
