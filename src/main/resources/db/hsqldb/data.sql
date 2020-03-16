@@ -92,7 +92,7 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VA<LUES (14, 'Desto', '2016-06-18', 3, 11);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Desto', '2016-06-18', 3, 11);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Puesto', '2015-11-25', 6, 12);
 
 
