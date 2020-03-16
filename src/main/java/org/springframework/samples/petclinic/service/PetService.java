@@ -89,4 +89,8 @@ public class PetService {
 		return this.petRepository.findAll().stream().filter(x -> x.getOwner().getLastName().equals("Shelter")).collect(Collectors.toList());
 	}
 
+	public void save(final Pet pet) {
+		this.petRepository.save(pet);
+	}
+
 }

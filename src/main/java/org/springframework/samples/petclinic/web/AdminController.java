@@ -94,36 +94,6 @@ public class AdminController {
 
 			Calendar calendar = Calendar.getInstance();
 			notification.setDate(calendar.getTime());
-
-			/*
-			 * switch (notification.getTarget()) {
-			 *
-			 * case "owner":
-			 * Iterable<Owner> owners = this.ownerService.findAllOwner();
-			 * for (Owner i : owners) {
-			 * i.addNotification(notification);
-			 * this.ownerService.saveOwner(i);
-			 * }
-			 * break;
-			 *
-			 * case "veterinarian":
-			 * Iterable<Vet> vets = this.vetService.findVets();
-			 * for (Vet i : vets) {
-			 * i.addNotification(notification);
-			 * this.vetService.save(i);
-			 * }
-			 * break;
-			 *
-			 * case "animal shelter":
-			 * Iterable<Animalshelter> animalShelters = this.animalShelterService.findAnimalshelters();
-			 * for (Animalshelter i : animalShelters) {
-			 * i.addNotification(notification);
-			 * this.animalShelterService.save(i);
-			 * }
-			 * break;
-			 * }
-			 */
-
 			this.notificationService.save(notification);
 			return "redirect:/admin/notification/";
 		}

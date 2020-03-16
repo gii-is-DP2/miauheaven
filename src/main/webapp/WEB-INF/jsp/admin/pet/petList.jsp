@@ -29,7 +29,7 @@
                     <c:out value="${pet.owner.firstName} ${pet.owner.lastName}"/>
                 </td>
                 <td>
-                <a href='<spring:url value="/pets/${pet.id}"/>'>See more</a>
+                <a href='<spring:url value="/admin/pets/${pet.id}"/>'>See more</a>
                </td>
             </tr>
         </c:forEach>

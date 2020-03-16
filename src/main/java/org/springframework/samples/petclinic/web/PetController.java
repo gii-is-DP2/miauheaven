@@ -98,6 +98,10 @@ public class PetController {
 	@GetMapping(value = "/pets/new")
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Pet pet = new Pet();
+		List<String> genres = new ArrayList<>();
+		genres.add("female");
+		genres.add("male");
+		model.put("genres", genres);
 		owner.addPet(pet);
 		model.put("pet", pet);
 		return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -106,6 +110,10 @@ public class PetController {
 	@PostMapping(value = "/pets/new")
 	public String processCreationForm(final Owner owner, @Valid final Pet pet, final BindingResult result, final ModelMap model) {
 		if (result.hasErrors()) {
+			List<String> genres = new ArrayList<>();
+			genres.add("female");
+			genres.add("male");
+			model.put("genres", genres);
 			model.put("pet", pet);
 			return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 		} else {
@@ -113,6 +121,10 @@ public class PetController {
 				owner.addPet(pet);
 				this.petService.savePet(pet);
 			} catch (DuplicatedPetNameException ex) {
+				List<String> genres = new ArrayList<>();
+				genres.add("female");
+				genres.add("male");
+				model.put("genres", genres);
 				result.rejectValue("name", "duplicate", "already exists");
 				return PetController.VIEWS_PETS_CREATE_OR_UPDATE_FORM;
 			}

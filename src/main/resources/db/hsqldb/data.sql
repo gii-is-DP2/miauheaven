@@ -25,6 +25,16 @@ INSERT INTO authorities VALUES ('owner10','owner');
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet2','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet2','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet3','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet3','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet4','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet4','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet5','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet5','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet6','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet6','veterinarian');
 
 -- Animal shelters' Users
 INSERT INTO users(username,password,enabled) VALUES ('shelter1','shelter1',TRUE);
@@ -32,12 +42,12 @@ INSERT INTO authorities VALUES ('shelter1','animalshelter');
 INSERT INTO users(username,password,enabled) VALUES ('shelter2','shelter2',TRUE);
 INSERT INTO authorities VALUES ('shelter2','animalshelter');
 
-INSERT INTO vets VALUES (1, 'James', 'Carter');
-INSERT INTO vets VALUES (2, 'Helen', 'Leary');
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+INSERT INTO vets VALUES (1, 'James', 'Carter', 'vet1');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'vet2');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'vet3');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', 'vet4');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'vet5');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');
@@ -69,21 +79,21 @@ INSERT INTO owners VALUES (10, 'Carlos', 'Estaban', '2335 Independence La.', 'Wa
 INSERT INTO owners VALUES (11, 'Pichú Animales', 'Shelter', '41410 La Celada', 'Seville', '610839583', 'shelter1');
 INSERT INTO owners VALUES (12, 'Arca Sevilla', 'Shelter', '41500 Alcalá de Guadaíra', 'Seville', '6085555487', 'shelter2');
 
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 1, 1);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 6, 2);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (3, 'Rosy', '2011-04-17', 2, 3);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (4, 'Jewel', '2010-03-07', 2, 3);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (5, 'Iggy', '2010-11-30', 3, 4);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (6, 'George', '2010-01-20', 4, 5);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (7, 'Samantha', '2012-09-04', 1, 6);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (8, 'Max', '2012-09-04', 1, 6);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (9, 'Lucky', '2011-08-06', 5, 7);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2007-02-24', 2, 8);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Desto', '2016-06-18', 3, 11);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Puesto', '2015-11-25', 6, 12);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (1, 'Leo', '2010-09-07', 'female', 1, 1);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (2, 'Basil', '2012-08-06', 'female', 6, 2);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (3, 'Rosy', '2011-04-17', 'female', 2, 3);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (4, 'Jewel', '2010-03-07', 'female', 2, 3);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (5, 'Iggy', '2010-11-30', 'female', 3, 4);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (6, 'George', '2010-01-20', 'female', 4, 5);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (7, 'Samantha', '2012-09-04', 'female', 1, 6);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (8, 'Max', '2012-09-04', 'female', 1, 6);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (9, 'Lucky', '2011-08-06', 'male', 5, 7);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (10, 'Mulligan', '2007-02-24', 'male', 2, 8);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 'male', 5, 9);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 'male', 2, 10);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 'male', 1, 10);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (14, 'Desto', '2016-06-18', 'male', 3, 11);
+INSERT INTO pets(id,name,birth_date,genre,type_id,owner_id) VALUES (15, 'Puesto', '2015-11-25', 'male', 6, 12);
 
 
 INSERT INTO visits(id,pet_id,visit_date,description) VALUES (1, 7, '2013-01-01', 'rabies shot');
@@ -94,6 +104,9 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animales', '12345678A', '41410 La Celada',11);
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (2, 'Operacion','2020-05-01','true', 2, 3, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (3, 'Revision','2020-12-18','false', 5, 11, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (4, 'Cita ya pasada','2019-12-18','false', 5, 11, 1);
 
 INSERT INTO notification(id,title,date,message,target) VALUES (1, '¡Bienvenidos propietarios de animales!', '2013-01-04 12:32', 'Quiero daros la bienvenida a todos los propietarios de animales','owner');
 INSERT INTO notification(id,title,date,message,target, url) VALUES (2, '¡Mira esta página de amazonas!', '2020-02-15 16:32', 'Puede que si te interesa el mundo de la monta a la amazona quieras visitar esta página web','owner','https://www.asociacionandaluzademontaalaamazona.com/');

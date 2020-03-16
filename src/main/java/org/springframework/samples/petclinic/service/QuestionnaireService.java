@@ -45,8 +45,16 @@ public class QuestionnaireService {
 		return this.questionnaireRepository.findAllByPetId(petId);
 	}
 
+
 	@Transactional(readOnly = true)
 	public Questionnaire findOneById(final int questionnaireId) throws DataAccessException {
 		return this.questionnaireRepository.findOneById(questionnaireId);
 	}
+
+	@Transactional
+	public Questionnaire findQuestionnaireById(final int questId) {
+		return this.questionnaireRepository.findById(questId);
+	}
+
+
 }

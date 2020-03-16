@@ -6,25 +6,22 @@
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
 <petclinic:layout pageName="questionnaire">
-	<h2>Applications</h2>
+	<h2>Applications for <c:out value="${questionnaire[0].pet.name}"></c:out></h2>
 
 
 	<table id="questionnaireTable" class="table table-striped">
 		<thead>
 			<tr>
-				<th style="width: 150px;">Score</th>
-				<th style="width: 200px;">Name</th>
-				<th style="width: 120px">Home</th>
-				<th style="width: 120px">Income</th>
+				<th >Name</th>
+				<th >Score</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach items="${questionnaire}" var="quest">
 				<tr>
+					<td><c:out value="${quest.owner.firstName} ${quest.owner.lastName}" /></td>
 					<td><c:out value="${quest.puntuacion}" /></td>
-					<td><c:out value="${quest.name}" /></td>
-					<td><c:out value="${quest.vivienda}" /></td>
-					<td><c:out value="${quest.ingresos}" /></td>
+					<td><a href='<spring:url value="/owners/adoptList/questionnaire/show/${quest.id}"></spring:url>'>See more</a></td>
 
 				</tr>
 			</c:forEach>
