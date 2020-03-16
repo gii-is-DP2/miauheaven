@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Vets;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.NotificationService;
@@ -132,17 +133,19 @@ public class VetController {
 	@GetMapping("vets/appointment")
 	public String appointmentList(final Map<String, Object> model) {
 
-		//final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(vetId);
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String username = auth.getName();
+		final Vet v = this.vetService.finVetByUsername(username);
 
-		final Iterable<Appointment> appointments = this.appointmentService.findAll();
+		final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(v.getId());
+
 		final String pattern = "yyyy/MM/dd";
 		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 		final String currentYear = simpleDateFormat.format(new Date());
-		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		final String username = auth.getName();
-		//final Vet v = this.vetService.finVetByUsername(username);
+
 		model.put("appointments", appointments);
+
 		return VetController.APPOINTMENT_LIST;
 	}
 

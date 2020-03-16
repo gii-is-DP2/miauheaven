@@ -48,9 +48,9 @@ public class AppointmentService {
 	}
 	//	public LocalDate getFecha(Appointment ap) {
 	//		Date date = new Date();
-	//		
+	//
 	//		return date;
-	//		
+	//
 	//	}
 
 	@Transactional
@@ -59,7 +59,7 @@ public class AppointmentService {
 	}
 
 	@Transactional
-	public Iterable<Appointment> findAllByVet(final int vetId) {
+	public Iterable<Appointment> findAllByVet(final int vetId) throws DataAccessException {
 		return this.appointmentRepository.findAllByVet(vetId);
 	}
 
