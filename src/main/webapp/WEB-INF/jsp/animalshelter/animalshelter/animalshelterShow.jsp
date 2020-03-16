@@ -31,7 +31,7 @@
 	<spring:url value="{ownerId}/edit" var="editUrl">
 		<spring:param name="ownerId" value="${owner.id}" />
 	</spring:url>
-	<a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Owner</a>
+	<a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Shelter</a>
 
 	<spring:url value="{ownerId}/pets/new" var="addUrl">
 		<spring:param name="ownerId" value="${owner.id}" />
@@ -43,6 +43,9 @@
 	</spring:url>
 	<a href="${fn:escapeXml(adoptionPetListUrl)}" class="btn btn-default">Adoption Pets</a>
 
+<spring:url value="myAnimalShelter/records" var="recordListUrl">
+	</spring:url>
+	<a href="${fn:escapeXml(recordListUrl)}" class="btn btn-default">Records</a>
 
 
 

@@ -2,6 +2,7 @@
 package org.springframework.samples.petclinic.service;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Pet;
@@ -43,6 +44,10 @@ public class QuestionnaireService {
 	@Transactional
 	public Questionnaire findQuestionnaireById(final int questId) {
 		return this.questionnaireRepository.findById(questId);
+	}
+	@Transactional
+	public List<Questionnaire> findAll() {
+		return (List<Questionnaire>) this.questionnaireRepository.findAll();
 	}
 
 }
