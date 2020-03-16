@@ -4,11 +4,16 @@ package org.springframework.samples.petclinic.model;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-
+@Data
+@EqualsAndHashCode(callSuper = false)
 @Entity
+@Table(name = "questionnaires")
 @Getter
 @Setter
 public class Questionnaire extends NamedEntity {
