@@ -24,7 +24,7 @@ public interface AppointmentRepository extends CrudRepository<Appointment, Integ
 
 	Appointment findOneById(int id);
 
-	@Query("select a from Appointment a where a.vet_id=?1")
+	@Query("select a from Appointment a where a.vet_id=?1 and a.date>current_timestamp")
 	Iterable<Appointment> findAllByVet(int vetId);
 
 }

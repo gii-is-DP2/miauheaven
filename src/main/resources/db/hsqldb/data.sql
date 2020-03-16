@@ -106,6 +106,7 @@ INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla',
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'El animal esta malo','2020-04-01','true', 6, 7, 2);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (2, 'Operacion','2020-05-01','true', 2, 3, 1);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (3, 'Revision','2020-12-18','false', 5, 11, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (4, 'Cita ya pasada','2019-12-18','false', 5, 11, 1);
 
 INSERT INTO notification(id,title,date,message,target) VALUES (1, '¡Bienvenidos propietarios de animales!', '2013-01-04 12:32', 'Quiero daros la bienvenida a todos los propietarios de animales','owner');
 INSERT INTO notification(id,title,date,message,target, url) VALUES (2, '¡Mira esta página de amazonas!', '2020-02-15 16:32', 'Puede que si te interesa el mundo de la monta a la amazona quieras visitar esta página web','owner','https://www.asociacionandaluzademontaalaamazona.com/');

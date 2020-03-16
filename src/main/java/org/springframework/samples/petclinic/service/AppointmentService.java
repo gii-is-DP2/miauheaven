@@ -58,6 +58,7 @@ public class AppointmentService {
 		return this.appointmentRepository.findAll();
 	}
 
+	//Historia de usuario 17: muestra todas las citas del veterinario loggeado
 	@Transactional
 	public Iterable<Appointment> findAllByVet(final int vetId) throws DataAccessException {
 		return this.appointmentRepository.findAllByVet(vetId);
