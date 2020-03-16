@@ -29,6 +29,8 @@ import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -128,15 +130,18 @@ public class VetController {
 
 	// ------------------------------------------------ Appoitment --------------------------------------------
 	@GetMapping("vets/appointment")
-	public String appointmentList(final Map<String, Object> model, @PathVariable("vetId") final int vetId) {
+	public String appointmentList(final Map<String, Object> model) {
 
-		final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(vetId);
+		//final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(vetId);
 
+		final Iterable<Appointment> appointments = this.appointmentService.findAll();
 		final String pattern = "yyyy/MM/dd";
 		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 		final String currentYear = simpleDateFormat.format(new Date());
-
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String username = auth.getName();
+		//final Vet v = this.vetService.finVetByUsername(username);
 		model.put("appointments", appointments);
 		return VetController.APPOINTMENT_LIST;
 	}
@@ -146,7 +151,6 @@ public class VetController {
 		final Appointment appointment = this.appointmentService.findOneById(appointmentId);
 		model.put("appointment", appointment);
 		return VetController.APPOINTMENT_SHOW;
-
 	}
 
 }

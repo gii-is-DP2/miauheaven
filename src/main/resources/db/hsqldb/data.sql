@@ -25,6 +25,16 @@ INSERT INTO authorities VALUES ('owner10','owner');
 -- One vet user, named vet1 with passwor v3t
 INSERT INTO users(username,password,enabled) VALUES ('vet1','v3t',TRUE);
 INSERT INTO authorities VALUES ('vet1','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet2','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet2','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet3','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet3','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet4','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet4','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet5','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet5','veterinarian');
+INSERT INTO users(username,password,enabled) VALUES ('vet6','v3t',TRUE);
+INSERT INTO authorities VALUES ('vet6','veterinarian');
 
 -- Animal shelters' Users
 INSERT INTO users(username,password,enabled) VALUES ('shelter1','shelter1',TRUE);
@@ -32,12 +42,12 @@ INSERT INTO authorities VALUES ('shelter1','animalshelter');
 INSERT INTO users(username,password,enabled) VALUES ('shelter2','shelter2',TRUE);
 INSERT INTO authorities VALUES ('shelter2','animalshelter');
 
-INSERT INTO vets VALUES (1, 'James', 'Carter');
-INSERT INTO vets VALUES (2, 'Helen', 'Leary');
-INSERT INTO vets VALUES (3, 'Linda', 'Douglas');
-INSERT INTO vets VALUES (4, 'Rafael', 'Ortega');
-INSERT INTO vets VALUES (5, 'Henry', 'Stevens');
-INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins');
+INSERT INTO vets VALUES (1, 'James', 'Carter', 'vet1');
+INSERT INTO vets VALUES (2, 'Helen', 'Leary', 'vet2');
+INSERT INTO vets VALUES (3, 'Linda', 'Douglas', 'vet3');
+INSERT INTO vets VALUES (4, 'Rafael', 'Ortega', 'vet4');
+INSERT INTO vets VALUES (5, 'Henry', 'Stevens', 'vet5');
+INSERT INTO vets VALUES (6, 'Sharon', 'Jenkins', 'vet6');
 
 INSERT INTO specialties VALUES (1, 'radiology');
 INSERT INTO specialties VALUES (2, 'surgery');
@@ -82,7 +92,7 @@ INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (10, 'Mulligan', '2
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (11, 'Freddy', '2010-03-09', 5, 9);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (12, 'Lucky', '2010-06-24', 2, 10);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (13, 'Sly', '2012-06-08', 1, 10);
-INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (14, 'Desto', '2016-06-18', 3, 11);
+INSERT INTO pets(id,name,birth_date,type_id,owner_id) VA<LUES (14, 'Desto', '2016-06-18', 3, 11);
 INSERT INTO pets(id,name,birth_date,type_id,owner_id) VALUES (15, 'Puesto', '2015-11-25', 6, 12);
 
 
