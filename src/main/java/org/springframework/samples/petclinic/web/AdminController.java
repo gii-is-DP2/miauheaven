@@ -35,8 +35,8 @@ public class AdminController {
 	private static final String			NOTIFICATION_CREATE	= "admin/notification/notificationCreate";
 	private static final String			NOTIFICATION_LIST	= "admin/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW	= "admin/notification/notificationShow";
-	private static final String			QUESTIONNAIRE_LIST	= "admin/questionnaire/questionnaireList";
-	private static final String			QUESTIONNAIRE_SHOW	= "admin/questionnaire/questionnaireShow";
+	private static final String			QUESTIONNAIRE_LIST	= "admin/questionnaires/questionnaireList";
+	private static final String			QUESTIONNAIRE_SHOW	= "admin/questionnaires/questionnaireShow";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
@@ -151,7 +151,7 @@ public class AdminController {
 		return AdminController.APPOINTMENT_SHOW;
 
 	}
-	
+	// ------------------------------------------------ Questionnaire --------------------------------------------
 	@GetMapping(value = "/questionnaires")
 	public String questionnaireList(final Map<String, Object> model) {
 		Iterable<Questionnaire> questionnaires  = this.questionnaireService.findAll();
