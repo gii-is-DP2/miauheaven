@@ -16,9 +16,6 @@
 
 package org.springframework.samples.petclinic.web;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -132,7 +129,7 @@ public class VetController {
 
 	// ------------------------------------------------ Appoitment --------------------------------------------
 
-	//Historia de usuario 17: muestra todas las citas del veterinario loggeado
+	//Historia de usuario 17: muestra todas las citas del veterinario loggeado y las citas futuras
 	@GetMapping("vets/appointment")
 	public String appointmentList(final Map<String, Object> model) {
 
@@ -141,13 +138,6 @@ public class VetController {
 		final Vet v = this.vetService.finVetByUsername(username);
 
 		final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(v.getId());
-
-		final String pattern = "yyyy/MM/dd";
-		final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
-		final String currentYear = simpleDateFormat.format(new Date());
-
-		final LocalDate today = LocalDate.now();
 
 		model.put("appointments", appointments);
 
