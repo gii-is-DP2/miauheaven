@@ -19,7 +19,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${questionnaire}" var="quest">
+			<c:forEach items="${questionnaires}" var="quest">
 				<tr>
 					<td><c:out value="${quest.puntuacion}" /></td>
 					<td><c:out value="${quest.name}" /></td>
