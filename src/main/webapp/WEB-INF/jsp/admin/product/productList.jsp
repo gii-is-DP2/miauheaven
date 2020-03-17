@@ -5,10 +5,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="petclinic" tagdir="/WEB-INF/tags"%>
 
+
+
 <petclinic:layout pageName="products">
 	<h2>Products list</h2>
 
-
+<a href = '<spring:url value="/admin/product/create" ></spring:url>' class="btn btn-default"> Create a new product</a>
 	<table id="questionnaireTable" class="table table-striped">
 		<thead>
 			<tr>

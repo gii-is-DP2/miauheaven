@@ -42,6 +42,7 @@ public class AdminController {
 	private static final String			QUESTIONNAIRE_SHOW	= "admin/questionnaires/questionnaireShow";
 	private static final String			PRODUCT_LIST		= "admin/product/productList";
 	private static final String			PRODUCT_SHOW		= "admin/product/productShow";
+	private static final String			PRODUCT_FORM		= "admin/product/productForm";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
@@ -154,10 +155,54 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "/product/{productId}")
-	public String productList(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+	public String productShow(final Map<String, Object> model, @PathVariable("productId") final int productId) {
 		Product product = this.productService.findProductById(productId);
 		model.put("product", product);
 		return AdminController.PRODUCT_SHOW;
+	}
+
+	@GetMapping(value = "/product/create")
+	public String productCreate(final Map<String, Object> model) {
+		Product product = new Product();
+		List<Boolean> stock = new ArrayList<>();
+		stock.add(true);
+		stock.add(false);
+		model.put("stock", stock);
+		model.put("product", product);
+		return AdminController.PRODUCT_FORM;
+	}
+
+	@GetMapping(value = "/product/update/{productId}")
+	public String productUpdate(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		List<Boolean> stock = new ArrayList<>();
+		stock.add(true);
+		stock.add(false);
+		model.put("stock", stock);
+		model.put("product", product);
+		return AdminController.PRODUCT_FORM;
+	}
+
+	@PostMapping(value = "/product/save")
+	public String productSave(final Map<String, Object> model, @Valid final Product product, final BindingResult result) {
+		if (result.hasErrors()) {
+			List<Boolean> stock = new ArrayList<>();
+			stock.add(true);
+			stock.add(false);
+			model.put("stock", stock);
+			model.put("product", product);
+			return AdminController.PRODUCT_FORM;
+		} else {
+			this.productService.save(product);
+			return "redirect:/admin/product/";
+		}
+	}
+
+	@GetMapping(value = "/product/delete/{productId}")
+	public String productDelete(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		this.productService.delete(product);
+		return "redirect:/admin/product/";
 	}
 
 	@GetMapping(value = {
