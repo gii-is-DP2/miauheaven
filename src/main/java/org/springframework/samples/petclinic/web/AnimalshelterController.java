@@ -68,8 +68,8 @@ public class AnimalshelterController {
 
 
 	@Autowired
-	public AnimalshelterController(final AnimalshelterService clinicService, final NotificationService notificationService, final QuestionnaireService questService, final OwnerService ownerService, final RecordService recordService) {
-		this.animalshelterService = clinicService;
+	public AnimalshelterController(final AnimalshelterService animalshelterService, final NotificationService notificationService, final QuestionnaireService questService, final OwnerService ownerService, final RecordService recordService) {
+		this.animalshelterService = animalshelterService;
 		this.notificationService = notificationService;
 		this.recordService = recordService;
 		this.questService = questService;

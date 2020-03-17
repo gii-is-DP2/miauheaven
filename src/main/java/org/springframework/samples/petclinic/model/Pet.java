@@ -31,6 +31,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.support.MutableSortDefinition;
@@ -53,6 +54,7 @@ public class Pet extends NamedEntity {
 	private LocalDate	birthDate;
 
 	@Pattern(regexp = "female|male")
+	@NotNull
 	private String		genre;
 
 	@ManyToOne

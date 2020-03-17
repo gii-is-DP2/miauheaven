@@ -98,14 +98,7 @@
 									<spring:param name="ownerId" value="${owner.id}" />
 									<spring:param name="petId" value="${pet.id}" />
 								</spring:url> <a href="${fn:escapeXml(appointmentUrl)}">Add Appointment</a></td>
- 						<c:if test = "${owner.id == shelter}">
-      
-							<td><spring:url value="{ownerId}/questionnaire/questionnaireList/{petId}" var="questionnaireListUrl">
-									<spring:param name="petId" value="${pet.id}" />
-																		<spring:param name="ownerId" value="${owner.id}" />
-									
-								</spring:url> <a href="${fn:escapeXml(questionnaireListUrl)}">See applications</a></td>
-								</c:if>
+ 					
 						</tr>
 					</table>
 				</td>

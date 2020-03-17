@@ -26,13 +26,13 @@ import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +40,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -63,14 +62,18 @@ public class OwnerController {
 	private final NotificationService	notificationService;
 	private final PetService			petService;
 	private final QuestionnaireService	questService;
+	private final AnimalshelterService	animalshelterService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService) {
+	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService,
+		final AnimalshelterService animalshelterService) {
 		this.ownerService = ownerService;
 		this.notificationService = notificationService;
 		this.petService = petService;
 		this.questService = questService;
+		this.animalshelterService = animalshelterService;
+
 	}
 
 	@InitBinder
@@ -162,18 +165,6 @@ public class OwnerController {
 		ModelAndView mav = new ModelAndView("owners/ownerDetails");
 		mav.addObject(this.ownerService.findOwnerById(ownerId));
 		return mav;
-	}
-
-	@ModelAttribute("shelter")
-	public Integer findOwner() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
-		Integer res = 0;
-		if (!username.contains("admin")) {
-			Owner o = this.ownerService.findOwnerByUsername(username);
-			res = o.getId();
-		}
-		return res;
 	}
 
 	// ------------------------------------------------ Adopt -------------------------------------------------

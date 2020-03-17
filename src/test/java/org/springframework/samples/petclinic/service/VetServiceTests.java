@@ -82,6 +82,8 @@ class VetServiceTests {
 		Assertions.assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
 	}
 
+	//HU.17
+	//Negative Case
 	/* With this Test you can see that if you obtain all appointments, you get old appointments */
 	@Test
 	void shouldFindAllMyAppointments() {
@@ -97,7 +99,7 @@ class VetServiceTests {
 			}
 		}
 	}
-
+	//Positive Case
 	/* With this Test you can see that if you obtain your next appointments, so all must be in the future */
 	@Test
 	void shouldFindMyNextAppointments() {
