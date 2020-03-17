@@ -120,3 +120,7 @@ INSERT INTO questionnaires(id,name,umbral,vivienda,ingresos,horas_Libres,convive
 
 INSERT INTO records(id,owner_id,animalshelter_id) VALUES (1, 1, 11);
 
+INSERT INTO product(id,name,price,stock,description,image) VALUES (1, 'Comida para perros',12.2, true, 'La mejor comida para alimentar a nuestros compañeros caninos', 'https://www.petpremium.com/wp-content/uploads/2012/10/5-healthy-dog-foods-430x226.jpg');
+INSERT INTO product(id,name,price,stock,description,image) VALUES (2, 'Comida para gatos',15.4, false, 'La mejor comida para alimentar a nuestros compañeros felinos', 'https://t1.uc.ltmcdn.com/images/1/9/0/img_como_hacer_comida_casera_saludable_para_mi_gato_23091_orig.jpg');
+
+
