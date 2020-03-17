@@ -10,11 +10,13 @@
 	<br>
 	<br>
 	<br>
+	<c:if test="${not empty product.image }">
 	<b>Image of the product:</b>
 	<div class="col-md-12">
             <spring:url value="${product.image}" htmlEscape="true" var="image"/>
             <img class="img-responsive" src="${image}" height="200" width="200"/>
         </div>
+    </c:if>
     <table class="table table-striped">
        <tr>
             <th>Product name</th>
@@ -38,5 +40,6 @@
 					</c:if>
         </tr>
     </table>
-    <a class="btn btn-default" href='<spring:url value="/owners/product/save/${product.id}" ></spring:url>'>Update</a>
+    <a class="btn btn-default" href='<spring:url value="/admin/product/update/${product.id}" ></spring:url>'>Update</a>
+    <a class="btn btn-default" href='<spring:url value="/admin/product/delete/${product.id}" ></spring:url>'>Delete</a>
 </petclinic:layout>

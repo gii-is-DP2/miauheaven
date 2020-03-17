@@ -33,4 +33,12 @@ public class ProductService {
 		return res;
 	}
 
+	public void save(final Product product) {
+		this.productRepository.save(product);
+	}
+
+	public void delete(final Product product) {
+		this.productRepository.delete(product);
+	}
+
 }
