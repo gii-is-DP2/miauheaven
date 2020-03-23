@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,10 +21,19 @@ import lombok.Setter;
 public class Questionnaire extends NamedEntity {
 
 	private Integer	umbral;
+
+	@NotNull
 	private String	vivienda;
+
+	@NotNull
 	private String	ingresos;
+
+	@NotNull
 	private String	horasLibres;
+
+	@NotNull
 	private String	convivencia;
+
 	private Integer	puntuacion;
 
 	//Relaciones
