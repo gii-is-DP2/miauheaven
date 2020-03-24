@@ -35,7 +35,7 @@
 				</petclinic:menuItem>
 				
 				<sec:authorize access="hasAuthority('veterinarian')">
-				<petclinic:menuItem active="${name eq 'pets'}" url="/pets"
+				<petclinic:menuItem active="${name eq 'pets'}" url="/vets/pets"
 					title="find pets for Vets">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 					<span>Pets for vets</span>
@@ -95,7 +95,7 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('veterinarian')">
-				<petclinic:menuItem active="${name eq 'notificationList'}" url="/vets/notification/"
+				<petclinic:menuItem active="${name eq 'notificationList'}" url="/vets/notification"
 					title="Notifications for vets">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Notifications for vets</span>

@@ -91,7 +91,7 @@ public class VetController {
 	}
 
 	@GetMapping(value = {
-		"/pets"
+		"/vets/pets"
 	})
 	public String showPetList(final Map<String, Object> model) {
 		final Iterable<Pet> pets = this.petService.findAllPets();
@@ -100,7 +100,7 @@ public class VetController {
 	}
 
 	@GetMapping(value = {
-		"/pets/{petId}"
+		"/vets/pets/{petId}"
 	})
 	public String showPet(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		final Pet pet = this.petService.findPetById(petId);
@@ -110,7 +110,7 @@ public class VetController {
 
 	// ------------------------------------------------ Notification --------------------------------------------
 
-	@GetMapping("vets/notification/")
+	@GetMapping("vets/notification")
 	public String notificationList(final Map<String, Object> model) {
 		final Iterable<Notification> notifications = this.notificationService.findAllForVets();
 		model.put("notifications", notifications);

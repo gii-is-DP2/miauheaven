@@ -29,6 +29,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+
+import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.model.Animalshelter;
+
+
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -76,6 +81,9 @@ class PetServiceTests {
         @Autowired
 	protected OwnerService ownerService;	
 
+	@Autowired
+	protected AnimalshelterService	animalshelterService;
+
 	@Test
 	void shouldFindPetWithCorrectId() {
 		Pet pet7 = this.petService.findPetById(7);
@@ -105,6 +113,7 @@ class PetServiceTests {
 		Collection<PetType> types = this.petService.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(LocalDate.now());
+		pet.setGenre("male");
 		owner6.addPet(pet);
 		assertThat(owner6.getPets().size()).isEqualTo(found + 1);
 
@@ -130,6 +139,7 @@ class PetServiceTests {
 		Collection<PetType> types = this.petService.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(LocalDate.now());
+		pet.setGenre("male");
 		owner6.addPet(pet);
 		try {
 			petService.savePet(pet);		
@@ -171,10 +181,13 @@ class PetServiceTests {
 		Collection<PetType> types = this.petService.findPetTypes();
 		pet.setType(EntityUtils.getById(types, PetType.class, 2));
 		pet.setBirthDate(LocalDate.now());
+		pet.setGenre("male");
+
 		owner6.addPet(pet);
 		
 		Pet anotherPet = new Pet();		
 		anotherPet.setName("waluigi");
+		anotherPet.setGenre("male");
 		anotherPet.setType(EntityUtils.getById(types, PetType.class, 1));
 		anotherPet.setBirthDate(LocalDate.now().minusWeeks(2));
 		owner6.addPet(anotherPet);
@@ -223,6 +236,58 @@ class PetServiceTests {
 		assertThat(visitArr[0].getPet().getId()).isEqualTo(7);
 	}
 	
+
+	//HU.6
+	//Positive Case
+	@Test 
+	void shouldInsertPetByAnimalShelter() {
+		//We get an animalshelter from the repository
+	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+	Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
+	Integer oldtam=animalshelter.getOwner().getPets().size();
+
+	
+	//We create a pet, add it to the animalshelter and save it
+	Pet pet= new Pet();
+	pet.setName("peach");
+	Collection<PetType> types = this.petService.findPetTypes();
+	pet.setType(EntityUtils.getById(types, PetType.class, 2));
+	pet.setBirthDate(LocalDate.now());
+	pet.setGenre("female");
+	
+	animalshelter.getOwner().addPet(pet);
+	this.animalshelterService.save(animalshelter);
+	
+	//We recover the same animalshelter and try if it save it correctly
+	List<Animalshelter> Newanimalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+	Animalshelter Newanimalshelter = EntityUtils.getById(Newanimalshelters, Animalshelter.class, 1);
+	
+	Integer newtam= Newanimalshelter.getOwner().getPets().size();
+
+     assertThat(oldtam).isLessThan(newtam);
+	
+	}
+
+	//Negative Case
+	
+	void shouldnotInsertPetByAnimalShelter() throws Exception {
+		//We get an animalshelter from the repository
+	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+	Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
+
+	
+	//We create a pet, add it to the animalshelter and try to save it
+	Pet pet= new Pet();
+	pet.setName("peach");
+	Collection<PetType> types = this.petService.findPetTypes();
+	pet.setType(EntityUtils.getById(types, PetType.class, 2));
+	pet.setBirthDate(LocalDate.now());
+	pet.setGenre("female");
+	
+	animalshelter.getOwner().addPet(pet);
+   this.animalshelterService.save(animalshelter);
+	
+
 	@Test
 	void shouldFindPetsToAdopt() throws Exception {
 		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
@@ -249,6 +314,7 @@ class PetServiceTests {
 				assertThat(p).isNotEqualTo(pet);
 			}
 		}
+
 	}
 
 }

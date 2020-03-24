@@ -1,7 +1,9 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
@@ -48,7 +50,9 @@ public class AdminController {
 	private final PetService			petService;
 	private final NotificationService	notificationService;
 	private final QuestionnaireService	questionnaireService;
+
 	private final ProductService		productService;
+
 
 
 	@Autowired
@@ -100,8 +104,7 @@ public class AdminController {
 			return AdminController.NOTIFICATION_CREATE;
 		} else {
 
-			Calendar calendar = Calendar.getInstance();
-			notification.setDate(calendar.getTime());
+			notification.setDate(LocalDateTime.now());
 			this.notificationService.save(notification);
 			return "redirect:/admin/notification/";
 		}
