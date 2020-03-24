@@ -26,7 +26,6 @@ import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
-import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -62,17 +61,14 @@ public class OwnerController {
 	private final NotificationService	notificationService;
 	private final PetService			petService;
 	private final QuestionnaireService	questService;
-	private final AnimalshelterService	animalshelterService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService,
-		final AnimalshelterService animalshelterService) {
+	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService) {
 		this.ownerService = ownerService;
 		this.notificationService = notificationService;
 		this.petService = petService;
 		this.questService = questService;
-		this.animalshelterService = animalshelterService;
 
 	}
 
@@ -204,9 +200,9 @@ public class OwnerController {
 		if (notification.getTarget().equals("owner")) {
 			model.put("notification", notification);
 			return OwnerController.NOTIFICATION_SHOW;
+		} else {
+			return "redirect:/oups";
 		}
-		return "redirect:/oups";
-
 	}
 
 }

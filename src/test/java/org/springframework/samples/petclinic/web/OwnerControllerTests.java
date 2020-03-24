@@ -1,6 +1,8 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDateTime;
+
 import org.assertj.core.util.Lists;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,8 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
+import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
-import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
@@ -37,6 +39,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 class OwnerControllerTests {
 
 	private static final int		TEST_OWNER_ID	= 1;
+	
+	private static final int		TEST_NOTIFICATION_ID	= 1;
 
 	@Autowired
 	private OwnerController			ownerController;
@@ -49,8 +53,6 @@ class OwnerControllerTests {
 	private NotificationService		notificationService;
 	@MockBean
 	private PetService				petService;
-	@MockBean
-	private AnimalshelterService	animalshelterService;
 
 	@MockBean
 	private UserService				userService;
@@ -63,7 +65,8 @@ class OwnerControllerTests {
 
 	private Owner					george;
 
-
+	private Notification 			notification;
+	
 	@BeforeEach
 	void setup() {
 
@@ -75,6 +78,16 @@ class OwnerControllerTests {
 		this.george.setCity("Madison");
 		this.george.setTelephone("6085551023");
 		BDDMockito.given(this.clinicService.findOwnerById(OwnerControllerTests.TEST_OWNER_ID)).willReturn(this.george);
+
+		this.notification = new Notification();
+		this.notification.setId(OwnerControllerTests.TEST_NOTIFICATION_ID);
+		this.notification.setTitle("Prueba");
+		this.notification.setMessage("Prueba");
+		this.notification.setDate(LocalDateTime.now());
+		this.notification.setTarget("owner");
+		this.notification.setUrl("www.us.es");
+		
+		BDDMockito.given(this.notificationService.findNotificationById(OwnerControllerTests.TEST_NOTIFICATION_ID)).willReturn(this.notification);
 
 	}
 
@@ -164,4 +177,37 @@ class OwnerControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("owner", Matchers.hasProperty("telephone", Matchers.is("6085551023")))).andExpect(MockMvcResultMatchers.view().name("owners/ownerDetails"));
 	}
 
+	@WithMockUser(value = "spring")
+	@Test
+	void testAdoptList() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("pets"))
+		.andExpect(MockMvcResultMatchers.view().name("owners/pet/adoptionPetList"));
+
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testNotificationList() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("notifications"))
+		.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationList"));
+	}
+	
+	@WithMockUser(value = "spring")
+	@Test
+	void testNotificationShow() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/{notificationId}", OwnerControllerTests.TEST_NOTIFICATION_ID))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("notification"))
+		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("id",Matchers.is(OwnerControllerTests.TEST_NOTIFICATION_ID))))
+		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title",Matchers.is("Prueba"))))
+		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message",Matchers.is("Prueba"))))
+		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target",Matchers.is("owner"))))
+		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("url",Matchers.is("www.us.es"))))
+		.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationShow"));
+	}
+	
 }

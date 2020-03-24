@@ -286,7 +286,7 @@ class PetServiceTests {
 	
 	animalshelter.getOwner().addPet(pet);
    this.animalshelterService.save(animalshelter);
-	
+	}
 
 	@Test
 	void shouldFindPetsToAdopt() throws Exception {
