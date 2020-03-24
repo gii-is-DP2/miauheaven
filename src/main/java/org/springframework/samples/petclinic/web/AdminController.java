@@ -1,8 +1,8 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +41,7 @@ public class AdminController {
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
-	private final QuestionnaireService  questionnaireService;
+	private final QuestionnaireService	questionnaireService;
 
 
 	@Autowired
@@ -92,8 +92,7 @@ public class AdminController {
 			return AdminController.NOTIFICATION_CREATE;
 		} else {
 
-			Calendar calendar = Calendar.getInstance();
-			notification.setDate(calendar.getTime());
+			notification.setDate(LocalDateTime.now());
 			this.notificationService.save(notification);
 			return "redirect:/admin/notification/";
 		}
@@ -124,11 +123,11 @@ public class AdminController {
 	// ------------------------------------------------ Questionnaire --------------------------------------------
 	@GetMapping(value = "/questionnaires")
 	public String questionnaireList(final Map<String, Object> model) {
-		Iterable<Questionnaire> questionnaires  = this.questionnaireService.findAll();
+		Iterable<Questionnaire> questionnaires = this.questionnaireService.findAll();
 		model.put("questionnaires", questionnaires);
 		return AdminController.QUESTIONNAIRE_LIST;
 	}
-	
+
 	@GetMapping(value = "/questionnaires/{questionnaireId}")
 	public String questionnaireShow(final Map<String, Object> model, @PathVariable("questionnaireId") final int questionnaireId) {
 		Questionnaire questionnaire = this.questionnaireService.findOneById(questionnaireId);

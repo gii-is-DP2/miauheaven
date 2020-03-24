@@ -1,7 +1,7 @@
 
 package org.springframework.samples.petclinic.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,20 +22,20 @@ import lombok.EqualsAndHashCode;
 public class Notification extends BaseEntity {
 
 	@NotEmpty
-	private String	title;
+	private String			title;
 
 	@Column(name = "date")
 	@DateTimeFormat(pattern = "yyyy/MM/dd")
-	private Date	date;
+	private LocalDateTime	date;
 
 	@NotEmpty
-	private String	message;
+	private String			message;
 
 	@Pattern(regexp = "owner|veterinarian|animal_shelter")
-	private String	target;
+	private String			target;
 
 	@URL
-	private String	url;
+	private String			url;
 
 
 	public String getMessage() {
@@ -50,11 +50,11 @@ public class Notification extends BaseEntity {
 		this.title = title;
 	}
 
-	public Date getDate() {
+	public LocalDateTime getDate() {
 		return this.date;
 	}
 
-	public void setDate(final Date date) {
+	public void setDate(final LocalDateTime date) {
 		this.date = date;
 	}
 
