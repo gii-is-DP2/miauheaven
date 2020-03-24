@@ -3,6 +3,9 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -12,10 +15,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,19 +42,26 @@ public class AdminController {
 	private static final String			NOTIFICATION_SHOW	= "admin/notification/notificationShow";
 	private static final String			QUESTIONNAIRE_LIST	= "admin/questionnaires/questionnaireList";
 	private static final String			QUESTIONNAIRE_SHOW	= "admin/questionnaires/questionnaireShow";
+	private static final String			PRODUCT_LIST		= "admin/product/productList";
+	private static final String			PRODUCT_SHOW		= "admin/product/productShow";
+	private static final String			PRODUCT_FORM		= "admin/product/productForm";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
 	private final QuestionnaireService	questionnaireService;
 
+	private final ProductService		productService;
+
+
 
 	@Autowired
-	public AdminController(final AppointmentService appointmentService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService) {
+	public AdminController(final AppointmentService appointmentService, final ProductService productService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
 		this.notificationService = notificationService;
 		this.questionnaireService = questionnaireService;
+		this.productService = productService;
 	}
 
 	// ------------------------------------------------ Notification ------------------------------------------
@@ -134,6 +146,66 @@ public class AdminController {
 		model.put("questionnaire", questionnaire);
 		return AdminController.QUESTIONNAIRE_SHOW;
 
+	}
+
+	// ------------------------------------------------ Product ---------------------------------------------------
+
+	@GetMapping(value = "/product")
+	public String productList(final Map<String, Object> model) {
+		Collection<Product> products = this.productService.findAll();
+		model.put("products", products);
+		return AdminController.PRODUCT_LIST;
+	}
+
+	@GetMapping(value = "/product/{productId}")
+	public String productShow(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		model.put("product", product);
+		return AdminController.PRODUCT_SHOW;
+	}
+
+	@GetMapping(value = "/product/create")
+	public String productCreate(final Map<String, Object> model) {
+		Product product = new Product();
+		List<Boolean> stock = new ArrayList<>();
+		stock.add(true);
+		stock.add(false);
+		model.put("stock", stock);
+		model.put("product", product);
+		return AdminController.PRODUCT_FORM;
+	}
+
+	@GetMapping(value = "/product/update/{productId}")
+	public String productUpdate(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		List<Boolean> stock = new ArrayList<>();
+		stock.add(true);
+		stock.add(false);
+		model.put("stock", stock);
+		model.put("product", product);
+		return AdminController.PRODUCT_FORM;
+	}
+
+	@PostMapping(value = "/product/save")
+	public String productSave(final Map<String, Object> model, @Valid final Product product, final BindingResult result) {
+		if (result.hasErrors()) {
+			List<Boolean> stock = new ArrayList<>();
+			stock.add(true);
+			stock.add(false);
+			model.put("stock", stock);
+			model.put("product", product);
+			return AdminController.PRODUCT_FORM;
+		} else {
+			this.productService.save(product);
+			return "redirect:/admin/product/";
+		}
+	}
+
+	@GetMapping(value = "/product/delete/{productId}")
+	public String productDelete(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		this.productService.delete(product);
+		return "redirect:/admin/product/";
 	}
 
 	@GetMapping(value = {

@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,18 +26,18 @@ import java.util.logging.Logger;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Animalshelter;
+
+
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
-import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
-import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
@@ -235,6 +236,7 @@ class PetServiceTests {
 		assertThat(visitArr[0].getPet().getId()).isEqualTo(7);
 	}
 	
+
 	//HU.6
 	//Positive Case
 	@Test 
@@ -285,6 +287,34 @@ class PetServiceTests {
 	animalshelter.getOwner().addPet(pet);
    this.animalshelterService.save(animalshelter);
 	
+
+	@Test
+	void shouldFindPetsToAdopt() throws Exception {
+		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
+		assertThat(toAdopt.size()).isEqualTo(2);
+	}
+	
+	@Test
+	void shouldNotFindPetsToAdopt() throws Exception{
+		Collection<Owner> owners = this.ownerService.findAllOwnerCollection();
+		Collection<Owner> shelters = this.ownerService.findOwnerByLastName("Shelter");
+		List<Pet> pets = new ArrayList<Pet>();
+		if(owners.removeAll(shelters)) {
+			for(Owner o: owners) {
+				pets.addAll(o.getPets());
+			}
+		}
+		for(Pet p:pets) {
+			assertThat(p.getId()).isNotEqualTo(14);
+			assertThat(p.getId()).isNotEqualTo(15);
+		}
+		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
+		for(Pet p:pets) {
+			for(Pet pet:toAdopt) {
+				assertThat(p).isNotEqualTo(pet);
+			}
+		}
+
 	}
 
 }
