@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.repository.OwnerRepository;
+import org.springframework.samples.petclinic.service.exceptions.InferiorUmbralException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -82,4 +83,13 @@ public class OwnerService {
 		return this.ownerRepository.findByUsername(username);
 	}
 
+	@Transactional(rollbackFor = InferiorUmbralException.class)
+	public void saveOwnerQuest(final Owner owner, final Integer umbral, final Integer puntuacion) throws DataAccessException, InferiorUmbralException {
+
+		if (umbral > puntuacion) {
+			throw new InferiorUmbralException();
+		} else {
+			this.ownerRepository.save(owner);
+		}
+	}
 }
