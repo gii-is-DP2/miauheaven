@@ -12,7 +12,11 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Appointment;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.service.AppointmentService;
+import org.springframework.samples.petclinic.service.OwnerService;
+import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -33,10 +37,20 @@ class AppointmentControllerTests {
 	@MockBean
 	private AppointmentService		appointmentService;
 
+	@MockBean
+	private OwnerService			ownerService;
+
+	@MockBean
+	private PetService				petService;
+
 	@Autowired
 	private MockMvc					mockMvc;
 
 	private Appointment				ap;
+
+	private Owner					ow;
+
+	private Pet						pet;
 
 
 	@BeforeEach
@@ -47,8 +61,8 @@ class AppointmentControllerTests {
 		this.ap.setCause("No come nada");
 		this.ap.setDate(LocalDate.now());
 		this.ap.setUrgent(true);
-		this.ap.setOwner(AppointmentControllerTests.TEST_OWNER_ID);
-		this.ap.setPet(AppointmentControllerTests.TEST_PET_ID);
+		this.ap.setOwner(this.ownerService.findOwnerById(AppointmentControllerTests.TEST_OWNER_ID));
+		this.ap.setPet(this.petService.findPetById(AppointmentControllerTests.TEST_PET_ID));
 		this.ap.setVet_id(AppointmentControllerTests.TEST_VET_ID);
 		BDDMockito.given(this.appointmentService.findOneById(AppointmentControllerTests.TEST_APPOINTMENT_ID)).willReturn(this.ap);
 
