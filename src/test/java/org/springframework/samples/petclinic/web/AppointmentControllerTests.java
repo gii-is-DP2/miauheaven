@@ -4,6 +4,7 @@ package org.springframework.samples.petclinic.web;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -14,11 +15,17 @@ import org.springframework.samples.petclinic.configuration.SecurityConfiguration
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.User;
+import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(controllers = AppointmentController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class AppointmentControllerTests {
@@ -52,6 +59,8 @@ class AppointmentControllerTests {
 
 	private Pet						pet;
 
+	private Vet						vet;
+
 
 	@BeforeEach
 	void setup() {
@@ -66,6 +75,37 @@ class AppointmentControllerTests {
 		this.ap.setVet_id(AppointmentControllerTests.TEST_VET_ID);
 		BDDMockito.given(this.appointmentService.findOneById(AppointmentControllerTests.TEST_APPOINTMENT_ID)).willReturn(this.ap);
 
+		final User user = new User();
+		user.setEnabled(true);
+		user.setUsername("shelter1");
+		user.setPassword("shelter1");
+		this.ap.setUser(user);
+		BDDMockito.given(this.appointmentService.findOwnerByUsername("shelter1")).willReturn(this.ap);
+
+	}
+
+	@WithMockUser(value = "shelter1")
+	@Test
+	void testinitNewAppointmentForm() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/*/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_PET_ID)).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.model().attributeExists("appointment")).andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
+	}
+
+	@WithMockUser(value = "shelter1")
+	@Test
+	void testProcessCreationFormSuccess() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).param("cause", "No come nada").param("date", "2020-04-01")
+			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true").param("owner_id", "6").param("pet_id", "7").param("vet_id", "2")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+	}
+
+	@WithMockUser(value = "shelter1")
+	@Test
+	void testProcessCreationFormHasErrors() throws Exception {
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).with(SecurityMockMvcRequestPostProcessors.csrf())
+				.param("cause", "Operacion").param("date", "2020-05-01").param("owner_id", "1").param("vet_id", "1"))
+			.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeHasErrors("appointment")).andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("appointment", "urgent"))
+			.andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("appointment", "pet_id")).andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAnimalshelterForm"));
 	}
 
 }
