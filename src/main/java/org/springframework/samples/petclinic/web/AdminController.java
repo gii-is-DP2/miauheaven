@@ -73,7 +73,7 @@ public class AdminController {
 		return AdminController.NOTIFICATION_LIST;
 	}
 
-	@GetMapping(value = "/notification/{appointmentId}")
+	@GetMapping(value = "/notification/{notificationnotiId}")
 	public String notificationsShow(final Map<String, Object> model, @PathVariable final int appointmentId) {
 		Notification notification = this.notificationService.findNotificationById(appointmentId);
 		model.put("notification", notification);
