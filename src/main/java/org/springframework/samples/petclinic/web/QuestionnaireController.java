@@ -120,22 +120,24 @@ public class QuestionnaireController {
 	}
 
 	@GetMapping(value = "/accept/{questId}")
-    public String acceptAdoption(final Map<String, Object> model, @PathVariable("questId") final int questId) {
-        Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
-        Pet pet = questionnaire.getPet();
-        Owner owner = questionnaire.getOwner();
-        owner.addPet(pet);
-        try {
-            this.ownerService.saveOwnerQuest(owner, questionnaire.getUmbral(), questionnaire.getPuntuacion());
-            this.petService.save(pet);
+	public String acceptAdoption(final Map<String, Object> model, @PathVariable("questId") final int questId) {
+		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
+		Pet pet = questionnaire.getPet();
+		Owner owner = questionnaire.getOwner();
 
-        } catch (UmbralInferiorException e) {
-            e.printStackTrace();
-        }
+		owner.addPet(pet);
+		try {
+			this.ownerService.saveOwnerQuest(owner, questionnaire.getUmbral(), questionnaire.getPuntuacion());
+			this.petService.save(pet);
 
-        model.put("questionnaire", questionnaire);
-        return "redirect:/owners/" + owner.getId();
-    }
+		} catch (UmbralInferiorException e) {
+			e.printStackTrace();
+		}
+
+		model.put("questionnaire", questionnaire);
+		model.put("pet", pet);
+		return "redirect:/owners/" + owner.getId();
+	}
 	/*
 	 * private static void rellenaPreguntas(final Questionnaire q) {
 	 * List<String> preguntas = Arrays.asList("¿Dónde vives?", "¿Cómo considerarías tus ingresos mensuales?", "¿Dispones de mucho tiempo a lo largo del día?", "¿Tienes otras mascotas que tengan problemas de convivencia?");
