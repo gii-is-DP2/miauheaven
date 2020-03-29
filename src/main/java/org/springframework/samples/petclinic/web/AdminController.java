@@ -47,7 +47,7 @@ public class AdminController {
 	private static final String			PRODUCT_FORM		= "admin/product/productForm";
 
 	private final AppointmentService	appointmentService;
-	private final PetService			petService;
+	private final PetService		petService;
 	private final NotificationService	notificationService;
 	private final QuestionnaireService	questionnaireService;
 
@@ -73,9 +73,9 @@ public class AdminController {
 		return AdminController.NOTIFICATION_LIST;
 	}
 
-	@GetMapping(value = "/notification/{appointmentId}")
-	public String notificationsShow(final Map<String, Object> model, @PathVariable final int appointmentId) {
-		Notification notification = this.notificationService.findNotificationById(appointmentId);
+	@GetMapping(value = "/notification/{notificationId}")
+	public String notificationsShow(final Map<String, Object> model, @PathVariable final int notificationId) {
+		Notification notification = this.notificationService.findNotificationById(notificationId);
 		model.put("notification", notification);
 		return AdminController.NOTIFICATION_SHOW;
 	}
