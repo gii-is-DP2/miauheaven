@@ -16,11 +16,16 @@
 
 package org.springframework.samples.petclinic.service;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Appointment;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.repository.AppointmentRepository;
-import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
+import org.springframework.samples.petclinic.repository.PetRepository;
+import org.springframework.samples.petclinic.service.exceptions.PetNotRegistredException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,25 +38,27 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class AppointmentService {
 
-	private final AppointmentRepository appointmentRepository;
+	private final AppointmentRepository	appointmentRepository;
+
+	private PetRepository				petRepository;
 
 
 	@Autowired
-	public AppointmentService(final AppointmentRepository appointmentRepository) {
+	public AppointmentService(final AppointmentRepository appointmentRepository, final PetRepository petRepository) {
 		this.appointmentRepository = appointmentRepository;
+		this.petRepository = petRepository;
+
 	}
 
-	@Transactional(rollbackFor = DuplicatedPetNameException.class)
-	public void saveAppointment(final Appointment appointment) throws DataAccessException {
-
-		this.appointmentRepository.save(appointment);
+	@Transactional(rollbackFor = PetNotRegistredException.class)
+	public void saveAppointment(final Appointment appointment) throws DataAccessException, PetNotRegistredException {
+		Collection<Pet> a = this.petRepository.findAll();
+		if (a.stream().filter(x -> x.equals(appointment.getPet())).collect(Collectors.toList()).isEmpty()) {
+			throw new PetNotRegistredException();
+		} else {
+			this.appointmentRepository.save(appointment);
+		}
 	}
-	//	public LocalDate getFecha(Appointment ap) {
-	//		Date date = new Date();
-	//
-	//		return date;
-	//
-	//	}
 
 	@Transactional
 	public Iterable<Appointment> findAll() {
