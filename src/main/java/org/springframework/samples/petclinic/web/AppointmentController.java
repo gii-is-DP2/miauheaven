@@ -71,14 +71,14 @@ public class AppointmentController {
 	// Spring MVC calls method loadPetWithAppointment(...) before initNewAppointmentForm is called
 	@ModelAttribute("vets")
 	public Vets loadVets(@PathVariable("petId") final int petId) {
-		Vets vets = new Vets();
+		final Vets vets = new Vets();
 		vets.getVetList().addAll(this.vetService.findVets());
 		return vets;
 	}
 
 	@GetMapping(value = "/owners/*/pets/{petId}/appointment/new")
 	public String initNewAppointmentForm(@PathVariable("petId") final int petId, final Map<String, Object> model) {
-		Appointment appointment = new Appointment();
+		final Appointment appointment = new Appointment();
 		model.put("appointment", appointment);
 		model.put("vetid", 1);
 		return "appointment/createOrUpdateAppointmentForm";
@@ -87,13 +87,13 @@ public class AppointmentController {
 	// Spring MVC calls method loadPetWithAppointment(...) before processNewAppointmentForm is called
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/appointment/new")
 	public String processNewAppointmentForm(@Valid final Appointment appointment, @PathVariable("petId") final int petId, @PathVariable("ownerId") final int ownerId, final BindingResult result) {
-		if (result.hasErrors()) {
+		if (result.hasErrors())
 			return "appointment/createOrUpdateAppointmentForm";
-		} else {
-			Owner own = this.ownerService.findOwnerById(ownerId);
-			Pet pet = this.petService.findPetById(petId);
+		else {
+			final Owner own = this.ownerService.findOwnerById(ownerId);
+			final Pet pet = this.petService.findPetById(petId);
 			appointment.setOwner(own);
-			Vet v = this.vetService.findVetById(appointment.getVet_id());
+			final Vet v = this.vetService.findVetById(appointment.getVet_id());
 			appointment.setVet(v);
 			appointment.setPet(pet);
 			this.appointmentService.saveAppointment(appointment);

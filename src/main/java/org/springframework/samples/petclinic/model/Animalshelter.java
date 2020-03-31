@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -43,6 +44,7 @@ public class Animalshelter extends BaseEntity {
 
 	@Column(name = "cif")
 	@NotEmpty
+	@Pattern(regexp = "\\d{8}[A-HJ-NP-TV-Z]")
 	private String	cif;
 
 	@Column(name = "place")

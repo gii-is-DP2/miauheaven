@@ -37,12 +37,12 @@ import lombok.EqualsAndHashCode;
 @Table(name = "records")
 public class Record extends BaseEntity {
 
-	@OneToOne(cascade = CascadeType.ALL)
-	private Owner	owner;
-
 	@Column(name = "owner_id", insertable = false, updatable = false)
 	@NotNull
 	private Integer	owner_id;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Owner	owner;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Owner	animalshelter;
