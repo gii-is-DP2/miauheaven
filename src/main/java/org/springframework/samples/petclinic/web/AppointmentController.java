@@ -16,7 +16,10 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -30,6 +33,7 @@ import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
+import org.springframework.samples.petclinic.service.exceptions.PetNotRegistredException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -87,16 +91,22 @@ public class AppointmentController {
 	// Spring MVC calls method loadPetWithAppointment(...) before processNewAppointmentForm is called
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/appointment/new")
 	public String processNewAppointmentForm(@Valid final Appointment appointment, @PathVariable("petId") final int petId, @PathVariable("ownerId") final int ownerId, final BindingResult result) {
-		if (result.hasErrors())
+		List<Appointment> apps = (List<Appointment>) this.appointmentService.findAll();
+		List<LocalDate> dates = apps.stream().map(x -> x.getDate()).collect(Collectors.toList());
+		if (result.hasErrors() || dates.contains(appointment.getDate())) {
 			return "appointment/createOrUpdateAppointmentForm";
-		else {
+		} else {
 			final Owner own = this.ownerService.findOwnerById(ownerId);
 			final Pet pet = this.petService.findPetById(petId);
 			appointment.setOwner(own);
 			final Vet v = this.vetService.findVetById(appointment.getVet_id());
 			appointment.setVet(v);
 			appointment.setPet(pet);
-			this.appointmentService.saveAppointment(appointment);
+			try {
+				this.appointmentService.saveAppointment(appointment);
+			} catch (PetNotRegistredException e) {
+				e.printStackTrace();
+			}
 			return "redirect:/owners/{ownerId}";
 		}
 	}
