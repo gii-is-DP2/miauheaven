@@ -33,7 +33,7 @@
                     <c:out value="${appointment.urgent}"/>
                 </td>
                 <td>
-                <a href='<spring:url value="/admin/appointment/${appointment.id}"/>'>See more</a>
+                <a href='<spring:url value="/admin/appointments/${appointment.id}"/>'>See more</a>
                </td>
             </tr>
         </c:forEach>

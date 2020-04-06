@@ -26,6 +26,7 @@
                 <petclinic:inputField label="Cause" name="cause" />
                 <label for="urgent">¿Its urgent?:</label>
 				<select name="urgent">
+				<option value="null">-</option>
 	 				<option value="1">Yes</option>
 	 				<option value="0">No</option>
 	 						
