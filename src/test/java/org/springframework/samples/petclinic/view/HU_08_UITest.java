@@ -12,9 +12,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class HU_8 {
+public class HU_08_UITest {
 
 	private WebDriver		driver;
 	private String			baseUrl;
@@ -24,17 +24,18 @@ public class HU_8 {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		String pathToGeckoDriver = System.getProperty("webdriver.gecko.driver");
-		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\chromedriver.exe");
-		this.driver = new ChromeDriver();
+
+		String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
+		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
+		this.driver = new FirefoxDriver();
 		this.baseUrl = "https://www.google.com/";
 		this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 
 	@Test
-	public void testAceptarAdopcion() throws Exception {
+	public void testPruebaAceptarAdopcion() throws Exception {
 		this.driver.get("http://localhost:8080/");
-		this.driver.findElement(By.linkText("Login")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
@@ -42,12 +43,14 @@ public class HU_8 {
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.linkText("My animal shelter")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
 		this.driver.findElement(By.linkText("See applications")).click();
 		this.driver.findElement(By.linkText("See more")).click();
 		this.driver.findElement(By.linkText("Accept adoption")).click();
-		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//b")).getText());
 		Assert.assertEquals("Desto", this.driver.findElement(By.xpath("//dd")).getText());
+		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//b")).getText());
+		Assert.assertEquals("Owner Information", this.driver.findElement(By.xpath("//h2")).getText());
+		Assert.assertEquals("Pets and Visits", this.driver.findElement(By.xpath("//h2[2]")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
