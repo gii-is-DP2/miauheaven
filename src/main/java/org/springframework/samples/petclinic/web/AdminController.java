@@ -3,8 +3,6 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -47,12 +45,11 @@ public class AdminController {
 	private static final String			PRODUCT_FORM		= "admin/product/productForm";
 
 	private final AppointmentService	appointmentService;
-	private final PetService		petService;
+	private final PetService			petService;
 	private final NotificationService	notificationService;
 	private final QuestionnaireService	questionnaireService;
 
 	private final ProductService		productService;
-
 
 
 	@Autowired
@@ -222,8 +219,11 @@ public class AdminController {
 	})
 	public String showPet(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		Pet pet = this.petService.findPetById(petId);
-		model.put("pet", pet);
-		return AdminController.PETS_SHOW;
+		if (!pet.getName().isEmpty()) {
+			model.put("pet", pet);
+			return AdminController.PETS_SHOW;
+		}
+		return "redirect:/oups";
 	}
 
 }
