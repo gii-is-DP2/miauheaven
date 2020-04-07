@@ -7,15 +7,23 @@ import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class HU_10_UITest {
 
+	@LocalServerPort
+	private int				port;
 	private WebDriver		driver;
 	private String			baseUrl;
 	private boolean			acceptNextAlert		= true;
@@ -34,7 +42,7 @@ public class HU_10_UITest {
 
 	@Test
 	public void testListarPeticiones() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).clear();
@@ -56,6 +64,25 @@ public class HU_10_UITest {
 		Assert.assertEquals("No", this.driver.findElement(By.xpath("//tr[5]/td")).getText());
 		Assert.assertEquals("0", this.driver.findElement(By.xpath("//tr[6]/td")).getText());
 		Assert.assertEquals("Accept adoption", this.driver.findElement(By.linkText("Accept adoption")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+
+	@Test
+	public void testOwnerNoVeListaCuestionarios() throws Exception {
+		this.driver.get("http://localhost:" + this.port);
+		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.id("username")).click();
+		this.driver.findElement(By.id("username")).clear();
+		this.driver.findElement(By.id("username")).sendKeys("owner1");
+		this.driver.findElement(By.id("password")).click();
+		this.driver.findElement(By.id("password")).clear();
+		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.get("http://localhost:" + this.port + "/admin/questionnaires");
+		Assert.assertEquals("Forbidden", this.driver.findElement(By.xpath("//div[3]")).getText());
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
