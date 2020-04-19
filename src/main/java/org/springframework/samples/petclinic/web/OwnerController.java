@@ -22,11 +22,13 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.samples.petclinic.model.Event;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.EventService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -56,19 +58,24 @@ public class OwnerController {
 	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW					= "owners/notification/notificationShow";
 	private static final String			ADOPTION_PET_LIST					= "owners/pet/adoptionPetList";
+	private static final String			EVENTS_LIST							= "owners/events/eventsList";
+	private static final String			EVENT_SHOW							= "owners/events/eventShow";
 
 	private final OwnerService			ownerService;
 	private final NotificationService	notificationService;
 	private final PetService			petService;
 	private final QuestionnaireService	questService;
+	private final EventService			eventService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService) {
+	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService,
+		final EventService eventService) {
 		this.ownerService = ownerService;
 		this.notificationService = notificationService;
 		this.petService = petService;
 		this.questService = questService;
+		this.eventService = eventService;
 
 	}
 
@@ -203,6 +210,27 @@ public class OwnerController {
 		} else {
 			return "redirect:/oups";
 		}
+	}
+
+	// ------------------------------------------------ Event ------------------------------------------
+
+	@GetMapping(value = {
+		"owners/events"
+	})
+	public String showEventList(final Map<String, Object> model) {
+		Collection<Event> events;
+		events = this.eventService.findEvents();
+		model.put("events", events);
+		return OwnerController.EVENTS_LIST;
+	}
+
+	@GetMapping(value = {
+		"owners/events/{eventId}"
+	})
+	public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
+		Event event = this.eventService.findEventById(eventId);
+		model.put("event", event);
+		return OwnerController.EVENT_SHOW;
 	}
 
 }

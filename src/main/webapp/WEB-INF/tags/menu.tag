@@ -80,9 +80,17 @@
 				
 				<sec:authorize access="hasAuthority('owner')">
 				<petclinic:menuItem active="${name eq 'adoptionPetList'}" url="/owners/adoptList/"
-					title="Notifications for owners">
+					title="Adoption pet list">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Adopt a pet</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/owners/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
 				</petclinic:menuItem>
 				</sec:authorize>
 				
