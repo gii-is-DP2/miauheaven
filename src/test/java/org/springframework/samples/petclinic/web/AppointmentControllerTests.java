@@ -92,16 +92,15 @@ class AppointmentControllerTests {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).param("cause", "No come nada")
 			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
-	/*
-	 * @WithMockUser(value = "spring")
-	 *
-	 * @Test
-	 * void testProcessCreationFormHasErrors() throws Exception {
-	 * this.mockMvc
-	 * .perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "false"))
-	 * .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeHasErrors("appointment")).andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("appointment", "cause"))
-	 * .andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
-	 * }
-	 */
+
+	@WithMockUser(value = "spring")
+
+	@Test
+	void testProcessCreationFormHasErrors() throws Exception {
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "null"))
+			.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeHasErrors("appointment")).andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("appointment", "cause"))
+			.andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
+	}
 
 }
