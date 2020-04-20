@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -35,6 +34,7 @@ import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.VetService;
 import org.springframework.samples.petclinic.service.exceptions.PetNotRegistredException;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,19 +81,20 @@ public class AppointmentController {
 	}
 
 	@GetMapping(value = "/owners/*/pets/{petId}/appointment/new")
-	public String initNewAppointmentForm(@PathVariable("petId") final int petId, final Map<String, Object> model) {
+	public String initNewAppointmentForm(@PathVariable("petId") final int petId, final ModelMap model) {
 		final Appointment appointment = new Appointment();
 		model.put("appointment", appointment);
 		model.put("vetid", 1);
 		return "appointment/createOrUpdateAppointmentForm";
 	}
 
-	// Spring MVC calls method loadPetWithAppointment(...) before processNewAppointmentForm is called
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/appointment/new")
-	public String processNewAppointmentForm(@Valid final Appointment appointment, @PathVariable("petId") final int petId, @PathVariable("ownerId") final int ownerId, final BindingResult result) {
+	public String processNewAppointmentForm(@Valid final Appointment appointment, final BindingResult result, @PathVariable("petId") final int petId, @PathVariable("ownerId") final int ownerId, final ModelMap model) {
 		List<Appointment> apps = (List<Appointment>) this.appointmentService.findAll();
 		List<LocalDate> dates = apps.stream().map(x -> x.getDate()).collect(Collectors.toList());
+		System.out.println(result);
 		if (result.hasErrors() || dates.contains(appointment.getDate())) {
+			model.put("appointment", appointment);
 			return "appointment/createOrUpdateAppointmentForm";
 		} else {
 			final Owner own = this.ownerService.findOwnerById(ownerId);
@@ -105,6 +106,7 @@ public class AppointmentController {
 			try {
 				this.appointmentService.saveAppointment(appointment);
 			} catch (PetNotRegistredException e) {
+				result.rejectValue("pet", "not registred", "Mascota no registrada");
 				e.printStackTrace();
 			}
 			return "redirect:/owners/{ownerId}";

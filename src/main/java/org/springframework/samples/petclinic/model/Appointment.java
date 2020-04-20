@@ -28,6 +28,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
@@ -38,6 +39,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Data
 @Table(name = "appointments")
 public class Appointment extends BaseEntity {
 
@@ -64,62 +66,5 @@ public class Appointment extends BaseEntity {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Pet			pet;
-
-
-	public LocalDate getDate() {
-		return this.date;
-	}
-
-	public void setDate(final LocalDate date) {
-		this.date = date;
-	}
-
-	public String getCause() {
-		return this.cause;
-	}
-
-	public void setCause(final String cause) {
-		this.cause = cause;
-	}
-
-	public Boolean getUrgent() {
-		return this.urgent;
-	}
-
-	public void setUrgent(final Boolean urgent) {
-		this.urgent = urgent;
-	}
-
-	public int getVet_id() {
-		return this.vet_id;
-	}
-
-	public void setVet_id(final int vet_id) {
-		this.vet_id = vet_id;
-	}
-
-	public Owner getOwner() {
-		return this.owner;
-	}
-
-	public void setOwner(final Owner owner) {
-		this.owner = owner;
-	}
-
-	public Vet getVet() {
-		return this.vet;
-	}
-
-	public void setVet(final Vet vet) {
-		this.vet = vet;
-	}
-
-	public Pet getPet() {
-		return this.pet;
-	}
-
-	public void setPet(final Pet pet) {
-		this.pet = pet;
-	}
 
 }
