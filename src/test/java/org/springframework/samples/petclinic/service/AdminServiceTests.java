@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.validation.ConstraintViolationException;
@@ -16,27 +18,37 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.model.Vet;
+import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class AdminServiceTests {
 	
+	@Autowired
+	protected AppointmentService	appointmentService;
+	
+	@Autowired
+	protected VetService			vetService;
 	
 	@Autowired
 	private OwnerService			ownerService;
 
 	@Autowired
 	private PetService				petService;
+	
 	@Autowired
 	private NotificationService		notificationService;
 	
 	@Autowired
 	private QuestionnaireService	questionnaireService;
+	
 	@Autowired
 	private ProductService			productService;
 
@@ -129,6 +141,37 @@ public class AdminServiceTests {
 		Assertions.assertThat(this.petService.findPetById(pets.size() + 1)).isNull();
 	}
 	
+	
+	
+	// ----------------------------------------------------------------- HU.20 ---------------------------------------------------------------------------------------------------
+
+	@Test //+
+	
+	void adminShouldFindAllAppointments() {
+		
+		List<Appointment> appointments = (List<Appointment>) this.appointmentService.findAll();
+//		
+//		for (Appointment appointment : appointments) {
+//			Assertions.assertThat(appointment.getDate().isAfter(LocalDate.now())).isEqualTo(false);
+//			Assertions.assertThat(appointment.getDate().isAfter(LocalDate.now())).isEqualTo(true);
+//		}
+//		
+		
+	
+	}
+	@Test //-
+	
+	void adminShouldFindOldAndNewAppointments() {
+		
+		Iterable<Appointment> app = this.appointmentService.findAll();
+		Iterator<Appointment> list = app.iterator();
+		
+		if (list.hasNext()) {
+				Assertions.assertThat(list.next().getDate().isAfter(LocalDate.now())).isEqualTo(false);
+		}
+		
+	}
+	
 	// ----------------------------------------------------------------- HU.29 ---------------------------------------------------------------------------------------------------
 
 		@Test //+
@@ -155,8 +198,6 @@ public class AdminServiceTests {
 					product.setStock(Boolean.TRUE);
 					this.productService.save(product);
 					assertThat(product.getId().longValue()).isNotEqualTo(0);
-					
-					
 				}
 
 				@Test //-
@@ -168,7 +209,6 @@ public class AdminServiceTests {
 					assertThrows(ConstraintViolationException.class, () -> {
 						this.productService.save(product);
 					});
-					
 				}
 
 
