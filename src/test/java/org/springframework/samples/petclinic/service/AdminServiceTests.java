@@ -1,8 +1,13 @@
 
 package org.springframework.samples.petclinic.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Collection;
 import java.util.regex.Pattern;
+
+import javax.validation.ConstraintViolationException;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -25,6 +30,7 @@ public class AdminServiceTests {
 	@Autowired
 	private PetService				petService;
 
+	
 	@Autowired
 	private QuestionnaireService	questionnaireService;
 	@Autowired
@@ -32,7 +38,9 @@ public class AdminServiceTests {
 
 	 Pattern regex = Pattern.compile("(?i)^(?:(?:https?|ftp)://)(?:\\S+(?::\\S*)?@)?(?:(?!(?:10|127)(?:\\.\\d{1,3}){3})(?!(?:169\\.254|192\\.168)(?:\\.\\d{1,3}){2})(?!172\\.(?:1[6-9]|2\\d|3[0-1])(?:\\.\\d{1,3}){2})(?:[1-9]\\d?|1\\d\\d|2[01]\\d|22[0-3])(?:\\.(?:1?\\d{1,2}|2[0-4]\\d|25[0-5])){2}(?:\\.(?:[1-9]\\d?|1\\d\\d|2[0-4]\\d|25[0-4]))|(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*(?:\\.(?:[a-z\\u00a1-\\uffff]{2,}))\\.?)(?::\\d{2,5})?(?:[/?#]\\S*)?$");
 	
-	// ---------------------------------------------------------------- HU.10 ----------------------------------------------------------------------------------------------------
+
+	 
+	 // ---------------------------------------------------------------- HU.10 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
 	public void adminShouldSeeQuestionnaire() {
@@ -106,6 +114,31 @@ public class AdminServiceTests {
 			Collection<Product> products = (Collection<Product>) this.productService.findAll();
 			Assertions.assertThat(this.productService.findProductById(products.size() + 1)).isNull();
 		}
+		// ----------------------------------------------------------------- HU.30 ---------------------------------------------------------------------------------------------------
+
+				@Test //+
+				public void adminShouldCreateProduct() {
+					Product product = new Product();
+					product.setPrice(10.0);
+					product.setImage("http://www.google.es");
+					product.setStock(Boolean.TRUE);
+					this.productService.save(product);
+					assertThat(product.getId().longValue()).isNotEqualTo(0);
+					
+					
+				}
+
+				@Test //-
+				public void adminShouldNotCreateProduct() {
+					Product product = new Product();
+					product.setPrice(10.0);
+					product.setImage("http://www.google.es");
+					
+					assertThrows(ConstraintViolationException.class, () -> {
+						this.productService.save(product);
+					});
+					
+				}
 
 
 }
