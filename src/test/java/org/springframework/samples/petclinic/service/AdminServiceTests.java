@@ -57,6 +57,18 @@ public class AdminServiceTests {
 			assertThat(notification.getId().longValue()).isNotEqualTo(0);	
 		}
 
+		@Test //-
+		public void admintShouldNotCreateNotificationWithOut() {
+			Notification notification = new Notification();
+			notification.setDate(LocalDateTime.now());
+			notification.setTarget("owner");
+			notification.setTitle("New Product");
+			notification.setUrl("http://www.google.es");
+			
+			assertThrows(ConstraintViolationException.class, () -> {
+				this.notificationService.save(notification);
+			});
+		}
 	
 	 
 	 // ---------------------------------------------------------------- HU.10 ----------------------------------------------------------------------------------------------------
