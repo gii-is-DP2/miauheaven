@@ -7,7 +7,7 @@
 
 <petclinic:layout pageName="questionnaire">
 	<h2>Applications for <c:out value="${questionnaire[0].pet.name}"></c:out></h2>
-
+	<h3><c:out value="${message}"></c:out></h3>
 
 	<table id="questionnaireTable" class="table table-striped">
 		<thead>

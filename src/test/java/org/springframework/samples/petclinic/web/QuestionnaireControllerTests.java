@@ -32,8 +32,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(controllers = QuestionnaireController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 public class QuestionnaireControllerTests {
 
-	private static final int		TEST_QUEST_ID	= 1;
-	private static final int		TEST_PET_ID		= 15;
+	private static final int		TEST_QUEST_ID		= 1;
+	private static final int		TEST_QUEST_ID_FAIL	= 2;
+	private static final int		TEST_PET_ID			= 15;
 
 	@Autowired
 	private QuestionnaireController	questController;
@@ -84,7 +85,7 @@ public class QuestionnaireControllerTests {
 		dog.setId(3);
 		dog.setName("dog");
 		this.desto.setType(dog);
-		this.desto.changeOwner(this.pichu);
+		this.pichu.addPet(this.desto);
 		BDDMockito.given(this.petService.findPetById(QuestionnaireControllerTests.TEST_PET_ID)).willReturn(this.desto);
 
 		this.george = new Owner();
@@ -122,12 +123,21 @@ public class QuestionnaireControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attributeExists("questionnaire")).andExpect(MockMvcResultMatchers.view().name("questionnaire/createOrUpdateQuestionnaire"));
 	}
 
-		@WithMockUser(value = "spring")
-		@Test
-		void testSalvaCuestionario() throws Exception {
-			this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/adoptList/questionnaire/new/{petId}", QuestionnaireControllerTests.TEST_PET_ID).param("convivencia", "Sí")
-				.param("horasLibres", "Entre 3 y 6 horas").param("ingresos", "Altos").param("vivienda", "Casa")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
-		}
+	@WithMockUser(value = "spring")
+	@Test
+	void testSalvaCuestionario() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/adoptList/questionnaire/new/{petId}", QuestionnaireControllerTests.TEST_PET_ID).param("horasLibres", "Entre 3 y 6 horas").with(SecurityMockMvcRequestPostProcessors.csrf())
+			.param("ingresos", "Altos").param("vivienda", "Casa")).andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testSalvaCuestionarioFail() throws Exception {
+		this.mockMvc
+			.perform(MockMvcRequestBuilders.post("/owners/adoptList/questionnaire/new/{petId}", QuestionnaireControllerTests.TEST_PET_ID).param("horasLibres", "Entre 3 y 6 horas").with(SecurityMockMvcRequestPostProcessors.csrf()).param("ingresos", "")
+				.param("vivienda", "Casa"))
+			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("questionnaire")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("questionnaire/createOrUpdateQuestionnaire"));
+	}
 
 	@WithMockUser(value = "spring")
 	@Test
@@ -144,6 +154,13 @@ public class QuestionnaireControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("vivienda", Matchers.is("Casa"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("horasLibres", Matchers.is("Entre 3 y 6 horas"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("convivencia", Matchers.is("Sí")))).andExpect(MockMvcResultMatchers.view().name("questionnaire/questonnaireShow"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testAceptAdoptionFail() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/accept/{questId}", QuestionnaireControllerTests.TEST_QUEST_ID_FAIL)).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.view().name("exception"));
 	}
 
 	@WithMockUser(value = "spring")

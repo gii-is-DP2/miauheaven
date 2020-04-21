@@ -59,21 +59,22 @@ public class QuestionnaireController {
 	}
 
 	@PostMapping(path = "/new/{petId}")
-	public String salvaCuestionario(@Valid final Questionnaire cuestionario, @PathVariable("petId") final int petId, final BindingResult result, final ModelMap modelMap) {
-		Pet pet = this.questService.findPetById(petId);
-		cuestionario.setPet(pet);
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
-		Owner o = this.ownerService.findOwnerByUsername(username);
-		cuestionario.setOwner(o);
-		cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
-		Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);
-		cuestionario.setPuntuacion(puntuacion);
-		cuestionario.setUmbral(QuestionnaireValidator.estableceUmbral());
+	public String salvaCuestionario(@Valid final Questionnaire cuestionario, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap modelMap) {
+
 		if (result.hasErrors()) {
 			modelMap.addAttribute("questionnaire", cuestionario);
 			return "questionnaire/createOrUpdateQuestionnaire";
 		} else {
+			Pet pet = this.questService.findPetById(petId);
+			cuestionario.setPet(pet);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.ownerService.findOwnerByUsername(username);
+			cuestionario.setOwner(o);
+			cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
+			Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);
+			cuestionario.setPuntuacion(puntuacion);
+			cuestionario.setUmbral(QuestionnaireValidator.estableceUmbral());
 			this.questService.saveQuest(cuestionario);
 			modelMap.addAttribute("message", "Questionnaire successfully saved!");
 			return "redirect:/owners/" + o.getId();
@@ -124,18 +125,18 @@ public class QuestionnaireController {
 		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
 		Pet pet = questionnaire.getPet();
 		Owner owner = questionnaire.getOwner();
-
 		owner.addPet(pet);
 		try {
 			this.ownerService.saveOwnerQuest(owner, questionnaire.getUmbral(), questionnaire.getPuntuacion());
 			this.petService.save(pet);
+			model.put("questionnaire", questionnaire);
 
 		} catch (UmbralInferiorException e) {
 			e.printStackTrace();
+			model.put("message", "No se pudo realizar la adopción por no cumplir los requisitos");
+			return "exception";
 		}
 
-		model.put("questionnaire", questionnaire);
-		model.put("pet", pet);
 		return "redirect:/owners/" + owner.getId();
 	}
 	/*
