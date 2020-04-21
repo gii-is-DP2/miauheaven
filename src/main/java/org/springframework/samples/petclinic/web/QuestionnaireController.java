@@ -19,6 +19,8 @@ import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,7 +55,6 @@ public class QuestionnaireController {
 		String vista = "questionnaire/createOrUpdateQuestionnaire";
 		Questionnaire q = new Questionnaire();
 		q.setPet(this.questService.findPetById(petId));
-		//QuestionnaireController.rellenaPreguntas(q);
 		model.put("questionnaire", q);
 		return vista;
 	}
@@ -116,13 +117,33 @@ public class QuestionnaireController {
 	@GetMapping(value = "/show/{questId}")
 	public String showQuestionnaire(final Map<String, Object> model, @PathVariable("questId") final int questId) {
 		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
-		model.put("questionnaire", questionnaire);
-		return QuestionnaireController.QUESTIONNAIRE_SHOW;
+		SecurityContext context = SecurityContextHolder.getContext();
+		Boolean isShelter = false;
+		for (GrantedAuthority i : context.getAuthentication().getAuthorities()) {
+			if (i.getAuthority().equals("animalshelter")) {
+				isShelter = true;
+			}
+		}
+		if (isShelter) {
+			model.put("questionnaire", questionnaire);
+
+			return QuestionnaireController.QUESTIONNAIRE_SHOW;
+		} else {
+			return "redirect:/oups";
+		}
 	}
 
 	@GetMapping(value = "/accept/{questId}")
 	public String acceptAdoption(final Map<String, Object> model, @PathVariable("questId") final int questId) {
 		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
+		SecurityContext context = SecurityContextHolder.getContext();
+		Boolean isShelter = false;
+		for (GrantedAuthority i : context.getAuthentication().getAuthorities()) {
+			if (i.getAuthority().equals("animalshelter")) {
+				isShelter = true;
+			}
+		}
+		if (isShelter) {
 		Pet pet = questionnaire.getPet();
 		Owner owner = questionnaire.getOwner();
 		owner.addPet(pet);
@@ -138,12 +159,8 @@ public class QuestionnaireController {
 		}
 
 		return "redirect:/owners/" + owner.getId();
+		} else {
+			return "redirect:/oups";
+		}
 	}
-	/*
-	 * private static void rellenaPreguntas(final Questionnaire q) {
-	 * List<String> preguntas = Arrays.asList("¿Dónde vives?", "¿Cómo considerarías tus ingresos mensuales?", "¿Dispones de mucho tiempo a lo largo del día?", "¿Tienes otras mascotas que tengan problemas de convivencia?");
-	 * Set<String> def = preguntas.stream().collect(Collectors.toSet());
-	 * q.setPreguntas(def);
-	 * }
-	 */
 }

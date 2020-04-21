@@ -27,6 +27,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -35,9 +36,10 @@ import lombok.EqualsAndHashCode;
  *
  * @author Ken Krebs
  */
-@Data
+
 @EqualsAndHashCode(callSuper = false)
 @Entity
+@Data
 @Table(name = "appointments")
 public class Appointment extends BaseEntity {
 

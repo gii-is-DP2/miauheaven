@@ -3,8 +3,6 @@ package org.springframework.samples.petclinic.web;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +52,6 @@ public class AdminController {
 	private final ProductService		productService;
 
 
-
 	@Autowired
 	public AdminController(final AppointmentService appointmentService, final ProductService productService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService) {
 		this.appointmentService = appointmentService;
@@ -73,9 +70,9 @@ public class AdminController {
 		return AdminController.NOTIFICATION_LIST;
 	}
 
-	@GetMapping(value = "/notification/{appointmentId}")
-	public String notificationsShow(final Map<String, Object> model, @PathVariable final int appointmentId) {
-		Notification notification = this.notificationService.findNotificationById(appointmentId);
+	@GetMapping(value = "/notification/{notificationId}")
+	public String notificationsShow(final Map<String, Object> model, @PathVariable final int notificationId) {
+		Notification notification = this.notificationService.findNotificationById(notificationId);
 		model.put("notification", notification);
 		return AdminController.NOTIFICATION_SHOW;
 	}
@@ -222,8 +219,11 @@ public class AdminController {
 	})
 	public String showPet(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		Pet pet = this.petService.findPetById(petId);
-		model.put("pet", pet);
-		return AdminController.PETS_SHOW;
+		if (!pet.getName().isEmpty()) {
+			model.put("pet", pet);
+			return AdminController.PETS_SHOW;
+		}
+		return "redirect:/oups";
 	}
 
 }

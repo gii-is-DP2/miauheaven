@@ -85,14 +85,6 @@ public class AnimalshelterController {
 	}
 
 	@GetMapping(value = "/animalshelter/new")
-
-	/*
-	 * @ModelAttribute("/owner")
-	 * public Owner findOwner(@PathVariable("ownerId") final int ownerId) {
-	 * return this.ownerService.findOwnerById(ownerId);
-	 * }
-	 */
-
 	public String initCreationForm(final Owner owner, final ModelMap model) {
 		Animalshelter animalshelter = new Animalshelter();
 		animalshelter.setOwner(owner);
@@ -130,7 +122,7 @@ public class AnimalshelterController {
 		return this.questService.findAll();
 	}
 	@ModelAttribute("owners")
-	public List<Owner> findOwners() {
+	public List<Owner> findOwnersWithQuest() {
 		List<Questionnaire> quests = this.questService.findAll();
 		List<Owner> res = new ArrayList<>();
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -172,7 +164,6 @@ public class AnimalshelterController {
 			record.setOwner(ow);
 			record.setAnimalshelter(animalshelter);
 			this.recordService.saveRecord(record);
-
 			return "redirect:/owners/myAnimalShelter/records";
 		}
 	}
