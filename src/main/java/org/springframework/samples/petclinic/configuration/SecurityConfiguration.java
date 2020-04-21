@@ -49,7 +49,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
 				.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter")
 				.antMatchers("/appointment/**").authenticated()
-				.antMatchers("/questionnaire/**").permitAll()
+				.antMatchers("/questionnaire/**").hasAnyAuthority("owner","admin","animalshelter")
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
