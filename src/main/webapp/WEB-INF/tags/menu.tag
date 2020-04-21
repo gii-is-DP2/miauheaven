@@ -87,18 +87,18 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('owner')">
-				<petclinic:menuItem active="${name eq 'eventList'}" url="/owners/events/"
-					title="Events">
-					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-					<span>Events</span>
-				</petclinic:menuItem>
-				</sec:authorize>
-				
-				<sec:authorize access="hasAuthority('owner')">
 				<petclinic:menuItem active="${name eq 'notificationList'}" url="/owners/notification/"
 					title="Notifications for owners">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
 					<span>Notifications for owners</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/owners/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
 				</petclinic:menuItem>
 				</sec:authorize>
 				
