@@ -37,7 +37,7 @@ public class HU_24_UITest {
 	}
 
 	@Test
-	public void testPrueba24() throws Exception {
+	public void testCasoPositivo() throws Exception {
 		this.driver.get("http://localhost:8080/");
 		this.driver.findElement(By.linkText("Login")).click();
 		this.driver.findElement(By.id("username")).clear();
