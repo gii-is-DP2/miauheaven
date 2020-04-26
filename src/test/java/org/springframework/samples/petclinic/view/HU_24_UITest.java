@@ -37,19 +37,19 @@ public class HU_24_UITest {
 	}
 
 	@Test
-	public void testCasoPositivo() throws Exception {
+	public void testPrueba24() throws Exception {
 		this.driver.get("http://localhost:8080/");
-		this.driver.findElement(By.linkText("Login")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Records")).click();
-		this.driver.findElement(By.linkText("Add Record")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).click();
 		this.driver.findElement(By.name("owner_id")).click();
-		this.driver.findElement(By.xpath("//option[@value='2']")).click();
+		this.driver.findElement(By.xpath("//form[@id='record']/div/div/select/option")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 

@@ -39,7 +39,6 @@ public class HU_05_UITest {
 	@Test
 	public void testListaAplicaciones() throws Exception {
 		this.driver.get("http://localhost:8080/");
-		//this.driver.findElement(By.linkText("Login")).click();
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
