@@ -37,19 +37,30 @@ public class HU_24_UITest {
 	}
 
 	@Test
-	public void testPrueba24() throws Exception {
+	public void testCasoPositivo() throws Exception {
 		this.driver.get("http://localhost:8080/");
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
+		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		Assert.assertEquals("Records", this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).click();
+		Assert.assertEquals("Add Record", this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).click();
 		this.driver.findElement(By.name("owner_id")).click();
-		this.driver.findElement(By.xpath("//form[@id='record']/div/div/select/option")).click();
+		Assert.assertEquals("BettyDavis", this.driver.findElement(By.name("owner_id")).getText());
+		this.driver.findElement(By.name("owner_id")).click();
+		this.driver.findElement(By.xpath("//option[@value='2']")).click();
+		Assert.assertEquals("Create record", this.driver.findElement(By.xpath("//button[@type='submit']")).getText());
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//body/div/div")).click();
+		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 

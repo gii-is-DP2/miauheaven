@@ -45,9 +45,17 @@ public class HU_05_UITest {
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter')]")).click();
+		Assert.assertEquals("Pets and Visits", this.driver.findElement(By.xpath("//h2[2]")).getText());
+		Assert.assertEquals("See applications", this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).click();
-		//Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//b")).getText());
+		Assert.assertEquals("Applications for Desto", this.driver.findElement(By.xpath("//h2")).getText());
+		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td")).getText());
+		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/adoptList/questionnaire/show/1')]")).click();
+		Assert.assertEquals("Desto", this.driver.findElement(By.xpath("//td")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
 	@AfterEach
