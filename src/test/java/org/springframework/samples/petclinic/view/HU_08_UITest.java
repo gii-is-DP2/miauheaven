@@ -76,8 +76,9 @@ public class HU_08_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.get("http://localhost:" + this.port + "/owners/adoptList/questionnaire/show/1");
-		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		Assert.assertEquals("Forbidden", this.driver.findElement(By.xpath("//div[3]")).getText());
+		this.driver.get("http://localhost:" + this.port);
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
