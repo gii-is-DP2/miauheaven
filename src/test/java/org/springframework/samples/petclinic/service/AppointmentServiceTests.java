@@ -24,19 +24,29 @@ import org.springframework.stereotype.Service;
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 public class AppointmentServiceTests {
 
-	
 	@Autowired
-	private AnimalshelterService		animalshelterService;
+	private AnimalshelterService	animalshelterService;
 
 	@Autowired
-	private PetService			petService;
+	private PetService				petService;
 
 	@Autowired
-	private VetService			vetService;
+	private VetService				vetService;
 
 	@Autowired
-	private AppointmentService	appointmentService;
+	private AppointmentService		appointmentService;
 
+
+	@Test
+	public void findAllByVet() {
+		Iterable<Appointment> appointment = this.appointmentService.findAllByVet(1);
+		for (Appointment a : appointment) {
+			Assertions.assertThat(a.getCause()).isNotEmpty();
+			Assertions.assertThat(a.getDate()).isNotNull();
+			Assertions.assertThat(a.getUrgent()).isNotNull();
+
+		}
+	}
 
 	// ---------------------------------------------------------------- HU.14 ----------------------------------------------------------------------------------------------------
 

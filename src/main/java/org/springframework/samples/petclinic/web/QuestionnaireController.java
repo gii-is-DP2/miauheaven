@@ -18,6 +18,7 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
+import org.springframework.samples.petclinic.service.exceptions.UnrelatedPetException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -107,9 +108,16 @@ public class QuestionnaireController {
 	@GetMapping(value = "/{petId}")
 	public String showAnimalshelterList(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		List<Questionnaire> questionnaire = new ArrayList<Questionnaire>();
-		questionnaire.addAll(this.questService.findQuestionnaireByPetId(petId));
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner shelter = this.ownerService.findOwnerByUsername(name);
+		try {
+			questionnaire.addAll(this.questService.findMyQuestionnaireByPetId(shelter.getId(), petId));
+		} catch (UnrelatedPetException e) {
+			return "redirect:/oups";
+		}
 		model.put("questionnaire", questionnaire);
 		return "questionnaire/questionnaireList";
+
 	}
 
 	@GetMapping(value = "/show/{questId}")

@@ -35,6 +35,7 @@ public class QuestionnaireControllerTests {
 	private static final int		TEST_QUEST_ID		= 1;
 	private static final int		TEST_QUEST_ID_FAIL	= 2;
 	private static final int		TEST_PET_ID			= 15;
+	private static final int		TEST_OWNER_ID		= 11;
 
 	@Autowired
 	private QuestionnaireController	questController;
@@ -53,6 +54,8 @@ public class QuestionnaireControllerTests {
 	private Owner					george;
 	private Owner					pichu;
 	private Animalshelter			as;
+
+	private Owner					shelter;
 
 
 	@BeforeEach
@@ -114,6 +117,21 @@ public class QuestionnaireControllerTests {
 		this.quest.setPuntuacion(5);
 		BDDMockito.given(this.questService.findQuestionnaireById(QuestionnaireControllerTests.TEST_QUEST_ID)).willReturn(this.quest);
 
+		this.shelter = new Owner();
+		this.shelter.setId(QuestionnaireControllerTests.TEST_OWNER_ID);
+		this.shelter.setFirstName("Pichú Animales");
+		this.shelter.setLastName("Shelter");
+		this.shelter.setAddress("41410 La Celada");
+		this.shelter.setCity("Seville");
+		this.shelter.setTelephone("610839583");
+		BDDMockito.given(this.ownerService.findOwnerById(QuestionnaireControllerTests.TEST_OWNER_ID)).willReturn(this.shelter);
+
+		User user1 = new User();
+		user1.setEnabled(true);
+		user1.setUsername("shelter1");
+		user1.setPassword("shelter1");
+		this.shelter.setUser(user1);
+		BDDMockito.given(this.ownerService.findOwnerByUsername("shelter1")).willReturn(this.shelter);
 	}
 
 	@WithMockUser(value = "spring")
@@ -139,7 +157,7 @@ public class QuestionnaireControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("questionnaire")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("questionnaire/createOrUpdateQuestionnaire"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testShowAnimalShelterList() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/{petId}", QuestionnaireControllerTests.TEST_PET_ID)).andExpect(MockMvcResultMatchers.status().isOk())

@@ -57,7 +57,7 @@ public class VetService {
 		this.vetRepository.save(vet);
 	}
 
-	public Vet finVetByUsername(final String username) {
+	public Vet findVetByUsername(final String username) {
 		return this.vetRepository.findByUsername(username);
 	}
 }
