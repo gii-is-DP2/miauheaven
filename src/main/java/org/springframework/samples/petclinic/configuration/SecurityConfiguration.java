@@ -37,6 +37,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET, "/","/oups").permitAll()
 				.antMatchers("/users/new").permitAll()
 				.antMatchers("/admin/**").hasAnyAuthority("admin")
+				.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter")
+				.antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter")
 				.antMatchers("/owners/**").hasAnyAuthority("owner","admin","animalshelter")				
 				.antMatchers("/pets").hasAnyAuthority("veterinarian")
 				.antMatchers("/pets/**").hasAnyAuthority("veterinarian")
@@ -49,7 +51,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
 				.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter")
 				.antMatchers("/appointment/**").authenticated()
-				.antMatchers("/questionnaire/**").permitAll()
+				
 				.anyRequest().denyAll()
 				.and()
 				 	.formLogin()
