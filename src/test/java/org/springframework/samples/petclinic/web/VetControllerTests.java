@@ -121,7 +121,7 @@ class VetControllerTests {
 		user.setUsername("vet1");
 		user.setPassword("v3t");
 		this.vet1.setUser(user);
-		BDDMockito.given(this.clinicService.finVetByUsername("vet1")).willReturn(this.vet1);
+		BDDMockito.given(this.clinicService.findVetByUsername("vet1")).willReturn(this.vet1);
 
 		this.appointment = new Appointment();
 		this.appointment.setCause("Operacion");

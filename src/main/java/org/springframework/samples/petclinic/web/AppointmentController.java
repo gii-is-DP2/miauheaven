@@ -95,6 +95,9 @@ public class AppointmentController {
 		System.out.println(result);
 		if (result.hasErrors() || dates.contains(appointment.getDate())) {
 			model.put("appointment", appointment);
+			if (appointment.getUrgent() == null) {
+				result.rejectValue("date", "not defined", "Caracter de la cita no definido");
+			}
 			return "appointment/createOrUpdateAppointmentForm";
 		} else {
 			final Owner own = this.ownerService.findOwnerById(ownerId);

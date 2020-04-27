@@ -72,6 +72,14 @@ class VetServiceTests {
 
 
 	@Test
+	public void findVetByUsername() {
+		Vet vet = this.vetService.findVetByUsername("vet1");
+		Assertions.assertThat(vet.getFirstName()).isNotNull();
+		Assertions.assertThat(vet.getLastName()).isNotNull();
+
+	}
+
+	@Test
 	void shouldFindVets() {
 		Collection<Vet> vets = this.vetService.findVets();
 

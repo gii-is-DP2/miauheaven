@@ -135,7 +135,7 @@ public class VetController {
 
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		final String username = auth.getName();
-		final Vet v = this.vetService.finVetByUsername(username);
+		final Vet v = this.vetService.findVetByUsername(username);
 
 		final Iterable<Appointment> appointments = this.appointmentService.findAllByVet(v.getId());
 

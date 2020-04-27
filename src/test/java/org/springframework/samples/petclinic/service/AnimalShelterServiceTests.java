@@ -56,7 +56,7 @@ public class AnimalShelterServiceTests {
 
 	}
 
-	@Test //+
+	@Test //-
     public void animalShelterShouldNotAceptApplication() {
         Questionnaire res = null;
         Pet pet = this.questionnaireService.findPetById(15);

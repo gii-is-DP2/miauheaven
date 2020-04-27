@@ -10,6 +10,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.repository.PetRepository;
 import org.springframework.samples.petclinic.repository.QuestionnaireRepository;
+import org.springframework.samples.petclinic.service.exceptions.UnrelatedPetException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,6 +56,16 @@ public class QuestionnaireService {
 	@Transactional
 	public List<Questionnaire> findAll() {
 		return (List<Questionnaire>) this.questionnaireRepository.findAll();
+	}
+
+	@Transactional
+	public Collection<Questionnaire> findMyQuestionnaireByPetId(final int shelterid, final int petId) throws UnrelatedPetException {
+		Pet pet = this.petRepository.findById(petId);
+		if (shelterid != pet.getOwner().getId()) {
+			throw new UnrelatedPetException();
+		} else {
+			return this.questionnaireRepository.findAllByPetId(petId);
+		}
 	}
 
 }

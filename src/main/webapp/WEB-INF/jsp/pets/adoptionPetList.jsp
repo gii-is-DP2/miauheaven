@@ -20,7 +20,7 @@
 				<tr>
 					<td width><c:out value="${pet.name}" /></td>
 					<td><c:out value="${pet.birthDate}" /></td>
-					  <spring:url value="questionnaire/new/{petId}" var="questUrl">
+					  <spring:url value="/owners/adoptList/questionnaire/new/{petId}" var="questUrl">
         				<spring:param name="petId" value="${pet.id}"/>
     					</spring:url>
 					<td> <a href="${fn:escapeXml(questUrl)}" class="btn btn-default">Adopt it</a>
