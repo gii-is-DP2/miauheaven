@@ -94,6 +94,14 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<sec:authorize access="hasAuthority('veterinarian')">
 				<petclinic:menuItem active="${name eq 'notificationList'}" url="/vets/notification"
 					title="Notifications for vets">
