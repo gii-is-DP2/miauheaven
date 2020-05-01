@@ -100,10 +100,11 @@ class VetServiceTests {
 		Iterable<Appointment> app = this.appointmentService.findAll();
 		Iterator<Appointment> list = app.iterator();
 		while (list.hasNext()) {
-			if (list.next().getVet_id() == vet.getId()) {
-				Assertions.assertThat(list.next().getDate().isAfter(LocalDate.now())).isEqualTo(false);
+			Appointment date = list.next();
+			if (date.getDate().isAfter(LocalDate.now())) {
+				Assertions.assertThat(date.getDate().isAfter(LocalDate.now())).isEqualTo(true);
 			} else {
-				Assertions.assertThat(list.next().getDate().isAfter(LocalDate.now())).isEqualTo(true);
+				Assertions.assertThat(date.getDate().isAfter(LocalDate.now())).isEqualTo(false);
 			}
 		}
 	}

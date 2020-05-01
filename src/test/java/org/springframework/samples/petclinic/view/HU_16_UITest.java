@@ -81,7 +81,7 @@ public class HU_16_UITest {
 		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 		this.driver.findElement(By.linkText("See appointments")).click();
 		Assert.assertEquals("Pichú Animales Shelter", this.driver.findElement(By.xpath("//td")).getText());
-		Assert.assertEquals("2020-07-31", this.driver.findElement(By.xpath("//td[3]")).getText());
+		Assert.assertEquals("2020-08-31", this.driver.findElement(By.xpath("//td[3]")).getText());
 		Assert.assertEquals("true", this.driver.findElement(By.xpath("//td[4]")).getText());
 	}
 	@Test

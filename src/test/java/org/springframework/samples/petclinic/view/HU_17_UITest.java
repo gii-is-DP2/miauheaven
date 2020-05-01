@@ -60,7 +60,7 @@ public class HU_17_UITest {
 		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 		this.driver.findElement(By.linkText("See appointments")).click();
 		this.driver.findElement(By.linkText("See more")).click();
-		Assert.assertEquals("2020-04-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
+		Assert.assertEquals("2020-11-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
