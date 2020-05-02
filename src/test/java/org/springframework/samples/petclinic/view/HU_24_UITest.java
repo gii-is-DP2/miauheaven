@@ -37,7 +37,7 @@ public class HU_24_UITest {
 	}
 
 	@Test
-	public void testCasoPositivo() throws Exception {
+	public void testPrueba24CasoPositivo() throws Exception {
 		this.driver.get("http://localhost:8080/");
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
@@ -59,6 +59,28 @@ public class HU_24_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//body/div/div")).click();
 		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+
+	@Test
+	public void testPrueba24CasoNegativo() throws Exception {
+		this.driver.get("http://localhost:8080/");
+		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.id("username")).clear();
+		this.driver.findElement(By.id("username")).sendKeys("shelter1");
+		this.driver.findElement(By.id("password")).click();
+		this.driver.findElement(By.id("password")).clear();
+		this.driver.findElement(By.id("password")).sendKeys("shelter1");
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).click();
+		this.driver.findElement(By.name("owner_id")).click();
+		this.driver.findElement(By.xpath("//option[@value='null']")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
 		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
