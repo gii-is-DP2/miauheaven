@@ -161,13 +161,13 @@ public class AnimalshelterController {
 			final Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
 			if (ow == null || animalshelter == null)
 				return "redirect:/oups";
-			else {
-				record.setOwner(ow);
-				record.setAnimalshelter(animalshelter);
-				this.recordService.saveRecord(record);
-				return "redirect:/owners/myAnimalShelter/records";
-			}
+
+			record.setOwner(ow);
+			record.setAnimalshelter(animalshelter);
+			this.recordService.saveRecord(record);
+			return "redirect:/owners/myAnimalShelter/records";
 		}
+
 	}
 
 	// ------------------------------------------------ Notification --------------------------------------------
