@@ -32,4 +32,5 @@
         </c:forEach>
         </tbody>
     </table>
+    <a href="/events/new" class="btn btn-default">Create new Event</a>
 </petclinic:layout>

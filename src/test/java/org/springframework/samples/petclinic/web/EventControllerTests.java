@@ -17,6 +17,7 @@ import org.springframework.samples.petclinic.model.Event;
 import org.springframework.samples.petclinic.service.EventService;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -60,5 +61,26 @@ public class EventControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("id", Matchers.is(EventControllerTests.TEST_EVENT_ID))))
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("name", Matchers.is("Prueba")))).andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("description", Matchers.is("Prueba"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.now())))).andExpect(MockMvcResultMatchers.view().name("events/eventShow"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testInitCreationForm() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/new")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"))
+			.andExpect(MockMvcResultMatchers.model().attributeExists("event"));
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testProcessCreationForm() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("description", "Descripción de prueba").param("date", "2020/08/08"))
+			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+	}
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testProcessCreationFormFail() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("description", "Descripción de prueba").param("date", ""))
+			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("event")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"));
 	}
 }

@@ -34,11 +34,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll().antMatchers("/admin/**").hasAnyAuthority("admin")
-			.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter").antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter").antMatchers("/owners/**")
-			.hasAnyAuthority("owner", "admin", "animalshelter").antMatchers("/pets").hasAnyAuthority("veterinarian").antMatchers("/pets/**").hasAnyAuthority("veterinarian").antMatchers("/pets").hasAnyAuthority("admin").antMatchers("/pets/**")
-			.hasAnyAuthority("admin").antMatchers("/events/**").authenticated().antMatchers("/vets/**").authenticated().antMatchers("/vets/notification/").hasAnyAuthority("veterinarian").antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian")
-			.antMatchers("/animalshelter/**").authenticated().antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter").antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter").antMatchers("/appointment/**")
-			.authenticated()
+			.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter")
+			.antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter")
+			.antMatchers("/owners/**").hasAnyAuthority("owner", "admin", "animalshelter")
+			.antMatchers("/pets").hasAnyAuthority("veterinarian")
+			.antMatchers("/pets/**").hasAnyAuthority("veterinarian")
+			.antMatchers("/pets").hasAnyAuthority("admin")
+			.antMatchers("/pets/**").hasAnyAuthority("admin")
+			.antMatchers("/events/new").hasAnyAuthority("animalshelter")
+			.antMatchers("/events/**").authenticated()
+			.antMatchers("/vets/**").authenticated()
+			.antMatchers("/vets/notification/").hasAnyAuthority("veterinarian")
+			.antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian")
+			.antMatchers("/animalshelter/**").authenticated()
+			.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
+			.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter")
+			.antMatchers("/appointment/**").authenticated()
 
 			.anyRequest().denyAll().and().formLogin()
 			/* .loginPage("/login") */
