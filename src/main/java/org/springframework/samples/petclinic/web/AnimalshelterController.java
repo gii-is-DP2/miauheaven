@@ -78,7 +78,7 @@ public class AnimalshelterController {
 	}
 	@GetMapping(value = "/animalshelter")
 	public String showAnimalshelterList(final Map<String, Object> model) {
-		List<Animalshelter> animalshelters = new ArrayList<Animalshelter>();
+		final List<Animalshelter> animalshelters = new ArrayList<Animalshelter>();
 		animalshelters.addAll(this.animalshelterService.findAnimalshelters());
 		model.put("animalshelters", animalshelters);
 		return "animalshelter/animalshelterList";
@@ -86,7 +86,7 @@ public class AnimalshelterController {
 
 	@GetMapping(value = "/animalshelter/new")
 	public String initCreationForm(final Owner owner, final ModelMap model) {
-		Animalshelter animalshelter = new Animalshelter();
+		final Animalshelter animalshelter = new Animalshelter();
 		animalshelter.setOwner(owner);
 		model.put("animalshelter", animalshelter);
 		return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
@@ -98,9 +98,9 @@ public class AnimalshelterController {
 			model.put("animalshelter", animalshelter);
 			return AnimalshelterController.VIEWS_ANIMAL_CREATE_OR_UPDATE_FORM;
 		} else {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String username = auth.getName();
-			Owner o = this.animalshelterService.findOwnerByUsername(username);
+			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			final String username = auth.getName();
+			final Owner o = this.animalshelterService.findOwnerByUsername(username);
 			animalshelter.setOwner(o);
 			this.animalshelterService.saveAnimalshelter(animalshelter, o);
 			return "redirect:/animalshelter";
@@ -109,8 +109,8 @@ public class AnimalshelterController {
 
 	@GetMapping("/owners/myAnimalShelter")
 	public String findMyAnimalShelter(final Map<String, Object> model) {
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		Owner owner = this.animalshelterService.findOwnerByUsername(name);
+		final String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		final Owner owner = this.animalshelterService.findOwnerByUsername(name);
 		model.put("owner", owner);
 		return AnimalshelterController.ANIMAL_SHELTER_SHOW;
 	}
@@ -123,23 +123,21 @@ public class AnimalshelterController {
 	}
 	@ModelAttribute("owners")
 	public List<Owner> findOwnersWithQuest() {
-		List<Questionnaire> quests = this.questService.findAll();
-		List<Owner> res = new ArrayList<>();
-		String name = SecurityContextHolder.getContext().getAuthentication().getName();
-		List<Record> records = this.recordService.findAllByUsename(name);
+		final List<Questionnaire> quests = this.questService.findAll();
+		final List<Owner> res = new ArrayList<>();
+		final String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		final List<Record> records = this.recordService.findAllByUsename(name);
 
-		for (Questionnaire quest : quests) {
+		for (final Questionnaire quest : quests)
 			res.add(quest.getOwner());
-		}
-		for (Owner record : records.stream().map(x -> x.getOwner()).collect(Collectors.toList())) {
+		for (final Owner record : records.stream().map(x -> x.getOwner()).collect(Collectors.toList()))
 			res.remove(record);
-		}
 		return res;
 	}
 
 	@GetMapping(value = "/owners/myAnimalShelter/records")
 	public String showRecodsList(final Map<String, Object> model) {
-		List<Record> records = new ArrayList<>();
+		final List<Record> records = new ArrayList<>();
 		records.addAll(this.recordService.findAll());
 		model.put("records", records);
 		return "records/recordList";
@@ -147,24 +145,28 @@ public class AnimalshelterController {
 
 	@GetMapping(value = "/owners/myAnimalShelter/records/new")
 	public String initRecordForm(final Map<String, Object> model) {
-		Record record = new Record();
+		final Record record = new Record();
 		model.put("record", record);
 		return "records/createOrUpdateRecordForm";
 	}
 
 	@PostMapping(value = "/owners/myAnimalShelter/records/new")
 	public String processRecordForm(@Valid final Record record, final BindingResult result) {
-		if (result.hasErrors()) {
+		if (result.hasErrors())
 			return "records/createOrUpdateRecordForm";
-		} else {
-			Owner ow = this.ownerService.findOwnerById(record.getOwner_id());
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String username = auth.getName();
-			Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
-			record.setOwner(ow);
-			record.setAnimalshelter(animalshelter);
-			this.recordService.saveRecord(record);
-			return "redirect:/owners/myAnimalShelter/records";
+		else {
+			final Owner ow = this.ownerService.findOwnerById(record.getOwner_id());
+
+			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			final String username = auth.getName();
+			final Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
+			if (ow == null || animalshelter ==null)
+				return "redirect:/oups";
+			else {
+				record.setOwner(ow);
+				record.setAnimalshelter(animalshelter);
+				this.recordService.saveRecord(record);
+				return "redirect:/owners/myAnimalShelter/records";
 		}
 	}
 
@@ -172,14 +174,14 @@ public class AnimalshelterController {
 
 	@GetMapping("/animalshelter/notification/")
 	public String notificationList(final Map<String, Object> model) {
-		Iterable<Notification> notifications = this.notificationService.findAllForAnimalShelters();
+		final Iterable<Notification> notifications = this.notificationService.findAllForAnimalShelters();
 		model.put("notifications", notifications);
 		return AnimalshelterController.NOTIFICATION_LIST;
 	}
 
 	@GetMapping("/animalshelter/notification/{notificationId}")
 	public String notificationShow(final Map<String, Object> model, @PathVariable final int notificationId) {
-		Notification notification = this.notificationService.findNotificationById(notificationId);
+		final Notification notification = this.notificationService.findNotificationById(notificationId);
 		if (notification.getTarget().equals("animal_shelter")) {
 			model.put("notification", notification);
 			return AnimalshelterController.NOTIFICATION_SHOW;

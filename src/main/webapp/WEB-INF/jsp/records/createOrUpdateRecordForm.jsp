@@ -22,6 +22,7 @@
 				<select name="owner_id">
      
 				<c:forEach var="owner" items="${owners}">
+							<option value= "null">-</option>
 	 						<option value="${owner.id}">${owner.firstName} ${owner.lastName} </option>
 						</c:forEach>
 				</select>
