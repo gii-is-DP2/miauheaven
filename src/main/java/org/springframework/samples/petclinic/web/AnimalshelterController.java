@@ -160,7 +160,7 @@ public class AnimalshelterController {
 		if (ow.equals(null) || animalshelter == null || animalshelter.equals(null) || ow == null)
 			return "redirect:/oups";
 		else if (result.hasErrors())
-			return "redirect:/oups";
+			return "records/createOrUpdateRecordForm";
 		else {
 			record.setOwner(ow);
 			record.setAnimalshelter(animalshelter);
