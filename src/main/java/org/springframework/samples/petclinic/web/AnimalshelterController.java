@@ -156,17 +156,17 @@ public class AnimalshelterController {
 			return "records/createOrUpdateRecordForm";
 		else {
 			final Owner ow = this.ownerService.findOwnerById(record.getOwner_id());
-
 			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			final String username = auth.getName();
 			final Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
-			if (ow == null || animalshelter ==null)
+			if (ow == null || animalshelter == null)
 				return "redirect:/oups";
 			else {
 				record.setOwner(ow);
 				record.setAnimalshelter(animalshelter);
 				this.recordService.saveRecord(record);
 				return "redirect:/owners/myAnimalShelter/records";
+			}
 		}
 	}
 
