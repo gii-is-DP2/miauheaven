@@ -30,4 +30,9 @@ public class EventService {
 	public Event findEventById(final int id) throws DataAccessException {
 		return this.eventRepository.findById(id);
 	}
+
+	@Transactional
+	public void saveEvent(final Event e) {
+		this.eventRepository.save(e);
+	}
 }
