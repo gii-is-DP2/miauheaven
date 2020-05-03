@@ -147,12 +147,9 @@ class VetControllerTests {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/vets.xml").accept(MediaType.APPLICATION_XML)).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_XML_VALUE))
 			.andExpect(MockMvcResultMatchers.content().node(HasXPath.hasXPath("/vets/vetList[id=1]/id")));
 	}
-	
-	 // ---------------------------------------------------------------- HU.18 ----------------------------------------------------------------------------------------------------
-	
-	
-	@Test //+
+
 	@WithMockUser(value = "spring")
+	@Test
 	void testShowPetList() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/vets/pets")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("pets")).andExpect(MockMvcResultMatchers.view().name("vets/petList"));
 	}
@@ -199,6 +196,5 @@ class VetControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("appointment", Matchers.hasProperty("date", Matchers.is(LocalDate.of(2020, 5, 1)))))
 			.andExpect(MockMvcResultMatchers.model().attribute("appointment", Matchers.hasProperty("urgent", Matchers.is(true)))).andExpect(MockMvcResultMatchers.view().name("vets/appointment/appointmentsShow"));
 	}
-
 
 }
