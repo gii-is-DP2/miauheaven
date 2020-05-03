@@ -11,11 +11,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Appointment;
+import org.springframework.samples.petclinic.model.Event;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AppointmentService;
+import org.springframework.samples.petclinic.service.EventService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.ProductService;
@@ -43,24 +45,49 @@ public class AdminController {
 	private static final String			PRODUCT_LIST		= "admin/product/productList";
 	private static final String			PRODUCT_SHOW		= "admin/product/productShow";
 	private static final String			PRODUCT_FORM		= "admin/product/productForm";
+	private static final String 		EVENT_LIST			= "admin/events/eventsList";
+	private static final String			EVENT_SHOW			= "admin/events/eventShow";
 
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
 	private final QuestionnaireService	questionnaireService;
-
+	private final EventService			eventService;
 	private final ProductService		productService;
 
 
 	@Autowired
-	public AdminController(final AppointmentService appointmentService, final ProductService productService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService) {
+	public AdminController(final AppointmentService appointmentService, final ProductService productService, 
+			final PetService petService, final NotificationService notificationService, 
+			final QuestionnaireService questionnaireService, final EventService eventService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
 		this.notificationService = notificationService;
 		this.questionnaireService = questionnaireService;
 		this.productService = productService;
+		this.eventService = eventService;
 	}
 
+	// ------------------------------------------------ Event ------------------------------------------
+	@GetMapping(value = {
+			"/events"
+		})
+		public String showEventList(final Map<String, Object> model) {
+			Collection<Event> events;
+			events = this.eventService.findEvents();
+			model.put("events", events);
+			return AdminController.EVENT_LIST;
+		}
+
+		@GetMapping(value = {
+			"/events/{eventId}"
+		})
+		public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
+			Event event = this.eventService.findEventById(eventId);
+			model.put("event", event);
+			return AdminController.EVENT_SHOW;
+		}
+	
 	// ------------------------------------------------ Notification ------------------------------------------
 
 	@GetMapping(value = "/notification/")

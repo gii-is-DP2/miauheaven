@@ -59,6 +59,17 @@
 				</sec:authorize>
 				
 				<sec:authorize access="hasAuthority('admin')">
+				<petclinic:menuItem active="${name eq 'events'}" url="/admin/events"
+					title="events for Admin">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Events for admin</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				
+				
+				
+				<sec:authorize access="hasAuthority('admin')">
 
 				<petclinic:menuItem active="${name eq 'questionnaire'}" url="/admin/questionnaires"
 					title="siew questionnaires results">
