@@ -14,6 +14,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -47,19 +48,20 @@ public class HU_24_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		Assert.assertEquals("My animal shelter", this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).getText());
 		Assert.assertEquals("Records", this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(@href, 'myAnimalShelter/records')]")).click();
 		Assert.assertEquals("Add Record", this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).click();
-		this.driver.findElement(By.name("owner_id")).click();
-		Assert.assertEquals("- BettyDavis", this.driver.findElement(By.name("owner_id")).getText());
-		this.driver.findElement(By.name("owner_id")).click();
+		Assert.assertEquals("- BettyDavis", this.driver.findElement(By.xpath("//select[@name='owner_id']")).getText());
+		this.driver.findElement(By.xpath("//select[@name='owner_id']")).click();
+		new Select(this.driver.findElement(By.xpath("//select[@name='owner_id']"))).selectByVisibleText("BettyDavis");
 		this.driver.findElement(By.xpath("//option[@value='2']")).click();
 		Assert.assertEquals("Create record", this.driver.findElement(By.xpath("//button[@type='submit']")).getText());
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//body/div/div")).click();
+		this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).click();
 		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
