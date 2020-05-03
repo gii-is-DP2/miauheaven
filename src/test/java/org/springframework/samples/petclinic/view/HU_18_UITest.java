@@ -35,13 +35,12 @@ public class HU_18_UITest {
 	
 	  @BeforeEach
 	  public void setUp() throws Exception {
-			String pathToGeckoDriver = "/Users/chuscadenas";
-			System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "/geckodriver");
-//			String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
-//			System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
+		  String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
+			System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
 			this.driver = new FirefoxDriver();
 			this.baseUrl = "https://www.google.com/";
 			this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);	
+			 
 		 
 	  }
 	  
