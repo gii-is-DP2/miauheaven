@@ -52,7 +52,7 @@ public class HU_24_UITest {
 		Assert.assertEquals("Add Record", this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).getText());
 		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter/records/new')]")).click();
 		this.driver.findElement(By.name("owner_id")).click();
-		Assert.assertEquals("BettyDavis", this.driver.findElement(By.name("owner_id")).getText());
+		Assert.assertEquals("- BettyDavis", this.driver.findElement(By.name("owner_id")).getText());
 		this.driver.findElement(By.name("owner_id")).click();
 		this.driver.findElement(By.xpath("//option[@value='2']")).click();
 		Assert.assertEquals("Create record", this.driver.findElement(By.xpath("//button[@type='submit']")).getText());
