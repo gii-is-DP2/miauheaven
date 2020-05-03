@@ -106,7 +106,6 @@ class AnimalshelterControllerTests {
 		List<Record> records = new ArrayList<>();
 		records.add(this.record);
 		BDDMockito.given(this.recordService.findAllByUsename("owner1")).willReturn(records);
-
 	}
 
 	@WithMockUser(value = "spring")
@@ -169,17 +168,16 @@ class AnimalshelterControllerTests {
 			.andExpect(MockMvcResultMatchers.view().name("records/createOrUpdateRecordForm"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testProcessRecordFormSuccess() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/myAnimalShelter/records/new").with(SecurityMockMvcRequestPostProcessors.csrf()).param("owner_id", "12")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/myAnimalShelter/records/new").with(SecurityMockMvcRequestPostProcessors.csrf()).param("owner_id", "1")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
 
 	@WithMockUser(value = "shelter1")
 	@Test
 	void testProcessRecordFormHasErrors() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/myAnimalShelter/records/new").with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("record")).andExpect(MockMvcResultMatchers.model().attributeHasFieldErrors("record", "owner_id")).andExpect(MockMvcResultMatchers.view().name("records/createOrUpdateRecordForm"));
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/myAnimalShelter/records/new").with(SecurityMockMvcRequestPostProcessors.csrf())).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("exception"));
 	}
 
 	@WithMockUser(value = "spring")
