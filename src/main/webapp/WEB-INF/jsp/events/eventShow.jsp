@@ -23,4 +23,8 @@
             <td><c:out value="${event.description}"/></td>
         </tr>
     </table>
+    <spring:url value="{eventId}/edit" var="editUrl">
+		<spring:param name="eventId" value="${event.id}" />
+	</spring:url>
+	<a href="${fn:escapeXml(editUrl)}" class="btn btn-default">Edit Event</a>
 </petclinic:layout>
