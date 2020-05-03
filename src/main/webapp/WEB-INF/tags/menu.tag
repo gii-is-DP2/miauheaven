@@ -126,6 +126,14 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('animalshelter')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<petclinic:menuItem active="${name eq 'vets'}" url="/vets"
 					title="veterinarians">
 					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
