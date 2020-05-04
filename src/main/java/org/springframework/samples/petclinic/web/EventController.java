@@ -1,8 +1,11 @@
 
 package org.springframework.samples.petclinic.web;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -35,6 +38,7 @@ public class EventController {
 	public String showEventList(final Map<String, Object> model) {
 		Collection<Event> events;
 		events = this.eventService.findEvents();
+		events = events.stream().filter(x->x.getDate().isAfter(LocalDate.now())).collect(Collectors.toList());
 		model.put("events", events);
 		return EventController.EVENTS_LIST;
 	}
