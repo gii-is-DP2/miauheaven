@@ -44,6 +44,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/events/new").hasAnyAuthority("animalshelter")
 			.antMatchers("/events/**").authenticated()
 			.antMatchers("/vets/**").authenticated()
+			.antMatchers("/vets.xml").authenticated()
 			.antMatchers("/vets/notification/").hasAnyAuthority("veterinarian")
 			.antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian")
 			.antMatchers("/animalshelter/**").authenticated()
