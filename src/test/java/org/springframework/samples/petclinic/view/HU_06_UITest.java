@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -15,8 +16,14 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public class HU_06_UITest {
 
 	@LocalServerPort
@@ -38,7 +45,7 @@ public class HU_06_UITest {
 
 	@Test
 	public void testPositive() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
@@ -72,14 +79,12 @@ public class HU_06_UITest {
 
 	@Test
 	public void testNegative() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).click();
-		// ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=username | ]]
 		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).click();
-		// ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=username | ]]
 		this.driver.findElement(By.xpath("//form[@action='/login']")).click();
 		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("username")).click();
