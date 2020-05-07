@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -23,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class HU_30_UITest {
+public class HU_2_UITest {
 
 	@LocalServerPort
 	private int				port;
@@ -35,55 +36,42 @@ public class HU_30_UITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-
 		String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
 		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
 		this.driver = new FirefoxDriver();
 		this.baseUrl = "https://www.google.com/";
 		this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
 	}
 
 	@Test
 	public void testPositive() throws Exception {
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.xpath("//div")).click();
+		this.driver.findElement(By.id("username")).click();
+		this.driver.findElement(By.id("username")).sendKeys(Keys.DOWN);
 		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("admin1");
+		this.driver.findElement(By.id("username")).sendKeys("owner1");
+		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
+		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
+		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create a new product")).click();
-		this.driver.findElement(By.id("name")).clear();
-		this.driver.findElement(By.id("name")).sendKeys("Gotas para ojos tortugas");
-		this.driver.findElement(By.id("description")).clear();
-		this.driver.findElement(By.id("description")).sendKeys("Para limpiar los ojos a los reptiles con problemas de conjuntivitis");
-		this.driver.findElement(By.id("image")).clear();
-		this.driver.findElement(By.id("image")).sendKeys("https://static.miscota.com/media/1/photos/products/038772/taberaqua-vitam-tortugas-20ml-4_1_g.jpg");
-		this.driver.findElement(By.xpath("//option[@value='true']")).click();
-		this.driver.findElement(By.id("price")).clear();
-		this.driver.findElement(By.id("price")).sendKeys("7.50");
-		new Select(this.driver.findElement(By.id("stock"))).selectByVisibleText("true");
+		this.driver.findElement(By.linkText("Adopt it")).click();
+		new Select(this.driver.findElement(By.id("vivienda"))).selectByVisibleText("Piso");
+		this.driver.findElement(By.xpath("//option[@value='Piso']")).click();
+		new Select(this.driver.findElement(By.id("ingresos"))).selectByVisibleText("Medios");
+		this.driver.findElement(By.xpath("//option[@value='Medios']")).click();
+		new Select(this.driver.findElement(By.id("horasLibres"))).selectByVisibleText("Menos de 3 horas");
+		this.driver.findElement(By.xpath("//option[@value='Menos de 3 horas']")).click();
+		new Select(this.driver.findElement(By.id("convivencia"))).selectByVisibleText("No");
+		this.driver.findElement(By.xpath("//option[@value='No']")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		Assert.assertEquals("Gotas para ojos tortugas", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr[3]/td")).getText());
-		Assert.assertEquals("Yes", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr[3]/td[3]")).getText());
-		Assert.assertEquals("7.5", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr[3]/td[2]")).getText());
-		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[3]")).click();
-		Assert.assertEquals("Gotas para ojos tortugas", this.driver.findElement(By.xpath("//td")).getText());
-		Assert.assertEquals("Para limpiar los ojos a los reptiles con problemas de conjuntivitis", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
-		Assert.assertEquals("7.5", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
-		Assert.assertEquals("Yes", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
-		this.driver.findElement(By.linkText("Update")).click();
-		new Select(this.driver.findElement(By.id("stock"))).selectByVisibleText("false");
-		this.driver.findElement(By.xpath("//option[@value='false']")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[3]")).click();
-		this.driver.findElement(By.linkText("Delete")).click();
+		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//b")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-
 	}
 
 	@Test
@@ -91,24 +79,20 @@ public class HU_30_UITest {
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("admin1");
+		this.driver.findElement(By.id("username")).sendKeys("owner1");
 		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
+		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.id("main-navbar")).click();
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create a new product")).click();
-		this.driver.findElement(By.id("name")).clear();
-		this.driver.findElement(By.id("name")).sendKeys("Prueba");
-		this.driver.findElement(By.id("description")).clear();
-		this.driver.findElement(By.id("description")).sendKeys("Descripcion Prueba");
-		new Select(this.driver.findElement(By.id("stock"))).selectByVisibleText("false");
-		this.driver.findElement(By.id("name")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a")).click();
+		this.driver.findElement(By.linkText("Adopt it")).click();
+		new Select(this.driver.findElement(By.id("vivienda"))).selectByVisibleText("Casa");
+		this.driver.findElement(By.xpath("//option[@value='Casa']")).click();
+		new Select(this.driver.findElement(By.id("horasLibres"))).selectByVisibleText("Más de 6 horas");
+		this.driver.findElement(By.xpath("//option[@value='Más de 6 horas']")).click();
+		new Select(this.driver.findElement(By.id("convivencia"))).selectByVisibleText("No");
+		this.driver.findElement(By.xpath("//option[@value='No']")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		Assert.assertEquals("no puede ser null", this.driver.findElement(By.xpath("//form[@id='product']/div[3]/div/span[2]")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Assert.assertEquals("no puede estar vacío", this.driver.findElement(By.xpath("//form[@id='questionnaire']/div/div/div[2]/div/span[2]")).getText());
 	}
 
 	@AfterEach

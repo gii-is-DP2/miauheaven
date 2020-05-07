@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -14,8 +15,14 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public class HU_07_UITest {
 
 	@LocalServerPort
@@ -37,7 +44,7 @@ public class HU_07_UITest {
 
 	@Test
 	public void testPositive() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.xpath("//div")).click();
 		this.driver.findElement(By.id("username")).click();
@@ -56,7 +63,6 @@ public class HU_07_UITest {
 		this.driver.findElement(By.id("cif")).click();
 		this.driver.findElement(By.id("name")).click();
 		this.driver.findElement(By.id("name")).click();
-		// ERROR: Caught exception [ERROR: Unsupported command [doubleClick | id=name | ]]
 		this.driver.findElement(By.id("name")).clear();
 		this.driver.findElement(By.id("name")).sendKeys("El Mundo con los animales");
 		this.driver.findElement(By.id("cif")).click();
@@ -75,7 +81,7 @@ public class HU_07_UITest {
 	}
 	@Test
 	public void testNegative() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.xpath("//div")).click();
 		this.driver.findElement(By.id("username")).click();
@@ -97,7 +103,6 @@ public class HU_07_UITest {
 		this.driver.findElement(By.xpath("//form[@id='add-animalshelter-form']/div/div[2]")).click();
 		this.driver.findElement(By.id("cif")).click();
 		this.driver.findElement(By.xpath("//form[@id='add-animalshelter-form']/div/div[2]")).click();
-		// ERROR: Caught exception [ERROR: Unsupported command [doubleClick | //form[@id='add-animalshelter-form']/div/div[2] | ]]
 		this.driver.findElement(By.id("cif")).click();
 		this.driver.findElement(By.id("cif")).clear();
 		this.driver.findElement(By.id("cif")).sendKeys("11111111Z");

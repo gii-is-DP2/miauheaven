@@ -1,6 +1,13 @@
 
 package org.springframework.samples.petclinic.web;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import java.time.LocalDate;
 
 import org.hamcrest.Matchers;
@@ -51,7 +58,8 @@ public class EventControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testEventList() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("events")).andExpect(MockMvcResultMatchers.view().name("events/eventsList"));
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("events"))
+		.andExpect(MockMvcResultMatchers.view().name("events/eventsList"));
 	}
 
 	@WithMockUser(value = "spring")
@@ -72,7 +80,7 @@ public class EventControllerTests {
 
 	@WithMockUser(value = "spring")
 	@Test
-	void testProcessCreationForm() throws Exception {
+	void testProcessCreationFormSucess() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("description", "Descripción de prueba").param("date", "2020/08/08"))
 			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
@@ -83,4 +91,26 @@ public class EventControllerTests {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("description", "Descripción de prueba").param("date", ""))
 			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("event")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"));
 	}
+	
+	 @WithMockUser(value = "spring")
+		@Test
+		void testInitUpdateForm() throws Exception {
+			mockMvc.perform(get("/event/{eventId}/edit", TEST_EVENT_ID))
+					.andExpect(status().isOk()).andExpect(model().attributeExists("event"))
+					.andExpect(view().name("events/createOrUpdateEvent"));
+		}
+	 
+	 @WithMockUser(value = "spring")
+		@Test
+		void testProcessUpdateFormSuccess() throws Exception {
+			mockMvc.perform(post("/event/{eventId}/edit", TEST_EVENT_ID)
+								.with(csrf())
+								.param("name", "Prueba")
+								.param("description", "Prueba")
+								.param("date", "2021/04/02"))
+					.andExpect(status().is3xxRedirection())
+					.andExpect(view().name("redirect:/event/"+ TEST_EVENT_ID));
+		}
+	 
+	
 }

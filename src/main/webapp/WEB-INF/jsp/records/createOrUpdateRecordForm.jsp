@@ -20,10 +20,10 @@
                 <div class="control-group">
                   <label for="owner_id">Choose a owner:</label>
 				<select name="owner_id">
-     
+    			<option value= "null">-</option>
 				<c:forEach var="owner" items="${owners}">
-	 						<option value="${owner.id}">${owner.firstName} ${owner.lastName} </option>
-						</c:forEach>
+						<option value="${owner.id}">${owner.firstName} ${owner.lastName} </option>
+				</c:forEach>
 				</select>
                 </div>
             </div>

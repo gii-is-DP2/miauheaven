@@ -44,11 +44,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.antMatchers("/events/new").hasAnyAuthority("animalshelter")
 			.antMatchers("/events/**").authenticated()
 			.antMatchers("/vets/**").authenticated()
+			.antMatchers("/vets.xml").authenticated()
 			.antMatchers("/vets/notification/").hasAnyAuthority("veterinarian")
 			.antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian")
 			.antMatchers("/animalshelter/**").authenticated()
 			.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
 			.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter")
+			.antMatchers("/product/**").hasAnyAuthority("owner")
 			.antMatchers("/appointment/**").authenticated()
 
 			.anyRequest().denyAll().and().formLogin()

@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class HU_18_UITest {
+public class HU_1_UITest {
 
 	@LocalServerPort
 	private int				port;
@@ -39,44 +40,27 @@ public class HU_18_UITest {
 		this.driver = new FirefoxDriver();
 		this.baseUrl = "https://www.google.com/";
 		this.driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-
 	}
 
 	@Test
-	public void testPositive() throws Exception {
+	public void testHU1() throws Exception {
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.xpath("//div")).click();
+		this.driver.findElement(By.id("username")).click();
+		this.driver.findElement(By.id("username")).sendKeys(Keys.DOWN);
 		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
+		this.driver.findElement(By.id("username")).sendKeys("owner1");
+		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
+		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
+		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("See more")).click();
-		Assert.assertEquals("Leo", this.driver.findElement(By.xpath("//b")).getText());
-		Assert.assertEquals("cat", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
-		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
-		Assert.assertEquals("2010-09-07", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//table[@id='adoptionPetListTable']/tbody/tr/td[4]")).click();
+		Assert.assertEquals("2015-11-25", this.driver.findElement(By.xpath("//table[@id='adoptionPetListTable']/tbody/tr/td[4]")).getText());
 	}
 
-	@Test
-	public void testNegative() throws Exception {
-		this.driver.get("http://localhost:" + this.port);
-		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
-		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
-		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.get("http://localhost:" + this.port + "/vets/pets/aaa");
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-	}
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.driver.quit();
@@ -118,5 +102,4 @@ public class HU_18_UITest {
 			this.acceptNextAlert = true;
 		}
 	}
-
 }
