@@ -16,31 +16,22 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Appointment;
-import org.springframework.samples.petclinic.model.Notification;
-import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
-import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.util.EntityUtils;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.stereotype.Service;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -73,10 +64,13 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
  */
 
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
 class VetServiceTests {
+
 	@Autowired
 	private PetService				petService;
-	
+
 	@Autowired
 	protected VetService			vetService;
 
@@ -135,18 +129,14 @@ class VetServiceTests {
 			}
 		}
 	}
-	 // ---------------------------------------------------------------- HU.18 ----------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------- HU.18 ----------------------------------------------------------------------------------------------------
 
-		@Test //-
-				
-		void testNotSeePet() throws Exception {
-			Collection<Pet> pets = (Collection<Pet>) this.petService.findAllPets();
-			Assertions.assertThat(this.petService.findPetById(pets.size() + 1)).isNull();
+	@Test //-
 
-		}
-	
-	
-	
+	void testNotSeePet() throws Exception {
+		Collection<Pet> pets = (Collection<Pet>) this.petService.findAllPets();
+		Assertions.assertThat(this.petService.findPetById(pets.size() + 1)).isNull();
 
+	}
 
 }
