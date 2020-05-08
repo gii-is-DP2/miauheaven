@@ -22,6 +22,10 @@
             <th>Description</th>
             <td><c:out value="${event.description}"/></td>
         </tr>
+        <tr>
+            <th>Animal Shelter</th>
+            <td><c:out value="${event.animalshelter.name}"/></td>
+        </tr>
     </table>
     <spring:url value="{eventId}/edit" var="editUrl">
 		<spring:param name="eventId" value="${event.id}" />
