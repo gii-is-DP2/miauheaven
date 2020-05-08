@@ -4,13 +4,17 @@ package org.springframework.samples.petclinic.web;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Event;
+import org.springframework.samples.petclinic.model.Owner;
+import org.springframework.samples.petclinic.service.AnimalshelterService;
 import org.springframework.samples.petclinic.service.EventService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,15 +25,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class EventController {
 
-	private static final String	EVENTS_LIST							= "events/eventsList";
-	private static final String	EVENT_SHOW							= "events/eventShow";
-	private static final String	VIEWS_EVENT_CREATE_OR_UPDATE_FORM	= "events/createOrUpdateEvent";
+	private static final String			EVENTS_LIST							= "events/eventsList";
+	private static final String			EVENT_SHOW							= "events/eventShow";
+	private static final String			VIEWS_EVENT_CREATE_OR_UPDATE_FORM	= "events/createOrUpdateEvent";
 
-	private final EventService	eventService;
+	private final EventService			eventService;
+	private final AnimalshelterService	asService;
 
 
-	public EventController(final EventService eventService) {
+	public EventController(final EventService eventService, final AnimalshelterService asService) {
 		this.eventService = eventService;
+		this.asService = asService;
 	}
 
 	@GetMapping(value = {
@@ -38,7 +44,7 @@ public class EventController {
 	public String showEventList(final Map<String, Object> model) {
 		Collection<Event> events;
 		events = this.eventService.findEvents();
-		events = events.stream().filter(x->x.getDate().isAfter(LocalDate.now())).collect(Collectors.toList());
+		events = events.stream().filter(x -> x.getDate().isAfter(LocalDate.now())).collect(Collectors.toList());
 		model.put("events", events);
 		return EventController.EVENTS_LIST;
 	}
@@ -66,26 +72,31 @@ public class EventController {
 			model.put("event", event);
 			return "events/createOrUpdateEvent";
 		} else {
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.asService.findOwnerByUsername(username);
+			Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
+			event.setAnimalshelter(as);
 			this.eventService.saveEvent(event);
 			return "redirect:/events/" + event.getId();
 		}
 	}
 
-	@GetMapping(value = "/event/{eventId}/edit")
+	@GetMapping(value = "/events/{eventId}/edit")
 	public String initUpdateEventForm(@PathVariable("eventId") final int eventId, final Model model) {
 		final Event ev = this.eventService.findEventById(eventId);
 		model.addAttribute(ev);
 		return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
 	}
 
-	@PostMapping(value = "/event/{eventId}/edit")
+	@PostMapping(value = "/events/{eventId}/edit")
 	public String processUpdateEventForm(@Valid final Event event, final BindingResult result, @PathVariable("eventId") final int eventId) {
-		if (result.hasErrors())
+		if (result.hasErrors()) {
 			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
-		else {
+		} else {
 			event.setId(eventId);
 			this.eventService.saveEvent(event);
-			return "redirect:/event/" + event.getId();
+			return "redirect:/events/" + event.getId();
 		}
 	}
 

@@ -25,6 +25,9 @@
                 <td>
                     <c:out value="${event.date}"/>
                 </td>
+                <td>
+                    <c:out value="${event.animalshelter.name}"/>
+                </td>
                 <td> 
 					<a href="/events/${event.id}">See more</a>
                </td>

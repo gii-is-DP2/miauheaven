@@ -80,4 +80,8 @@ public class AnimalshelterService {
 		this.animalshelterRepository.save(animalshelter);
 	}
 
+	public Animalshelter findAnimalshelterByOwnerId(final int ownerId) {
+		return this.animalshelterRepository.findByOwnerId(ownerId);
+	}
+
 }

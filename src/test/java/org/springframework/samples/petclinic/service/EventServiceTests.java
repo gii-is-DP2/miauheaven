@@ -32,7 +32,7 @@ public class EventServiceTests {
 		Event event = EntityUtils.getById(events, Event.class, 1);
 
 		Assertions.assertThat(event.getName()).isEqualTo("AnimalFest");
-		Assertions.assertThat(event.getDate()).isEqualTo(LocalDate.of(2010, 03, 04));
+		Assertions.assertThat(event.getDate()).isEqualTo(LocalDate.of(2050, 03, 04));
 		Assertions.assertThat(event.getDescription()).isEqualTo("Event to take a good time with your pet");
 	}
 	
