@@ -24,7 +24,7 @@
             <div class="form-group has-feedback">
                 <petclinic:inputField label="Date" name="date" />
                 <petclinic:inputField label="Cause" name="cause" />
-                <label for="urgent">¿Its urgent?:</label>
+                <label for="urgent">Is it urgent?:</label>
 				<select name="urgent">
 				<option value="null">-</option>
 	 				<option value="1">Yes</option>
@@ -40,12 +40,17 @@
 				</select>
             </div>
 
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <input type="hidden" name="id" value="${appointment.pet.id}" />
-                    <button class="btn btn-default" type="submit">Add Appointment</button>
-                </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <c:choose>
+                    <c:when test="${appointment ['new']}">
+                        <button class="btn btn-default" type="submit">Add appointment</button>
+                    </c:when>
+                    <c:otherwise>
+                    </c:otherwise>
+                </c:choose>
             </div>
+        </div>
         </form:form>
 
         <br />

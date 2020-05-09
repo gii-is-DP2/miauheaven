@@ -128,10 +128,12 @@ public class AnimalshelterController {
 		final String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		final List<Record> records = this.recordService.findAllByUsename(name);
 
-		for (final Questionnaire quest : quests)
+		for (final Questionnaire quest : quests) {
 			res.add(quest.getOwner());
-		for (final Owner record : records.stream().map(x -> x.getOwner()).collect(Collectors.toList()))
+		}
+		for (final Owner record : records.stream().map(x -> x.getOwner()).collect(Collectors.toList())) {
 			res.remove(record);
+		}
 		return res;
 	}
 
@@ -157,11 +159,11 @@ public class AnimalshelterController {
 		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		final String username = auth.getName();
 		final Owner animalshelter = this.animalshelterService.findOwnerByUsername(username);
-		if (ow.equals(null) || animalshelter == null || animalshelter.equals(null) || ow == null)
+		if (ow.equals(null) || animalshelter == null || animalshelter.equals(null) || ow == null) {
 			return "redirect:/oups";
-		else if (result.hasErrors())
+		} else if (result.hasErrors()) {
 			return "records/createOrUpdateRecordForm";
-		else {
+		} else {
 			record.setOwner(ow);
 			record.setAnimalshelter(animalshelter);
 			this.recordService.saveRecord(record);

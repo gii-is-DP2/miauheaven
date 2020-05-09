@@ -104,8 +104,8 @@ INSERT INTO visits(id,pet_id,visit_date,description) VALUES (4, 7, '2013-01-04',
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (1,'Pichú Animales', '12345678A', '41410 La Celada',11);
 INSERT INTO animalshelters(id,name,cif,place,owner_id) VALUES (2,'Arca Sevilla', '87654321B', '41500 Alcalá de Guadaíra',12);
 
-INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'No come nada','2020-04-01','true', 6, 7, 2);
-INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (2, 'Operacion','2020-05-01','true', 1, 1, 1);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (1, 'No come nada','2020-11-01','true', 6, 7, 2);
+INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (2, 'Operacion','2020-12-01','true', 1, 1, 1);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (3, 'Revision','2020-12-18','false', 5, 11, 1);
 INSERT INTO appointments(id,cause,date,urgent,owner_id,pet_id,vet_id) VALUES (4, 'Cita ya pasada','2019-12-18','false', 5, 11, 1);
 
@@ -124,4 +124,5 @@ INSERT INTO records(id,owner_id,animalshelter_id) VALUES (1, 1, 11);
 INSERT INTO product(id,name,price,stock,description,image) VALUES (1, 'Comida para perros',12.2, true, 'La mejor comida para alimentar a nuestros compañeros caninos', 'https://www.petpremium.com/wp-content/uploads/2012/10/5-healthy-dog-foods-430x226.jpg');
 INSERT INTO product(id,name,price,stock,description,image) VALUES (2, 'Comida para gatos',15.4, false, 'La mejor comida para alimentar a nuestros compañeros felinos', 'https://t1.uc.ltmcdn.com/images/1/9/0/img_como_hacer_comida_casera_saludable_para_mi_gato_23091_orig.jpg');
 
-
+INSERT INTO events(id,name,date,description,animalshelter_id) VALUES (1, 'AnimalFest', '2050-03-04', 'Event to take a good time with your pet',1);
+INSERT INTO events(id,name,date,description,animalshelter_id) VALUES (2, 'EventoPasado', '2010-03-04', 'Evento pasado de fecha',2);

@@ -38,8 +38,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(controllers = OwnerController.class, excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebSecurityConfigurer.class), excludeAutoConfiguration = SecurityConfiguration.class)
 class OwnerControllerTests {
 
-	private static final int		TEST_OWNER_ID	= 1;
-	
+	private static final int		TEST_OWNER_ID			= 1;
+
 	private static final int		TEST_NOTIFICATION_ID	= 1;
 
 	@Autowired
@@ -65,8 +65,9 @@ class OwnerControllerTests {
 
 	private Owner					george;
 
-	private Notification 			notification;
-	
+	private Notification			notification;
+
+
 	@BeforeEach
 	void setup() {
 
@@ -86,7 +87,7 @@ class OwnerControllerTests {
 		this.notification.setDate(LocalDateTime.now());
 		this.notification.setTarget("owner");
 		this.notification.setUrl("www.us.es");
-		
+
 		BDDMockito.given(this.notificationService.findNotificationById(OwnerControllerTests.TEST_NOTIFICATION_ID)).willReturn(this.notification);
 
 	}
@@ -180,34 +181,26 @@ class OwnerControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testAdoptList() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/"))
-		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.model().attributeExists("pets"))
-		.andExpect(MockMvcResultMatchers.view().name("owners/pet/adoptionPetList"));
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("pets"))
+			.andExpect(MockMvcResultMatchers.view().name("owners/pet/adoptionPetList"));
 
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testNotificationList() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/"))
-		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.model().attributeExists("notifications"))
-		.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationList"));
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("notifications"))
+			.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationList"));
 	}
-	
+
 	@WithMockUser(value = "spring")
 	@Test
 	void testNotificationShow() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/{notificationId}", OwnerControllerTests.TEST_NOTIFICATION_ID))
-		.andExpect(MockMvcResultMatchers.status().isOk())
-		.andExpect(MockMvcResultMatchers.model().attributeExists("notification"))
-		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("id",Matchers.is(OwnerControllerTests.TEST_NOTIFICATION_ID))))
-		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title",Matchers.is("Prueba"))))
-		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message",Matchers.is("Prueba"))))
-		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target",Matchers.is("owner"))))
-		.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("url",Matchers.is("www.us.es"))))
-		.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationShow"));
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/notification/{notificationId}", OwnerControllerTests.TEST_NOTIFICATION_ID)).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.model().attributeExists("notification")).andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("id", Matchers.is(OwnerControllerTests.TEST_NOTIFICATION_ID))))
+			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title", Matchers.is("Prueba")))).andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message", Matchers.is("Prueba"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target", Matchers.is("owner")))).andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("url", Matchers.is("www.us.es"))))
+			.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationShow"));
 	}
-	
+
 }

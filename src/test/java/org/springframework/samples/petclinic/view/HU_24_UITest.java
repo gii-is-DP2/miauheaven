@@ -16,16 +16,21 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public class HU_24_UITest {
 
 	private WebDriver			driver;
 	private String				baseUrl;
 	private boolean				acceptNextAlert		= true;
 	private final StringBuffer	verificationErrors	= new StringBuffer();
+	@LocalServerPort
+	private int					port;
 
 
 	@BeforeEach
@@ -39,7 +44,7 @@ public class HU_24_UITest {
 
 	@Test
 	public void testPrueba24CasoPositivo() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
@@ -66,7 +71,7 @@ public class HU_24_UITest {
 
 	@Test
 	public void testPrueba24CasoNegativo() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter2");
@@ -89,8 +94,9 @@ public class HU_24_UITest {
 	public void tearDown() throws Exception {
 		this.driver.quit();
 		final String verificationErrorString = this.verificationErrors.toString();
-		if (!"".equals(verificationErrorString))
+		if (!"".equals(verificationErrorString)) {
 			Assert.fail(verificationErrorString);
+		}
 	}
 
 	private boolean isElementPresent(final By by) {
@@ -115,10 +121,11 @@ public class HU_24_UITest {
 		try {
 			final Alert alert = this.driver.switchTo().alert();
 			final String alertText = alert.getText();
-			if (this.acceptNextAlert)
+			if (this.acceptNextAlert) {
 				alert.accept();
-			else
+			} else {
 				alert.dismiss();
+			}
 			return alertText;
 		} finally {
 			this.acceptNextAlert = true;

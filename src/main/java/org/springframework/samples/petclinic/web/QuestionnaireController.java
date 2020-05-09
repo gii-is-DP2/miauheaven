@@ -18,9 +18,8 @@ import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
+import org.springframework.samples.petclinic.service.exceptions.UnrelatedPetException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -60,21 +59,22 @@ public class QuestionnaireController {
 	}
 
 	@PostMapping(path = "/new/{petId}")
-	public String salvaCuestionario(@Valid final Questionnaire cuestionario, @PathVariable("petId") final int petId, final BindingResult result, final ModelMap modelMap) {
-		Pet pet = this.questService.findPetById(petId);
-		cuestionario.setPet(pet);
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String username = auth.getName();
-		Owner o = this.ownerService.findOwnerByUsername(username);
-		cuestionario.setOwner(o);
-		cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
-		Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);
-		cuestionario.setPuntuacion(puntuacion);
-		cuestionario.setUmbral(QuestionnaireValidator.estableceUmbral());
+	public String salvaCuestionario(@Valid final Questionnaire cuestionario, final BindingResult result, @PathVariable("petId") final int petId, final ModelMap modelMap) {
+
 		if (result.hasErrors()) {
 			modelMap.addAttribute("questionnaire", cuestionario);
 			return "questionnaire/createOrUpdateQuestionnaire";
 		} else {
+			Pet pet = this.questService.findPetById(petId);
+			cuestionario.setPet(pet);
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.ownerService.findOwnerByUsername(username);
+			cuestionario.setOwner(o);
+			cuestionario.setName("Quest-" + o.getFirstName() + " " + o.getLastName());
+			Integer puntuacion = QuestionnaireValidator.calculaPuntuacion(cuestionario);
+			cuestionario.setPuntuacion(puntuacion);
+			cuestionario.setUmbral(QuestionnaireValidator.estableceUmbral());
 			this.questService.saveQuest(cuestionario);
 			modelMap.addAttribute("message", "Questionnaire successfully saved!");
 			return "redirect:/owners/" + o.getId();
@@ -108,56 +108,44 @@ public class QuestionnaireController {
 	@GetMapping(value = "/{petId}")
 	public String showAnimalshelterList(final Map<String, Object> model, @PathVariable("petId") final int petId) {
 		List<Questionnaire> questionnaire = new ArrayList<Questionnaire>();
-		questionnaire.addAll(this.questService.findQuestionnaireByPetId(petId));
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		Owner shelter = this.ownerService.findOwnerByUsername(name);
+		try {
+			questionnaire.addAll(this.questService.findMyQuestionnaireByPetId(shelter.getId(), petId));
+		} catch (UnrelatedPetException e) {
+			return "redirect:/oups";
+		}
 		model.put("questionnaire", questionnaire);
 		return "questionnaire/questionnaireList";
+
 	}
 
 	@GetMapping(value = "/show/{questId}")
 	public String showQuestionnaire(final Map<String, Object> model, @PathVariable("questId") final int questId) {
 		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
-		SecurityContext context = SecurityContextHolder.getContext();
-		Boolean isShelter = false;
-		for (GrantedAuthority i : context.getAuthentication().getAuthorities()) {
-			if (i.getAuthority().equals("animalshelter")) {
-				isShelter = true;
-			}
-		}
-		if (isShelter) {
-			model.put("questionnaire", questionnaire);
+		model.put("questionnaire", questionnaire);
+		return QuestionnaireController.QUESTIONNAIRE_SHOW;
 
-			return QuestionnaireController.QUESTIONNAIRE_SHOW;
-		} else {
-			return "redirect:/oups";
-		}
 	}
 
 	@GetMapping(value = "/accept/{questId}")
 	public String acceptAdoption(final Map<String, Object> model, @PathVariable("questId") final int questId) {
 		Questionnaire questionnaire = this.questService.findQuestionnaireById(questId);
-		SecurityContext context = SecurityContextHolder.getContext();
-		Boolean isShelter = false;
-		for (GrantedAuthority i : context.getAuthentication().getAuthorities()) {
-			if (i.getAuthority().equals("animalshelter")) {
-				isShelter = true;
-			}
-		}
-		if (isShelter) {
-			Pet pet = questionnaire.getPet();
-			Owner owner = questionnaire.getOwner();
-			owner.addPet(pet);
-			try {
-				this.ownerService.saveOwnerQuest(owner, questionnaire.getUmbral(), questionnaire.getPuntuacion());
-				this.petService.save(pet);
-
-			} catch (UmbralInferiorException e) {
-				e.printStackTrace();
-			}
-
+		Pet pet = questionnaire.getPet();
+		Owner owner = questionnaire.getOwner();
+		owner.addPet(pet);
+		try {
+			this.ownerService.saveOwnerQuest(owner, questionnaire.getUmbral(), questionnaire.getPuntuacion());
+			this.petService.save(pet);
 			model.put("questionnaire", questionnaire);
-			return "redirect:/owners/" + owner.getId();
-		} else {
-			return "redirect:/oups";
+
+		} catch (UmbralInferiorException e) {
+			e.printStackTrace();
+			model.put("message", "No se pudo realizar la adopción por no cumplir los requisitos");
+			return "exception";
 		}
+
+		return "redirect:/owners/" + owner.getId();
+
 	}
 }

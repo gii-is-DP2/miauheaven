@@ -3,7 +3,7 @@ package org.springframework.samples.petclinic.service;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import javax.validation.ConstraintViolationException;
+import java.util.Collection;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -23,6 +23,14 @@ public class RecordServiceTests {
 	@Autowired
 	private RecordService	recordService;
 
+
+	@Test
+	public void findAllByUsename() {
+		Collection<Record> records = this.recordService.findAllByUsename("owner1");
+		for (Record r : records) {
+			Assertions.assertThat(r.getOwner_id()).isNotNull();
+		}
+	}
 
 	// ---------------------------------------------------------------- HU.24 ----------------------------------------------------------------------------------------------------
 
@@ -56,7 +64,6 @@ public class RecordServiceTests {
 			this.recordService.saveRecord(record);
 
 		});
-	
-		
+
 	}
 }

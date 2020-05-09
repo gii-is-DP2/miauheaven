@@ -44,7 +44,7 @@ public interface PetRepository extends CrudRepository<Pet, Integer> {
 	 *
 	 * @return a <code>Collection</code> of <code>PetType</code>s
 	 */
-	@Query("Select a.type from Pet a ")
+	@Query("Select distinct a.type from Pet a ")
 	List<PetType> findPetTypes() throws DataAccessException;
 
 	/**

@@ -16,10 +16,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext
 public class HU_20_UITest {
 
 	@LocalServerPort
@@ -54,7 +56,7 @@ public class HU_20_UITest {
 		Assert.assertEquals("Appointments", this.driver.findElement(By.xpath("//h2")).getText());
 		Assert.assertEquals("Jean Coleman", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td")).getText());
 		Assert.assertEquals("Helen Leary", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[2]")).getText());
-		Assert.assertEquals("2020-04-01", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[3]")).getText());
+		Assert.assertEquals("2020-11-01", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[3]")).getText());
 		Assert.assertEquals("true", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[4]")).getText());
 		this.driver.findElement(By.linkText("See more")).click();
 		Assert.assertEquals("Appointment Information", this.driver.findElement(By.xpath("//h2")).getText());
@@ -64,7 +66,7 @@ public class HU_20_UITest {
 		Assert.assertEquals("Helen Leary", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
 		Assert.assertEquals("true", this.driver.findElement(By.xpath("//tr[5]/td")).getText());
 		Assert.assertEquals("No come nada", this.driver.findElement(By.xpath("//tr[6]/td")).getText());
-		Assert.assertEquals("2020-04-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
+		Assert.assertEquals("2020-11-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();

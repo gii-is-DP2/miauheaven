@@ -94,6 +94,14 @@
 				</petclinic:menuItem>
 				</sec:authorize>
 				
+				<sec:authorize access="hasAuthority('owner')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
 				<sec:authorize access="hasAuthority('veterinarian')">
 				<petclinic:menuItem active="${name eq 'notificationList'}" url="/vets/notification"
 					title="Notifications for vets">
@@ -115,6 +123,14 @@
 					title="Notifications for animal shelters">
 					<span class="glyphicon glyphicon-user icon-size" aria-hidden="true"></span>
 					<span>My animal shelter</span>
+				</petclinic:menuItem>
+				</sec:authorize>
+				
+				<sec:authorize access="hasAuthority('animalshelter')">
+				<petclinic:menuItem active="${name eq 'eventList'}" url="/events/"
+					title="Events">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+					<span>Events</span>
 				</petclinic:menuItem>
 				</sec:authorize>
 				
