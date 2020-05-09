@@ -64,9 +64,7 @@ public class HU_24_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).click();
 		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//table[@id='recordsTable']/tbody/tr[2]/td")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+
 	}
 
 	@Test
