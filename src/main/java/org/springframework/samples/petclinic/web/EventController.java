@@ -72,10 +72,10 @@ public class EventController {
 			model.put("event", event);
 			return "events/createOrUpdateEvent";
 		} else {
-			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			String username = auth.getName();
-			Owner o = this.asService.findOwnerByUsername(username);
-			Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
+			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			final String username = auth.getName();
+			final Owner o = this.asService.findOwnerByUsername(username);
+			final Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
 			event.setAnimalshelter(as);
 			this.eventService.saveEvent(event);
 			return "redirect:/events/" + event.getId();
@@ -84,27 +84,26 @@ public class EventController {
 
 	@GetMapping(value = "/events/{eventId}/edit")
 	public String initUpdateEventForm(@PathVariable("eventId") final int eventId, final Model model) {
-		final Event ev = this.eventService.findEventById(eventId);
-		model.addAttribute(ev);
-		return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String username = auth.getName();
+		if (!username.contains("shelter"))
+			return "redirect:/oups";
+		else {
+			final Event ev = this.eventService.findEventById(eventId);
+			model.addAttribute(ev);
+			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
+		}
 	}
 
 	@PostMapping(value = "/events/{eventId}/edit")
 	public String processUpdateEventForm(@Valid final Event event, final BindingResult result, @PathVariable("eventId") final int eventId) {
-		if (result.hasErrors()) {
+		if (result.hasErrors())
 			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
-		} else {
+		else {
 			event.setId(eventId);
 			this.eventService.saveEvent(event);
 			return "redirect:/events/" + event.getId();
 		}
 	}
-
-	//	@GetMapping("/event/{eventId}")
-	//	public ModelAndView showEvent(@PathVariable("eventId") final int eventId) {
-	//		final ModelAndView mav = new ModelAndView("event/{eventId}");
-	//		mav.addObject(this.eventService.findEventById(eventId));
-	//		return mav;
-	//	}
 
 }
