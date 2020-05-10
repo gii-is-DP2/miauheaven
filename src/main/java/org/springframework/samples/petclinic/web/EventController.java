@@ -84,15 +84,11 @@ public class EventController {
 
 	@GetMapping(value = "/events/{eventId}/edit")
 	public String initUpdateEventForm(@PathVariable("eventId") final int eventId, final Model model) {
-		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		final String username = auth.getName();
-		if (!username.contains("shelter"))
-			return "redirect:/oups";
-		else {
-			final Event ev = this.eventService.findEventById(eventId);
-			model.addAttribute(ev);
-			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
-		}
+
+		final Event ev = this.eventService.findEventById(eventId);
+		model.addAttribute(ev);
+		return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
+
 	}
 
 	@PostMapping(value = "/events/{eventId}/edit")
