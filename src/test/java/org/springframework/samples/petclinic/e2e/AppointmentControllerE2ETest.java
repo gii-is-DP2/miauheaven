@@ -33,8 +33,8 @@ class AppointmentControllerE2ETest {
 	private MockMvc				mockMvc;
 
 
-	@WithMockUser(username = "shelter1", authorities = {
-		"animalshelter"
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
 	})
 	@Test
 	void testInitNewAppointmentForm() throws Exception {
@@ -42,16 +42,17 @@ class AppointmentControllerE2ETest {
 			.andExpect(MockMvcResultMatchers.model().attributeExists("appointment")).andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
 	}
 
-	@WithMockUser(username = "shelter1", authorities = {
-		"animalshelter"
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
 	})
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_OWNER_ID, AppointmentControllerE2ETest.TEST_PET_ID).param("cause", "Tiene rota la patita")
-			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_OWNER_ID, AppointmentControllerE2ETest.TEST_PET_ID).param("cause", "No come nada")
+			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true").param("date", "2020/12/12").param("vet_id", "1")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
-	@WithMockUser(username = "shelter1", authorities = {
-		"animalshelter"
+
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
 	})
 	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
