@@ -1,6 +1,8 @@
 
 package org.springframework.samples.petclinic.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -20,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EventServiceTests {
 
 	@Autowired
-	protected EventService eventService;
+	private EventService eventService;
 
 
 	@Test
@@ -60,7 +62,7 @@ public class EventServiceTests {
 		event.setDate(LocalDate.now());
 		event.setName("Prueba");
 
-		Assertions.assertThrows(ConstraintViolationException.class, () -> {
+		assertThrows(ConstraintViolationException.class, () -> {
 			this.eventService.saveEvent(event);
 		});
 	}
