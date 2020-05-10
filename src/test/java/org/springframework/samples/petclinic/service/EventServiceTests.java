@@ -67,7 +67,7 @@ public class EventServiceTests {
 		});
 	}
 
-	//Prueba HU.04 editar eventos caso positivo
+	//Prueba HU.04 editar eventos caso positiv
 	@Test
 	@Transactional
 	void shouldUpdateEvent() {
