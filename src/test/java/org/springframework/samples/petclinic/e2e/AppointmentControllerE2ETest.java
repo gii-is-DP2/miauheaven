@@ -33,19 +33,26 @@ class AppointmentControllerE2ETest {
 	private MockMvc				mockMvc;
 
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
 	@Test
 	void testInitNewAppointmentForm() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/*/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_PET_ID)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attributeExists("appointment")).andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
 	}
-	@WithMockUser(value = "spring")
+
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_OWNER_ID, AppointmentControllerE2ETest.TEST_PET_ID).param("cause", "Tiene rota la patita")
 			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
-	@WithMockUser(value = "spring")
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
 	@Test
 	void testProcessCreationFormHasErrors() throws Exception {
 		this.mockMvc
