@@ -1,8 +1,6 @@
 
 package org.springframework.samples.petclinic.service;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.time.LocalDate;
 import java.util.Collection;
 
@@ -27,24 +25,26 @@ public class EventServiceTests {
 
 	@Test
 	void shouldFindEvents() {
-		Collection<Event> events = this.eventService.findEvents();
+		final Collection<Event> events = this.eventService.findEvents();
 
-		Event event = EntityUtils.getById(events, Event.class, 1);
+		final Event event = EntityUtils.getById(events, Event.class, 1);
 
 		Assertions.assertThat(event.getName()).isEqualTo("AnimalFest");
 		Assertions.assertThat(event.getDate()).isEqualTo(LocalDate.of(2050, 03, 04));
 		Assertions.assertThat(event.getDescription()).isEqualTo("Event to take a good time with your pet");
 	}
-	
+
 	@Test
 	@Transactional
 	public void shouldInsertEvent() {
 		Collection<Event> events = this.eventService.findEvents();
-		int found = events.size();
+		final int found = events.size();
 
-		Event event = new Event();
-		event.setDate(LocalDate.now());;
-		event.setDescription("Prueba");;
+		final Event event = new Event();
+		event.setDate(LocalDate.now());
+		;
+		event.setDescription("Prueba");
+		;
 		event.setName("Prueba");
 
 		this.eventService.saveEvent(event);
@@ -53,16 +53,48 @@ public class EventServiceTests {
 		events = this.eventService.findEvents();
 		Assertions.assertThat(events.size()).isEqualTo(found + 1);
 	}
-	
-	@Test 
+
+	@Test
 	public void shouldNotInsertEvent() {
-		Event event = new Event();
+		final Event event = new Event();
 		event.setDate(LocalDate.now());
 		event.setName("Prueba");
-		
-		assertThrows(ConstraintViolationException.class, () -> {
+
+		Assertions.assertThrows(ConstraintViolationException.class, () -> {
 			this.eventService.saveEvent(event);
 		});
+	}
+
+	//Prueba HU.04 editar eventos caso positivo
+	@Test
+	@Transactional
+	void shouldUpdateEvent() {
+		Event ev = this.eventService.findEventById(1);
+		final String oldName = ev.getName();
+		final String newName = oldName + "Nuevo";
+
+		ev.setName(newName);
+		this.eventService.saveEvent(ev);
+
+		// retrieving new name from database
+		ev = this.eventService.findEventById(1);
+		Assertions.assertThat(ev.getName()).isEqualTo(newName);
+	}
+
+	//Prueba HU.04 editar eventos caso negativo
+	@Test
+	@Transactional
+	void shouldNotUpdateEvent() {
+		Event ev = this.eventService.findEventById(1);
+		final String oldName = ev.getName();
+		final String newName = "";
+
+		ev.setName(newName);
+		this.eventService.saveEvent(ev);
+
+		// retrieving new name from database
+		ev = this.eventService.findEventById(1);
+		Assertions.assertThat(ev.getName()).isEqualTo(newName);
 	}
 
 }
