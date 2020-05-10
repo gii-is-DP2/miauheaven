@@ -81,4 +81,20 @@ public class EventServiceTests {
 		Assertions.assertThat(ev.getName()).isEqualTo(newName);
 	}
 
+	//Prueba HU.04 editar eventos caso negativo
+	@Test
+	@Transactional
+	void shouldNotUpdateEvent() {
+		Event ev = this.eventService.findEventById(1);
+		final String oldName = ev.getName();
+		final String newName = "";
+
+		ev.setName(newName);
+		this.eventService.saveEvent(ev);
+
+		// retrieving new name from database
+		ev = this.eventService.findEventById(1);
+		Assertions.assertThat(ev.getName()).isEqualTo(newName);
+	}
+
 }
