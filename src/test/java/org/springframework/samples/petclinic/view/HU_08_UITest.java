@@ -54,15 +54,15 @@ public class HU_08_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("shelter1");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("See applications")).click();
-		this.driver.findElement(By.linkText("See more")).click();
-		this.driver.findElement(By.linkText("Accept adoption")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Accept adoption')]")).click();
 		Assert.assertEquals("Desto", this.driver.findElement(By.xpath("//dd")).getText());
 		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//b")).getText());
 		Assert.assertEquals("Owner Information", this.driver.findElement(By.xpath("//h2")).getText());
 		Assert.assertEquals("Pets and Visits", this.driver.findElement(By.xpath("//h2[2]")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
@@ -81,7 +81,7 @@ public class HU_08_UITest {
 		Assert.assertEquals("Forbidden", this.driver.findElement(By.xpath("//div[3]")).getText());
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 

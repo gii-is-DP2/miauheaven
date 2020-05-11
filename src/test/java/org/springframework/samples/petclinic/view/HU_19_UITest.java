@@ -53,14 +53,14 @@ public class HU_19_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("See more")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
 		Assert.assertEquals("Pet Information", this.driver.findElement(By.xpath("//h2")).getText());
 		Assert.assertEquals("Leo", this.driver.findElement(By.xpath("//b")).getText());
 		Assert.assertEquals("cat", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
 		Assert.assertEquals("2010-09-07", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
@@ -77,6 +77,10 @@ public class HU_19_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.get("http://localhost:" + this.port + "/admin/pets/50");
 		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
+		this.driver.get("http://localhost:" + this.port);
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
 	@AfterEach
