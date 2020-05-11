@@ -55,13 +55,13 @@ public class HU_29_UITest {
 		Assert.assertEquals("Comida para perros", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td")).getText());
 		Assert.assertEquals("12.2", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td[2]")).getText());
 		Assert.assertEquals("Yes", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td[3]")).getText());
-		this.driver.findElement(By.linkText("See more")).click();
+		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[1]")).click();
 		Assert.assertEquals("Comida para perros", this.driver.findElement(By.xpath("//td")).getText());
 		Assert.assertEquals("La mejor comida para alimentar a nuestros compañeros caninos", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("12.2", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
 		Assert.assertEquals("Yes", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
@@ -77,7 +77,7 @@ public class HU_29_UITest {
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
 		this.driver.get("http://localhost:" + this.port + "/admin/product/aaa");
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
