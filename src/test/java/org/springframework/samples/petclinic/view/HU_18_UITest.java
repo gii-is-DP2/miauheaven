@@ -34,6 +34,7 @@ public class HU_18_UITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
+		
 		String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
 		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
 		this.driver = new FirefoxDriver();
@@ -52,13 +53,13 @@ public class HU_18_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("v3t");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("See more")).click();
+		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[1]")).click();
 		Assert.assertEquals("Leo", this.driver.findElement(By.xpath("//b")).getText());
 		Assert.assertEquals("cat", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("George Franklin", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
 		Assert.assertEquals("2010-09-07", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
@@ -74,7 +75,7 @@ public class HU_18_UITest {
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
 		this.driver.get("http://localhost:" + this.port + "/vets/pets/aaa");
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 	@AfterEach
