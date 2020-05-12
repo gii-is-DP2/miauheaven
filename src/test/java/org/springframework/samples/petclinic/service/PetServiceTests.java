@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -30,11 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
-
-import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Animalshelter;
-
-
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
@@ -293,7 +290,8 @@ class PetServiceTests {
 	@Test
 	void shouldFindPetsToAdopt() throws Exception {
 		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
-		assertThat(toAdopt.size()-1).isEqualTo(1);
+        Integer size=this.animalshelterService.findAnimalshelters().stream().map(x->x.getOwner()).map(x->x.getPets()).collect(Collectors.toList()).size();
+        assertThat(toAdopt.size()).isEqualTo(size);
 	}
 	
 	@Test
