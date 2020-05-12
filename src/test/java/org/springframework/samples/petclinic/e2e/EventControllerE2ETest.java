@@ -42,7 +42,7 @@ public class EventControllerE2ETest {
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Festival Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("date", "2040/02/12").param("description", "Description of festival"))
-			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+			.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
 	}
 
 	@WithMockUser(username = "shelter1", authorities = {
