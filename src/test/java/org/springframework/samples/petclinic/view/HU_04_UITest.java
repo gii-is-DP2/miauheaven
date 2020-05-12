@@ -98,7 +98,6 @@ public class HU_04_UITest {
 		Assert.assertEquals("no puede ser null", this.driver.findElement(By.xpath("//form[@id='event']/div/div/div[3]/div/span[2]")).getText());
 	}
 
-
 	//	@Test
 	//	public void testSoloProtectoraPuedeEditarEventos() throws Exception {
 	//		this.driver.get("http://localhost:" + this.port);

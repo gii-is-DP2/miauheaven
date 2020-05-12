@@ -125,3 +125,4 @@ INSERT INTO product(id,name,price,stock,description,image) VALUES (1, 'Comida pa
 INSERT INTO product(id,name,price,stock,description,image) VALUES (2, 'Comida para gatos',15.4, false, 'La mejor comida para alimentar a nuestros compañeros felinos', 'https://t1.uc.ltmcdn.com/images/1/9/0/img_como_hacer_comida_casera_saludable_para_mi_gato_23091_orig.jpg');
 
 INSERT INTO events(id,name,date,description,animalshelter_id) VALUES (1, 'AnimalFest', '2050-03-04', 'Event to take a good time with your pet',1);
+INSERT INTO events(id,name,date,description,animalshelter_id) VALUES (2, 'EventoPasado', '2010-03-04', 'Evento pasado de fecha',2);
