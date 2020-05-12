@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.samples.petclinic.web.OwnerController;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
+@DirtiesContext
 //@TestPropertySource(locations = "classpath:application-mysql.properties")
 class AdminControllerE2ETest {
 
@@ -239,7 +241,7 @@ class AdminControllerE2ETest {
 	void testEventShow() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/events/{eventId}", AdminControllerE2ETest.TEST_EVENT_ID)).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("event"))
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("id", Matchers.is(AdminControllerE2ETest.TEST_EVENT_ID))))
-			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("name", Matchers.is("AnimalFest 2.1"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("name", Matchers.is("AnimalFest"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("description", Matchers.is("Event to take a good time with your pet"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.of(2050, 03, 04))))).andExpect(MockMvcResultMatchers.view().name("admin/events/eventShow"));
 	}

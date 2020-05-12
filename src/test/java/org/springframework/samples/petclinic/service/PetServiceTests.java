@@ -230,7 +230,7 @@ class PetServiceTests {
 
 	@Test
 	void shouldFindVisitsByPetId() throws Exception {
-		Collection<Visit> visits = this.petService.findVisitsByPetId(7);
+		Collection<Visit> visits = this.petService.findVisitsByPetId(8);
 		assertThat(visits.size()).isEqualTo(2);
 		Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
 		assertThat(visitArr[0].getPet()).isNotNull();
@@ -271,7 +271,7 @@ class PetServiceTests {
 	}
 
 	//Negative Case
-	
+	@Test
 	void shouldnotInsertPetByAnimalShelter() throws Exception {
 		//We get an animalshelter from the repository
 	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
@@ -293,7 +293,7 @@ class PetServiceTests {
 	@Test
 	void shouldFindPetsToAdopt() throws Exception {
 		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
-		assertThat(toAdopt.size()).isEqualTo(2);
+		assertThat(toAdopt.size()-1).isEqualTo(1);
 	}
 	
 	@Test
