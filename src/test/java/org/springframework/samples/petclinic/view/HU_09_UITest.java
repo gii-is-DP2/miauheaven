@@ -52,7 +52,7 @@ public class HU_09_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create new notification")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Create new notification')]")).click();
 		this.driver.findElement(By.id("title")).clear();
 		this.driver.findElement(By.id("title")).sendKeys("Prueba de interfaz HU09");
 		this.driver.findElement(By.id("message")).clear();
@@ -65,9 +65,9 @@ public class HU_09_UITest {
 		Assert.assertEquals("Prueba de interfaz HU09", this.driver.findElement(By.xpath("//td")).getText());
 		Assert.assertEquals("Mensaje de prueba HU09", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("owner", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
-		this.driver.findElement(By.linkText("Delete Notification")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Delete Notification')]")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 	@Test
@@ -80,7 +80,7 @@ public class HU_09_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create new notification")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Create new notification')]")).click();
 		this.driver.findElement(By.id("title")).clear();
 		this.driver.findElement(By.id("title")).sendKeys("Prueba fallida");
 		this.driver.findElement(By.id("url")).clear();

@@ -93,6 +93,7 @@ public class EventController {
 			model.put("event", ev);
 			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
 		}
+
 	}
 
 	@PostMapping(value = "/events/{eventId}/edit")

@@ -34,29 +34,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(final HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll().antMatchers("/admin/**").hasAnyAuthority("admin")
-			.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter")
-			.antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter")
-			.antMatchers("/owners/**").hasAnyAuthority("owner", "admin", "animalshelter")
-			.antMatchers("/pets").hasAnyAuthority("veterinarian")
-			.antMatchers("/pets/**").hasAnyAuthority("veterinarian")
-			.antMatchers("/pets").hasAnyAuthority("admin")
-			.antMatchers("/pets/**").hasAnyAuthority("admin")
-			.antMatchers("/events/new").hasAnyAuthority("animalshelter")
-			.antMatchers("/events/**").authenticated()
-			.antMatchers("/vets/**").authenticated()
-			.antMatchers("/vets.xml").authenticated()
-			.antMatchers("/vets/notification/").hasAnyAuthority("veterinarian")
-			.antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian")
-			.antMatchers("/animalshelter/**").authenticated()
-			.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
-			.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter")
-			.antMatchers("/product/**").hasAnyAuthority("owner")
-			.antMatchers("/appointment/**").authenticated()
+			.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter").antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter").antMatchers("/owners/**")
+			.hasAnyAuthority("owner", "admin", "animalshelter").antMatchers("/pets").hasAnyAuthority("veterinarian").antMatchers("/pets/**").hasAnyAuthority("veterinarian").antMatchers("/pets").hasAnyAuthority("admin").antMatchers("/pets/**")
+			.hasAnyAuthority("admin").antMatchers("/events/new").hasAnyAuthority("animalshelter").antMatchers("/events/**").authenticated().antMatchers("/vets/**").authenticated().antMatchers("/vets.xml").authenticated().antMatchers("/vets/notification/")
+			.hasAnyAuthority("veterinarian").antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian").antMatchers("/animalshelter/**").authenticated().antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
+			.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter").antMatchers("/product/**").hasAnyAuthority("owner").antMatchers("/appointment/**").authenticated().antMatchers("/events/**/edit").hasAnyAuthority("animalshelter")
 
 			.anyRequest().denyAll().and().formLogin()
 			/* .loginPage("/login") */
 			.failureUrl("/login-error").and().logout().logoutSuccessUrl("/");
-		// Configuración para que funcione la consola de administración 
+		// Configuración para que funcione la consola de administración
 		// de la BD H2 (deshabilitar las cabeceras de protección contra
 		// ataques de tipo csrf y habilitar los framesets si su contenido
 		// se sirve desde esta misma página.
@@ -72,7 +59,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
+		final PasswordEncoder encoder = NoOpPasswordEncoder.getInstance();
 		return encoder;
 	}
 

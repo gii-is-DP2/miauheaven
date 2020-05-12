@@ -1,4 +1,5 @@
 
+
 package org.springframework.samples.petclinic.e2e;
 
 import org.junit.jupiter.api.Test;
@@ -41,6 +42,7 @@ class AppointmentControllerE2ETest {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/*/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_PET_ID)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attributeExists("appointment")).andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
 	}
+
 	@WithMockUser(username = "owner1", authorities = {
 		"owner"
 	})
@@ -49,6 +51,7 @@ class AppointmentControllerE2ETest {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerE2ETest.TEST_OWNER_ID, AppointmentControllerE2ETest.TEST_PET_ID).param("cause", "No come nada")
 			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true").param("date", "2020/12/12").param("vet_id", "1")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
+
 	@WithMockUser(username = "owner1", authorities = {
 		"owner"
 	})
@@ -61,3 +64,4 @@ class AppointmentControllerE2ETest {
 			.andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
 	}
 }
+

@@ -167,14 +167,4 @@ public class PetController {
 		}
 	}
 
-	@GetMapping(value = {
-		"/adoptionPetList"
-	})
-	public String showAdoptionPetListList(final Map<String, Object> model) {
-		List<Pet> pets = new ArrayList<Pet>();
-		pets.addAll(this.petService.findAdoptionPets());
-		model.put("pets", pets);
-		return "pets/adoptionPetList";
-	}
-
 }

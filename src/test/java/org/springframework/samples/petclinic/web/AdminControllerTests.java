@@ -19,6 +19,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
 import org.springframework.samples.petclinic.configuration.SecurityConfiguration;
 import org.springframework.samples.petclinic.model.Appointment;
+import org.springframework.samples.petclinic.model.Event;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -30,6 +31,7 @@ import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.service.AppointmentService;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
+import org.springframework.samples.petclinic.service.EventService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
@@ -59,6 +61,7 @@ class AdminControllerTests {
 	private static final int TEST_OWNER_ID = 1;
 	private static final int TEST_PRODUCT_ID = 1;
 	private static final int TEST_QUESTIONNAIRE_ID = 1;
+	private static final int TEST_EVENT_ID = 1;
 
 	@Autowired
 	private AdminController adminController;
@@ -80,7 +83,9 @@ class AdminControllerTests {
 
 	@MockBean
 	private ProductService productService;
-
+	@MockBean
+	private EventService eventService;
+	
 	@Autowired
 	private MockMvc mockMvc;
 	private Pet leo;
@@ -90,10 +95,20 @@ class AdminControllerTests {
 	private Notification notification;
 	private Product product;
 	private Questionnaire questionnaire;
+	private Event event;
 
 	@BeforeEach
 	void setup() {
 
+		this.event = new Event();
+		this.event.setId(AdminControllerTests.TEST_EVENT_ID);
+		this.event.setName("Prueba");
+		this.event.setDescription("Prueba");
+		this.event.setDate(LocalDate.now());
+
+		BDDMockito.given(this.eventService.findEventById(AdminControllerTests.TEST_EVENT_ID)).willReturn(this.event);
+
+		
 		this.questionnaire = new Questionnaire();
 		this.questionnaire.setId(AdminControllerTests.TEST_QUESTIONNAIRE_ID);
 		this.questionnaire.setIngresos("Altos");
@@ -388,6 +403,27 @@ class AdminControllerTests {
 						Matchers.hasProperty("convivencia", Matchers.is("Sí"))))
 				.andExpect(MockMvcResultMatchers.view().name("admin/questionnaires/questionnaireShow"));
 	}
+	// ------------------------------------------------ Event
+	// --------------------------------------------
+	@WithMockUser(value = "spring")
+	@Test
+	void testEventList() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/events/"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("events"))
+		.andExpect(MockMvcResultMatchers.view().name("admin/events/eventsList"));
+	}
 
-	
+	@WithMockUser(value = "spring")
+	@Test
+	void testEventShow() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/events/{eventId}", AdminControllerTests.TEST_EVENT_ID))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("event"))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("id", Matchers.is(AdminControllerTests.TEST_EVENT_ID))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("name", Matchers.is("Prueba"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("description", Matchers.is("Prueba"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.now()))))
+			.andExpect(MockMvcResultMatchers.view().name("admin/events/eventShow"));
+	}
 }

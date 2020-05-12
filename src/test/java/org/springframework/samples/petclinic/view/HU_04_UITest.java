@@ -44,7 +44,7 @@ public class HU_04_UITest {
 
 	@Test
 	public void testEditarEvento() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
@@ -69,7 +69,7 @@ public class HU_04_UITest {
 
 	@Test
 	public void testNoSePuedeEditarDejandoCamposVacios() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("shelter1");
@@ -100,7 +100,7 @@ public class HU_04_UITest {
 
 	@Test
 	public void testSoloProtectoraPuedeEditarEventos() throws Exception {
-		this.driver.get("http://localhost:8080/");
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("owner1");

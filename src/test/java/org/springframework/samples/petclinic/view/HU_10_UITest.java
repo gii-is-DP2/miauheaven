@@ -54,10 +54,10 @@ public class HU_10_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("shelter2");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//a[contains(@href, '/owners/myAnimalShelter')]")).click();
-		this.driver.findElement(By.linkText("See applications")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).click();
 		Assert.assertEquals("Applications for Puesto", this.driver.findElement(By.xpath("//h2")).getText());
 		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td")).getText());
-		this.driver.findElement(By.linkText("See more")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
 		Assert.assertEquals("Puesto", this.driver.findElement(By.xpath("//td")).getText());
 		Assert.assertEquals("Betty Davis", this.driver.findElement(By.xpath("//b")).getText());
 		Assert.assertEquals("Bajos", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
@@ -65,9 +65,9 @@ public class HU_10_UITest {
 		Assert.assertEquals("No", this.driver.findElement(By.xpath("//tr[5]/td")).getText());
 		Assert.assertEquals("No", this.driver.findElement(By.xpath("//tr[5]/td")).getText());
 		Assert.assertEquals("0", this.driver.findElement(By.xpath("//tr[6]/td")).getText());
-		Assert.assertEquals("Accept adoption", this.driver.findElement(By.linkText("Accept adoption")).getText());
+		Assert.assertEquals("Accept adoption", this.driver.findElement(By.xpath("//a[contains(text(),'Accept adoption')]")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
@@ -86,7 +86,7 @@ public class HU_10_UITest {
 		Assert.assertEquals("Forbidden", this.driver.findElement(By.xpath("//div[3]")).getText());
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 

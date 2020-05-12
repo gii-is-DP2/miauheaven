@@ -35,7 +35,6 @@ public class HU_30_UITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-
 		String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
 		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
 		this.driver = new FirefoxDriver();
@@ -54,7 +53,7 @@ public class HU_30_UITest {
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create a new product")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Create a new product')]")).click();
 		this.driver.findElement(By.id("name")).clear();
 		this.driver.findElement(By.id("name")).sendKeys("Gotas para ojos tortugas");
 		this.driver.findElement(By.id("description")).clear();
@@ -74,14 +73,14 @@ public class HU_30_UITest {
 		Assert.assertEquals("Para limpiar los ojos a los reptiles con problemas de conjuntivitis", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("7.5", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
 		Assert.assertEquals("Yes", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
-		this.driver.findElement(By.linkText("Update")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Update')]")).click();
 		new Select(this.driver.findElement(By.id("stock"))).selectByVisibleText("false");
 		this.driver.findElement(By.xpath("//option[@value='false']")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[3]")).click();
-		this.driver.findElement(By.linkText("Delete")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Delete')]")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 
 	}
@@ -97,7 +96,7 @@ public class HU_30_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.id("main-navbar")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
-		this.driver.findElement(By.linkText("Create a new product")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(), 'Create a new product')]")).click();
 		this.driver.findElement(By.id("name")).clear();
 		this.driver.findElement(By.id("name")).sendKeys("Prueba");
 		this.driver.findElement(By.id("description")).clear();
@@ -107,7 +106,7 @@ public class HU_30_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		Assert.assertEquals("no puede ser null", this.driver.findElement(By.xpath("//form[@id='product']/div[3]/div/span[2]")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.linkText("Logout")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 

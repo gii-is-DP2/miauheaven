@@ -89,11 +89,8 @@ class AppointmentControllerTests {
 	@WithMockUser(value = "spring")
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
-		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).param("cause", "No come nada")
-			.with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true")
-			.param("date", "2020/12/12")
-		.param("vet_id", "1"))
-.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/owners/{ownerId}/pets/{petId}/appointment/new", AppointmentControllerTests.TEST_OWNER_ID, AppointmentControllerTests.TEST_PET_ID).param("cause", "No come nada").with(SecurityMockMvcRequestPostProcessors.csrf()).param("urgent", "true").param("date", "2020/12/12").param("vet_id", "1")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+
 	}
 
 	@WithMockUser(value = "spring")

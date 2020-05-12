@@ -65,7 +65,7 @@ class AdminControllerE2ETest {
 	private static final int TEST_OWNER_ID = 1;
 	private static final int TEST_PRODUCT_ID = 1;
 	private static final int TEST_QUESTIONNAIRE_ID = 1;
-
+	private static final int TEST_EVENT_ID = 1;
 	
 	@Autowired
 	private MockMvc mockMvc;
@@ -302,6 +302,29 @@ class AdminControllerE2ETest {
 						Matchers.hasProperty("convivencia", Matchers.is("Sí"))))
 				.andExpect(MockMvcResultMatchers.view().name("admin/questionnaires/questionnaireShow"));
 	}
-
+	// ------------------------------------------------ Event
+	// --------------------------------------------
+	@WithMockUser(username = "admin1", authorities = {
+	"admin"})
+	@Test
+	void testEventList() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/events/"))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("events"))
+		.andExpect(MockMvcResultMatchers.view().name("admin/events/eventsList"));
+	}
+	@WithMockUser(username = "admin1", authorities = {
+	"admin"})
+	@Test
+	void testEventShow() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/events/{eventId}", AdminControllerE2ETest.TEST_EVENT_ID))
+		.andExpect(MockMvcResultMatchers.status().isOk())
+		.andExpect(MockMvcResultMatchers.model().attributeExists("event"))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("id", Matchers.is(AdminControllerE2ETest.TEST_EVENT_ID))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("name", Matchers.is("AnimalFest"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("description", Matchers.is("Event to take a good time with your pet"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.of(2050, 03, 04)))))
+			.andExpect(MockMvcResultMatchers.view().name("admin/events/eventShow"));
+	}
 	
 }
