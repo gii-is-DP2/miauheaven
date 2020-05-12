@@ -67,14 +67,14 @@ public class EventControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.now())))).andExpect(MockMvcResultMatchers.view().name("events/eventShow"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testInitCreationForm() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/new")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"))
 			.andExpect(MockMvcResultMatchers.model().attributeExists("event"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testProcessCreationFormSucess() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("description", "Descripción de prueba").param("date", "2020/08/08"))

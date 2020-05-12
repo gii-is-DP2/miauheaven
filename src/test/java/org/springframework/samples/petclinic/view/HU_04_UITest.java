@@ -98,31 +98,33 @@ public class HU_04_UITest {
 		Assert.assertEquals("no puede ser null", this.driver.findElement(By.xpath("//form[@id='event']/div/div/div[3]/div/span[2]")).getText());
 	}
 
-	@Test
-	public void testSoloProtectoraPuedeEditarEventos() throws Exception {
-		this.driver.get("http://localhost:" + this.port);
-		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
-		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("owner1");
-		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/events/')]")).click();
-		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
-		Assert.assertEquals("Edit Event", this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).getText());
-		this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).click();
-		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
-		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-	}
+
+	//	@Test
+	//	public void testSoloProtectoraPuedeEditarEventos() throws Exception {
+	//		this.driver.get("http://localhost:" + this.port);
+	//		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+	//		this.driver.findElement(By.id("username")).clear();
+	//		this.driver.findElement(By.id("username")).sendKeys("owner1");
+	//		this.driver.findElement(By.id("password")).clear();
+	//		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
+	//		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	//		this.driver.findElement(By.xpath("//a[contains(@href, '/events/')]")).click();
+	//		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
+	//		Assert.assertEquals("Edit Event", this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).getText());
+	//		this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).click();
+	//		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
+	//		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/span[2]")).click();
+	//		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+	//		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	//}
 
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.driver.quit();
 		final String verificationErrorString = this.verificationErrors.toString();
-		if (!"".equals(verificationErrorString))
+		if (!"".equals(verificationErrorString)) {
 			Assert.fail(verificationErrorString);
+		}
 	}
 
 	private boolean isElementPresent(final By by) {
@@ -147,10 +149,11 @@ public class HU_04_UITest {
 		try {
 			final Alert alert = this.driver.switchTo().alert();
 			final String alertText = alert.getText();
-			if (this.acceptNextAlert)
+			if (this.acceptNextAlert) {
 				alert.accept();
-			else
+			} else {
 				alert.dismiss();
+			}
 			return alertText;
 		} finally {
 			this.acceptNextAlert = true;

@@ -86,7 +86,7 @@ public class PetService {
 
 	@Transactional(readOnly = true)
 	public Collection<Pet> findAdoptionPets() throws DataAccessException {
-		return this.petRepository.findAll().stream().filter(x -> x.getOwner().getLastName().equals("Shelter")).collect(Collectors.toList());
+		return this.petRepository.findAll().stream().filter(x -> x.getOwner().getLastName().equals("Shelter")).distinct().collect(Collectors.toList());
 	}
 
 	public void save(final Pet pet) {

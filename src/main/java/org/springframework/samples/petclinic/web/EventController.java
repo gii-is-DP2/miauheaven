@@ -76,13 +76,13 @@ public class EventController {
 			model.put("event", event);
 			return "events/createOrUpdateEvent";
 		} else {
-			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			final String username = auth.getName();
-			final Owner o = this.asService.findOwnerByUsername(username);
-			final Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.asService.findOwnerByUsername(username);
+			Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
 			event.setAnimalshelter(as);
 			this.eventService.saveEvent(event);
-			return "redirect:/events/" + event.getId();
+			return "redirect:/events/";
 		}
 	}
 
