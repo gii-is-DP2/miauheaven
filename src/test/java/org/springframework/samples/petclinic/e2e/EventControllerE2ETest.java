@@ -42,7 +42,7 @@ public class EventControllerE2ETest {
 	@Test
 	void testProcessCreationFormSuccess() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/new").param("name", "Festival Prueba").with(SecurityMockMvcRequestPostProcessors.csrf()).param("date", "2040/02/12").param("description", "Description of festival"))
-			.andExpect(MockMvcResultMatchers.status().is2xxSuccessful());
+			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
 
 	@WithMockUser(username = "shelter1", authorities = {
@@ -70,9 +70,8 @@ public class EventControllerE2ETest {
 	})
 	@Test
 	void testProcessUpdateEventFormSuccess() throws Exception {
-		this.mockMvc.perform(
-			MockMvcRequestBuilders.post("/events/{eventId}/edit", EventControllerE2ETest.TEST_EVENT_ID).with(SecurityMockMvcRequestPostProcessors.csrf()).param("name", "AnimalFest 2.1").param("description", "Descripcion Nueva").param("date", "2040/02/12"))
-			.andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+		this.mockMvc.perform(MockMvcRequestBuilders.post("/events/{eventId}/edit", EventControllerE2ETest.TEST_EVENT_ID).with(SecurityMockMvcRequestPostProcessors.csrf()).param("name", "AnimalFest 2.1")
+			.param("description", "Event to take a good time with your pet").param("date", "2050/03/04")).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
 	}
 
 	@WithMockUser(username = "shelter1", authorities = {

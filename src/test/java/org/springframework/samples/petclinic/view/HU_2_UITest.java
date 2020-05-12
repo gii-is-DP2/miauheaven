@@ -55,7 +55,7 @@ public class HU_2_UITest {
 		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
-		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
+		//this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[3]/a/span[2]")).click();
 		this.driver.findElement(By.linkText("Adopt it")).click();

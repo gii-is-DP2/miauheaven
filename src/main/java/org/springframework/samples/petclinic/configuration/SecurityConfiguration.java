@@ -36,9 +36,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers("/resources/**", "/webjars/**", "/h2-console/**").permitAll().antMatchers(HttpMethod.GET, "/", "/oups").permitAll().antMatchers("/users/new").permitAll().antMatchers("/admin/**").hasAnyAuthority("admin")
 			.antMatchers("/owners/adoptList/questionnaire/show/**").hasAnyAuthority("animalshelter").antMatchers("/owners/adoptList/questionnaire/accept/**").hasAnyAuthority("animalshelter").antMatchers("/owners/**")
 			.hasAnyAuthority("owner", "admin", "animalshelter").antMatchers("/pets").hasAnyAuthority("veterinarian").antMatchers("/pets/**").hasAnyAuthority("veterinarian").antMatchers("/pets").hasAnyAuthority("admin").antMatchers("/pets/**")
-			.hasAnyAuthority("admin").antMatchers("/events/new").hasAnyAuthority("animalshelter").antMatchers("/events/**").authenticated().antMatchers("/vets/**").authenticated().antMatchers("/vets.xml").authenticated().antMatchers("/vets/notification/")
-			.hasAnyAuthority("veterinarian").antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian").antMatchers("/animalshelter/**").authenticated().antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter")
-			.antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter").antMatchers("/product/**").hasAnyAuthority("owner").antMatchers("/appointment/**").authenticated().antMatchers("/events/**/edit").hasAnyAuthority("animalshelter")
+			.hasAnyAuthority("admin").antMatchers("/events/new").hasAnyAuthority("animalshelter").antMatchers("/events/**/edit").hasAnyAuthority("animalshelter").antMatchers("/events/**").authenticated().antMatchers("/vets/**").authenticated()
+			.antMatchers("/vets.xml").authenticated().antMatchers("/vets/notification/").hasAnyAuthority("veterinarian").antMatchers("/vets/notification/**").hasAnyAuthority("veterinarian").antMatchers("/animalshelter/**").authenticated()
+			.antMatchers("/animalshelter/notification/**").hasAnyAuthority("animalshelter").antMatchers("/animalshelter/notification/").hasAnyAuthority("animalshelter").antMatchers("/product/**").hasAnyAuthority("owner").antMatchers("/appointment/**")
+			.authenticated()
 
 			.anyRequest().denyAll().and().formLogin()
 			/* .loginPage("/login") */
