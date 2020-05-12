@@ -153,6 +153,7 @@ class PetServiceTests {
 		anotherPetWithTheSameName.setName("wario");
 		anotherPetWithTheSameName.setType(EntityUtils.getById(types, PetType.class, 1));
 		anotherPetWithTheSameName.setBirthDate(LocalDate.now().minusWeeks(2));
+		
 		Assertions.assertThrows(DuplicatedPetNameException.class, () ->{
 			owner6.addPet(anotherPetWithTheSameName);
 			petService.savePet(anotherPetWithTheSameName);
@@ -200,7 +201,7 @@ class PetServiceTests {
 			// The pets already exists!
 			e.printStackTrace();
 		}				
-			
+		
 		Assertions.assertThrows(DuplicatedPetNameException.class, () ->{
 			anotherPet.setName("wario");
 			petService.savePet(anotherPet);

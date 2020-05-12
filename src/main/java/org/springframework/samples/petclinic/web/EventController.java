@@ -72,13 +72,13 @@ public class EventController {
 			model.put("event", event);
 			return "events/createOrUpdateEvent";
 		} else {
-			final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-			final String username = auth.getName();
-			final Owner o = this.asService.findOwnerByUsername(username);
-			final Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String username = auth.getName();
+			Owner o = this.asService.findOwnerByUsername(username);
+			Animalshelter as = this.asService.findAnimalshelterByOwnerId(o.getId());
 			event.setAnimalshelter(as);
 			this.eventService.saveEvent(event);
-			return "redirect:/events/" + event.getId();
+			return "redirect:/events/";
 		}
 	}
 
@@ -93,9 +93,9 @@ public class EventController {
 
 	@PostMapping(value = "/events/{eventId}/edit")
 	public String processUpdateEventForm(@Valid final Event event, final BindingResult result, @PathVariable("eventId") final int eventId) {
-		if (result.hasErrors())
+		if (result.hasErrors()) {
 			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
-		else {
+		} else {
 			event.setId(eventId);
 			this.eventService.saveEvent(event);
 			return "redirect:/events/" + event.getId();
