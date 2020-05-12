@@ -1,6 +1,8 @@
 
 package org.springframework.samples.petclinic.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
 import org.springframework.samples.petclinic.service.exceptions.UnrelatedPetException;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
@@ -66,14 +69,16 @@ class QuestionnaireServiceTests {
 		Animalshelter OtherAnimalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 2);
 		Pet pet = animalshelter.getOwner().getPets().get(0);
 		List<Questionnaire> quests;
-		try {
-			quests = (List<Questionnaire>) this.questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
-			//We see if the collection of questionnaires is empty or not, in this case should not be empty by the initial data.
-			Assertions.assertThat(quests.isEmpty()).isEqualTo(true);
-		} catch (UnrelatedPetException e) {
-			Logger.getLogger(QuestionnaireServiceTests.class.getName()).log(Level.SEVERE, null, e);
-		}
-
+//		try {
+//		 this.questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
+//			//We see if the collection of questionnaires is empty or not, in this case should not be empty by the initial data.
+//			//Assertions.assertThat(quests.isEmpty()).isEqualTo(true);
+//		} catch (UnrelatedPetException e) {
+//			Logger.getLogger(QuestionnaireServiceTests.class.getName()).log(Level.SEVERE, null, e);
+//		}
+		 assertThrows(UnrelatedPetException.class, () -> {
+	            questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
+	        });
 	}
 
 }
