@@ -68,7 +68,7 @@ class QuestionnaireServiceTests {
 		Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
 		Animalshelter OtherAnimalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 2);
 		Pet pet = animalshelter.getOwner().getPets().get(0);
-		List<Questionnaire> quests;
+		//List<Questionnaire> quests;
 //		try {
 //		 this.questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
 //			//We see if the collection of questionnaires is empty or not, in this case should not be empty by the initial data.
