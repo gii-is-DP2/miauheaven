@@ -54,8 +54,12 @@ public class EventController {
 	})
 	public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
 		final Event event = this.eventService.findEventById(eventId);
-		model.put("event", event);
-		return EventController.EVENT_SHOW;
+		if (event.equals(null)) {
+			return "redirect:/oups";
+		} else {
+			model.put("event", event);
+			return EventController.EVENT_SHOW;
+		}
 	}
 
 	@GetMapping(path = "events/new")
