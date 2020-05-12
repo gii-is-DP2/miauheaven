@@ -203,4 +203,20 @@ class OwnerControllerTests {
 			.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationShow"));
 	}
 
+	// ------------------------------------------------------------ Prueba HU.20 Negativo ------------------------------------------------------------------------------------------------------
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testOwnerNoPuedeVerCuestionarios() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/questionnaires")).andExpect(MockMvcResultMatchers.status().is4xxClientError());
+	}
+
+	// ------------------------------------------------------------ Prueba HU.20 Negativo ------------------------------------------------------------------------------------------------------
+
+	@WithMockUser(value = "spring")
+	@Test
+	void testOwnerNoVeCitas() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/admin/appointments")).andExpect(MockMvcResultMatchers.status().is4xxClientError());
+	}
+
 }
