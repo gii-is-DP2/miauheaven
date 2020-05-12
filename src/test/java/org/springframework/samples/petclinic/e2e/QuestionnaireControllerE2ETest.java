@@ -1,6 +1,7 @@
 
 package org.springframework.samples.petclinic.e2e;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,19 +66,50 @@ public class QuestionnaireControllerE2ETest {
 
 	}
 
-	/*
-	 * @WithMockUser(username = "owner1", authorities = {
-	 * "owner"
-	 * })
-	 *
-	 * @Test
-	 * void testShowQuestionnaire() throws Exception {
-	 * this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/{questId}", QuestionnaireControllerE2ETest.TEST_QUEST_ID)).andExpect(MockMvcResultMatchers.status().isOk())
-	 * .andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("vivienda", Matchers.is("Casa"))))
-	 * .andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("ingresos", Matchers.is("Altos"))))
-	 * .andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("horas_Libres", Matchers.is("Entre 3 y 6 horas"))))
-	 * .andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("convivencia", Matchers.is("Sí")))).andExpect(MockMvcResultMatchers.view().name("questionnaire/questonnaireShow"));
-	 * }
-	 */
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
+
+	@Test
+	void testShowQuestionnaire() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/show/{questId}", QuestionnaireControllerE2ETest.TEST_QUEST_ID)).andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("vivienda", Matchers.is("Casa"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("ingresos", Matchers.is("Altos"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("horasLibres", Matchers.is("Entre 3 y 6 horas"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("questionnaire", Matchers.hasProperty("convivencia", Matchers.is("Sí")))).andExpect(MockMvcResultMatchers.view().name("questionnaire/questonnaireShow"));
+	}
+
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
+	})
+
+	@Test
+	void testShowQuestionnaireFail() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/show/{questId}", QuestionnaireControllerE2ETest.TEST_QUEST_ID)).andExpect(MockMvcResultMatchers.status().isForbidden());
+	}
+
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
+	@Test
+	void testAceptaAdopción() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/accept/{questId}", QuestionnaireControllerE2ETest.TEST_QUEST_ID)).andExpect(MockMvcResultMatchers.status().is3xxRedirection());
+	}
+
+	@WithMockUser(username = "shelter1", authorities = {
+		"animalshelter"
+	})
+	@Test
+	void testAceptAdoptionFail() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/accept/{questId}", 2)).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("exception"));
+	}
+
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
+	})
+	@Test
+	void testAceptAdoptionForbidden() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/owners/adoptList/questionnaire/accept/{questId}", 2)).andExpect(MockMvcResultMatchers.status().isForbidden());
+	}
 
 }
