@@ -1,4 +1,5 @@
 
+
 package org.springframework.samples.petclinic.e2e;
 
 import org.junit.jupiter.api.Test;
@@ -63,3 +64,4 @@ class AppointmentControllerE2ETest {
 			.andExpect(MockMvcResultMatchers.view().name("appointment/createOrUpdateAppointmentForm"));
 	}
 }
+

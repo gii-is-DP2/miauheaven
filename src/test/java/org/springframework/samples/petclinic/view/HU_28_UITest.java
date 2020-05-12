@@ -5,6 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +15,7 @@ import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.annotation.DirtiesContext;
@@ -22,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class HU_17_UITest {
+public class HU_28_UITest {
 
 	@LocalServerPort
 	private int				port;
@@ -44,42 +46,51 @@ public class HU_17_UITest {
 	@Test
 	public void testPositive() throws Exception {
 		this.driver.get("http://localhost:" + this.port);
-		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
-		this.driver.findElement(By.xpath("//div")).click();
-		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
-		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/vets/appointment')]")).click();
-		Assert.assertEquals("Appointments", this.driver.findElement(By.xpath("//h2")).getText());
-	}
-	@Test
-	public void testNegative() throws Exception {
-		this.driver.get("http://localhost:" + this.port);
-		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("admin1");
-		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/appointment')]")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/appointments/1')]")).click();
-		Assert.assertEquals("2020-11-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
-		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/product')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Update')]")).click();
+		this.driver.findElement(By.id("price")).click();
+		this.driver.findElement(By.id("price")).clear();
+		this.driver.findElement(By.id("price")).sendKeys("7.98");
+		new Select(this.driver.findElement(By.id("stock"))).selectByVisibleText("false");
+		this.driver.findElement(By.xpath("//option[@value='false']")).click();
+		this.driver.findElement(By.id("name")).click();
+		this.driver.findElement(By.id("name")).clear();
+		this.driver.findElement(By.id("name")).sendKeys("Esto es una edicion de prueba");
+		this.driver.findElement(By.xpath("//body/div/div")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
-		this.driver.findElement(By.id("username")).click();
+		Assertions.assertEquals("Esto es una edicion de prueba", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td")).getText());
+		Assertions.assertEquals("7.98", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td[2]")).getText());
+		Assertions.assertEquals("No", this.driver.findElement(By.xpath("//table[@id='questionnaireTable']/tbody/tr/td[3]")).getText());
+	}
+
+	@Test
+	public void testNegative() throws Exception {
+		this.driver.get("http://localhost:" + this.port);
+		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
 		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
-		this.driver.findElement(By.id("password")).click();
+		this.driver.findElement(By.id("username")).sendKeys("admin1");
 		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
+		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.get("http://localhost:" + this.port + "/admin/appointments/1");
-		Assert.assertEquals("There was an unexpected error (type=Forbidden, status=403).", this.driver.findElement(By.xpath("//div[2]")).getText());
+		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/product')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'See more')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Update')]")).click();
+		this.driver.findElement(By.id("name")).click();
+		this.driver.findElement(By.id("name")).clear();
+		this.driver.findElement(By.id("name")).sendKeys("");
+		this.driver.findElement(By.id("price")).click();
+		this.driver.findElement(By.id("price")).clear();
+		this.driver.findElement(By.id("price")).sendKeys("");
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		Assertions.assertEquals("el tamaño tiene que estar entre 3 y 50", this.driver.findElement(By.xpath("//form[@id='product']/div/div/span[2]")).getText());
+		Assertions.assertEquals("no puede ser null", this.driver.findElement(By.xpath("//form[@id='product']/div[3]/div/span[2]")).getText());
 	}
 
 	@AfterEach

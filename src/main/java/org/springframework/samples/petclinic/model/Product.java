@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.URL;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 public class Product extends NamedEntity {
 
 	@Min(0)
