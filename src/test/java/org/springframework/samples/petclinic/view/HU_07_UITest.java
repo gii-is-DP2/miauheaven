@@ -54,9 +54,10 @@ public class HU_07_UITest {
 		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
-		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
-		this.driver.findElement(By.linkText("Animal Shelter")).click();
-		this.driver.findElement(By.linkText("Become an Animal Shelter")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/animalshelter')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Become an Animal Shelter')]")).click();
 		this.driver.findElement(By.id("name")).click();
 		this.driver.findElement(By.id("name")).clear();
 		this.driver.findElement(By.id("name")).sendKeys("Save Them");
@@ -91,9 +92,10 @@ public class HU_07_UITest {
 		this.driver.findElement(By.xpath("//div")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
-		this.driver.findElement(By.id("password")).sendKeys(Keys.ENTER);
-		this.driver.findElement(By.linkText("Animal Shelter")).click();
-		this.driver.findElement(By.linkText("Become an Animal Shelter")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//a[contains(@href, '/animalshelter')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Become an Animal Shelter')]")).click();
 		this.driver.findElement(By.id("name")).click();
 		this.driver.findElement(By.id("name")).clear();
 		this.driver.findElement(By.id("name")).sendKeys("More Animals");

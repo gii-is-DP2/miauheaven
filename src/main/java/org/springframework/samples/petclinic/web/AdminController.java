@@ -45,9 +45,9 @@ public class AdminController {
 	private static final String			PRODUCT_LIST		= "admin/product/productList";
 	private static final String			PRODUCT_SHOW		= "admin/product/productShow";
 	private static final String			PRODUCT_FORM		= "admin/product/productForm";
-	private static final String 		EVENT_LIST			= "admin/events/eventsList";
- 	private static final String			EVENT_SHOW			= "admin/events/eventShow";
- 	
+	private static final String			EVENT_LIST			= "admin/events/eventsList";
+	private static final String			EVENT_SHOW			= "admin/events/eventShow";
+
 	private final AppointmentService	appointmentService;
 	private final PetService			petService;
 	private final NotificationService	notificationService;
@@ -57,35 +57,40 @@ public class AdminController {
 
 
 	@Autowired
-	public AdminController(final AppointmentService appointmentService, final ProductService productService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService, final EventService eventService) {
+	public AdminController(final AppointmentService appointmentService, final ProductService productService, final PetService petService, final NotificationService notificationService, final QuestionnaireService questionnaireService,
+		final EventService eventService) {
 		this.appointmentService = appointmentService;
 		this.petService = petService;
 		this.notificationService = notificationService;
 		this.questionnaireService = questionnaireService;
 		this.productService = productService;
 		this.eventService = eventService;
-		
+
 	}
 	// ------------------------------------------------ Event ------------------------------------------
- 	@GetMapping(value = {
- 			"/events"
- 		})
- 		public String showEventList(final Map<String, Object> model) {
- 			Collection<Event> events;
- 			events = this.eventService.findEvents();
- 			model.put("events", events);
- 			return AdminController.EVENT_LIST;
- 		}
+	@GetMapping(value = {
+		"/events"
+	})
+	public String showEventList(final Map<String, Object> model) {
+		Collection<Event> events;
+		events = this.eventService.findEvents();
+		model.put("events", events);
+		return AdminController.EVENT_LIST;
+	}
 
- 		@GetMapping(value = {
- 			"/events/{eventId}"
- 		})
- 		public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
- 			Event event = this.eventService.findEventById(eventId);
- 			model.put("event", event);
- 			return AdminController.EVENT_SHOW;
- 		}
-	
+	@GetMapping(value = {
+		"/events/{eventId}"
+	})
+	public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
+		Event event = this.eventService.findEventById(eventId);
+		if (event.equals(null)) {
+			return "redirect:/oups";
+		} else {
+			model.put("event", event);
+			return AdminController.EVENT_SHOW;
+		}
+	}
+
 	// ------------------------------------------------ Notification ------------------------------------------
 
 	@GetMapping(value = "/notification/")

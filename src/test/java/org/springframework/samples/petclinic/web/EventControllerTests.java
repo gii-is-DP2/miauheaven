@@ -88,7 +88,7 @@ public class EventControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attributeHasErrors("event")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testInitUpdateForm() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/{eventId}/edit", EventControllerTests.TEST_EVENT_ID)).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("event"))

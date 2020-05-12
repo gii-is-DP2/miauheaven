@@ -16,7 +16,7 @@ import org.springframework.samples.petclinic.service.EventService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,8 +54,12 @@ public class EventController {
 	})
 	public String showEvent(final Map<String, Object> model, @PathVariable("eventId") final int eventId) {
 		final Event event = this.eventService.findEventById(eventId);
-		model.put("event", event);
-		return EventController.EVENT_SHOW;
+		if (event.equals(null)) {
+			return "redirect:/oups";
+		} else {
+			model.put("event", event);
+			return EventController.EVENT_SHOW;
+		}
 	}
 
 	@GetMapping(path = "events/new")
@@ -83,11 +87,16 @@ public class EventController {
 	}
 
 	@GetMapping(value = "/events/{eventId}/edit")
-	public String initUpdateEventForm(@PathVariable("eventId") final int eventId, final Model model) {
-
-		final Event ev = this.eventService.findEventById(eventId);
-		model.addAttribute(ev);
-		return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
+	public String initUpdateEventForm(@PathVariable("eventId") final int eventId, final ModelMap model) {
+		final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		final String username = auth.getName();
+		if (!username.contains("shelter")) {
+			return "redirect:/oups";
+		} else {
+			final Event ev = this.eventService.findEventById(eventId);
+			model.put("event", ev);
+			return EventController.VIEWS_EVENT_CREATE_OR_UPDATE_FORM;
+		}
 
 	}
 

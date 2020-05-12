@@ -101,4 +101,27 @@ public class EventServiceTests {
 		Assertions.assertThat(ev.getName()).isEqualTo(newName);
 	}
 
+	// ----------------------------------------------------------------- HU.25 ---------------------------------------------------------------------------------------------------
+
+	@Test //+
+	void adminSeeEvents() {
+
+		Iterable<Event> events = this.eventService.findEvents();
+		for (Event i : events) {
+			Assertions.assertThat(i.getName()).isNotBlank();
+			Assertions.assertThat(i.getDescription()).isNotBlank();
+			Assertions.assertThat(i.getDate()).isNotNull();
+			Assertions.assertThat(i.getAnimalshelter()).isNotNull();
+		}
+
+	}
+
+	@Test //-
+	void adminDontSeeNotnexistentEvent() {
+		Collection<Event> events = this.eventService.findEvents();
+		Event evento = this.eventService.findEventById(events.size() + 1);
+		Assertions.assertThat(evento).isNull();
+
+	}
+
 }

@@ -22,7 +22,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class HU_17_UITest {
+public class HU_25_UITest {
 
 	@LocalServerPort
 	private int				port;
@@ -34,6 +34,7 @@ public class HU_17_UITest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
+
 		String pathToGeckoDriver = System.getenv("webdriver.gecko.driver");
 		System.setProperty("webdriver.gecko.driver", pathToGeckoDriver + "\\geckodriver.exe");
 		this.driver = new FirefoxDriver();
@@ -42,44 +43,49 @@ public class HU_17_UITest {
 	}
 
 	@Test
-	public void testPositive() throws Exception {
+	public void testVerEventos() throws Exception {
 		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
-		this.driver.findElement(By.xpath("//div")).click();
-		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
-		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
-		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/vets/appointment')]")).click();
-		Assert.assertEquals("Appointments", this.driver.findElement(By.xpath("//h2")).getText());
-	}
-	@Test
-	public void testNegative() throws Exception {
-		this.driver.get("http://localhost:" + this.port);
-		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
+		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).clear();
 		this.driver.findElement(By.id("username")).sendKeys("admin1");
 		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/appointment')]")).click();
-		this.driver.findElement(By.xpath("//a[contains(@href, '/admin/appointments/1')]")).click();
-		Assert.assertEquals("2020-11-01", this.driver.findElement(By.xpath("//tr[7]/td")).getText());
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[10]/a/span[2]")).click();
+		Assert.assertEquals("Events", this.driver.findElement(By.xpath("//h2")).getText());
+		Assert.assertEquals("AnimalFest", this.driver.findElement(By.xpath("//table[@id='eventsTable']/tbody/tr/td")).getText());
+		Assert.assertEquals("2050-03-04", this.driver.findElement(By.xpath("//table[@id='eventsTable']/tbody/tr/td[2]")).getText());
+		Assert.assertEquals("Pichú Animales", this.driver.findElement(By.xpath("//table[@id='eventsTable']/tbody/tr/td[3]")).getText());
+		this.driver.findElement(By.xpath("(//a[contains(text(),'See more')])[2]")).click();
+		Assert.assertEquals("Event Information", this.driver.findElement(By.xpath("//h2")).getText());
+		Assert.assertEquals("EventoPasado", this.driver.findElement(By.xpath("//b")).getText());
+		Assert.assertEquals("2010-03-04", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
+		Assert.assertEquals("Evento pasado de fecha", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
+		Assert.assertEquals("Arca Sevilla", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
+		this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+
+	@Test
+	public void testIntentarVerEventoNoCreado() throws Exception {
+		this.driver.get("http://localhost:" + this.port);
 		this.driver.findElement(By.xpath("//a[contains(@href, '/login')]")).click();
 		this.driver.findElement(By.id("username")).click();
 		this.driver.findElement(By.id("username")).clear();
-		this.driver.findElement(By.id("username")).sendKeys("vet1");
+		this.driver.findElement(By.id("username")).sendKeys("admin1");
 		this.driver.findElement(By.id("password")).click();
 		this.driver.findElement(By.id("password")).clear();
-		this.driver.findElement(By.id("password")).sendKeys("v3t");
+		this.driver.findElement(By.id("password")).sendKeys("4dm1n");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.get("http://localhost:" + this.port + "/admin/appointments/1");
-		Assert.assertEquals("There was an unexpected error (type=Forbidden, status=403).", this.driver.findElement(By.xpath("//div[2]")).getText());
+		this.driver.get("http://localhost:" + this.port + "/events/50");
+		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
 	@AfterEach
