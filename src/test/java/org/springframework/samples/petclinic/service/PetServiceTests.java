@@ -290,8 +290,7 @@ class PetServiceTests {
 	@Test
 	void shouldFindPetsToAdopt() throws Exception {
 		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
-        Integer size=this.animalshelterService.findAnimalshelters().stream().map(x->x.getOwner()).map(x->x.getPets()).collect(Collectors.toList()).size();
-        assertThat(toAdopt.size()).isEqualTo(size);
+		Integer size=this.animalshelterService.findAnimalshelters().stream().map(x->x.getOwner()).map(x->x.getPets()).distinct().collect(Collectors.toList()).size();        assertThat(toAdopt.size()).isEqualTo(size);
 	}
 	
 	@Test

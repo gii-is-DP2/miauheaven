@@ -67,7 +67,7 @@ public class EventControllerTests {
 			.andExpect(MockMvcResultMatchers.model().attribute("event", Matchers.hasProperty("date", Matchers.is(LocalDate.now())))).andExpect(MockMvcResultMatchers.view().name("events/eventShow"));
 	}
 
-	@WithMockUser(value = "spring")
+	@WithMockUser(value = "shelter1")
 	@Test
 	void testInitCreationForm() throws Exception {
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/events/new")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("events/createOrUpdateEvent"))
