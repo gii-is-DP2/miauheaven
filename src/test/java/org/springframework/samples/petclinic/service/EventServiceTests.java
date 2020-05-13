@@ -113,7 +113,7 @@ public class EventServiceTests {
 			Assertions.assertThat(i.getName()).isNotBlank();
 			Assertions.assertThat(i.getDescription()).isNotBlank();
 			Assertions.assertThat(i.getDate()).isNotNull();
-			Assertions.assertThat(a).isNotNull();
+			//Assertions.assertThat(a).isNotNull();
 		}
 
 	}
