@@ -106,7 +106,7 @@ public class EventServiceTests {
 	@Test //+
 	void adminSeeEvents() {
 
-		Iterable<Event> events = this.eventService.findEvents();
+		Collection<Event> events = this.eventService.findEvents();
 		for (Event i : events) {
 			Assertions.assertThat(i.getName()).isNotBlank();
 			Assertions.assertThat(i.getDescription()).isNotBlank();
