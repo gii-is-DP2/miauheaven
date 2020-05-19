@@ -64,7 +64,6 @@ public class HU_25_UITest {
 		Assert.assertEquals("2010-03-04", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		Assert.assertEquals("Evento pasado de fecha", this.driver.findElement(By.xpath("//tr[3]/td")).getText());
 		Assert.assertEquals("Arca Sevilla", this.driver.findElement(By.xpath("//tr[4]/td")).getText());
-		this.driver.findElement(By.xpath("//a[contains(text(),'Edit Event')]")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
