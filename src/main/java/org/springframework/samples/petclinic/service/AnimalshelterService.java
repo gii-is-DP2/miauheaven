@@ -21,6 +21,8 @@ import java.util.Collection;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Owner;
@@ -55,10 +57,12 @@ public class AnimalshelterService {
 	}
 
 	@Transactional(readOnly = true)
+	@Cacheable("findAnimalshelters")
 	public Collection<Animalshelter> findAnimalshelters() throws DataAccessException {
 		return this.animalshelterRepository.findAll();
 	}
 
+	@CacheEvict(cacheNames = "findAnimalshelters", allEntries = true)
 	public void saveAnimalshelter(@Valid final Animalshelter animalshelter, final Owner owner) {
 		//creating owner
 		this.animalshelterRepository.save(animalshelter);
