@@ -70,8 +70,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Dave Syer
  */
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PetServiceTests {        
         @Autowired
 	protected PetService petService;
@@ -83,6 +83,7 @@ class PetServiceTests {
 	protected AnimalshelterService	animalshelterService;
 
 	@Test
+	@Transactional
 	void shouldFindPetWithCorrectId() {
 		Pet pet7 = this.petService.findPetById(7);
 		assertThat(pet7.getName()).startsWith("Samantha");
@@ -91,6 +92,7 @@ class PetServiceTests {
 	}
 
 	@Test
+	@Transactional
 	void shouldFindAllPetTypes() {
 		Collection<PetType> petTypes = this.petService.findPetTypes();
 
@@ -226,6 +228,7 @@ class PetServiceTests {
 	}
 
 	@Test
+	@Transactional
 	void shouldFindVisitsByPetId() throws Exception {
 		Collection<Visit> visits = this.petService.findVisitsByPetId(8);
 		assertThat(visits.size()).isEqualTo(2);
@@ -239,6 +242,7 @@ class PetServiceTests {
 	//HU.6
 	//Positive Case
 	@Test 
+	@Transactional
 	void shouldInsertPetByAnimalShelter() {
 		//We get an animalshelter from the repository
 	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
@@ -269,6 +273,7 @@ class PetServiceTests {
 
 	//Negative Case
 	@Test
+	@Transactional
 	void shouldnotInsertPetByAnimalShelter() throws Exception {
 		//We get an animalshelter from the repository
 	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
@@ -296,6 +301,7 @@ class PetServiceTests {
 //	}
 	
 	@Test
+	@Transactional
 	void shouldNotFindPetsToAdopt() throws Exception{
 		Collection<Owner> owners = this.ownerService.findAllOwnerCollection();
 		Collection<Owner> shelters = this.ownerService.findOwnerByLastName("Shelter");

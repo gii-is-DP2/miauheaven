@@ -25,9 +25,10 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 	
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AdminServiceTests {
 	
 	@Autowired
@@ -57,6 +58,7 @@ public class AdminServiceTests {
 	 // ---------------------------------------------------------------- HU.09 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void adminShouldCreateNotification() {
 		Notification notification = new Notification();
 		notification.setDate(LocalDateTime.now());
@@ -70,6 +72,7 @@ public class AdminServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void admintShouldNotCreateNotificationWithOut() {
 		Notification notification = new Notification();
 		notification.setDate(LocalDateTime.now());
@@ -87,6 +90,7 @@ public class AdminServiceTests {
 	// ---------------------------------------------------------------- HU.10 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void adminShouldSeeQuestionnaire() {
 		Questionnaire res = null;
 		Pet pet = this.questionnaireService.findPetById(14);
@@ -109,6 +113,7 @@ public class AdminServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void adminShouldNotSeeQuestionnaire() {
 		Questionnaire res = null;
 		Pet pet = this.questionnaireService.findPetById(14);
@@ -126,6 +131,7 @@ public class AdminServiceTests {
 	// ----------------------------------------------------------------- HU.19 ---------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void adminShouldSeePet() {
 		Pet pet = this.petService.findPetById(1);
 		Assertions.assertThat(pet.getName()).isNotBlank();
@@ -137,6 +143,7 @@ public class AdminServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void adminShouldNotSeePet() {
 		Collection<Pet> pets = (Collection<Pet>) this.petService.findAllPets();
 		Assertions.assertThat(this.petService.findPetById(pets.size() + 1)).isNull();
@@ -145,7 +152,7 @@ public class AdminServiceTests {
 	// ----------------------------------------------------------------- HU.20 ---------------------------------------------------------------------------------------------------
 
 		@Test //+
-		
+		@Transactional
 		void adminShouldFindAllAppointments() {
 			
 			
@@ -154,7 +161,7 @@ public class AdminServiceTests {
 			
 		}
 		@Test //-
-		
+		@Transactional
 		void adminShouldFindOldAndNewAppointments() {
 			
 			Iterable<Appointment> app = this.appointmentService.findAll();
@@ -170,6 +177,7 @@ public class AdminServiceTests {
 	// ----------------------------------------------------------------- HU.29 ---------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void adminShouldSeeProduct() {
 		Product product = this.productService.findProductById(1);
 		Assertions.assertThat(product.getPrice()).isNotNull();
@@ -179,6 +187,7 @@ public class AdminServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void adminShouldNotSeeProduct() {
 		Collection<Product> products = this.productService.findAll();
 		Assertions.assertThat(products.isEmpty()).isFalse();
@@ -187,6 +196,7 @@ public class AdminServiceTests {
 	// ----------------------------------------------------------------- HU.30 ---------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void adminShouldCreateProduct() {
 		Product product = new Product();
 		product.setPrice(10.0);
@@ -197,6 +207,7 @@ public class AdminServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void adminShouldNotCreateProduct() {
 		Product product = new Product();
 		product.setPrice(10.0);

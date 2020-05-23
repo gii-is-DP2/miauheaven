@@ -9,9 +9,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class NotificationServiceTest {
 
 	@Autowired
@@ -19,6 +20,7 @@ public class NotificationServiceTest {
 
 
 	@Test
+	@Transactional
 	public void findOwnersNotification() {
 		Iterable<Notification> notifications = this.notificationService.findAllForOwners();
 		for (Notification i : notifications) {
@@ -30,6 +32,7 @@ public class NotificationServiceTest {
 	}
 
 	@Test
+	@Transactional
 	public void findVetsNotification() {
 		Iterable<Notification> notifications = this.notificationService.findAllForVets();
 		for (Notification i : notifications) {
@@ -41,6 +44,7 @@ public class NotificationServiceTest {
 	}
 
 	@Test
+	@Transactional
 	public void findAnimalShelterNotification() {
 		Iterable<Notification> notifications = this.notificationService.findAllForAnimalShelters();
 		for (Notification i : notifications) {

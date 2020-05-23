@@ -14,9 +14,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Record;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class RecordServiceTests {
 
 	@Autowired
@@ -37,6 +38,7 @@ public class RecordServiceTests {
 	// ---------------------------------------------------------------- HU.24 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void animalShelterShouldCreateRecord() {
 		//Crea el record asociado a un usuario con normalidad
 		Owner owner = this.ownerService.findOwnerById(1);
@@ -54,6 +56,7 @@ public class RecordServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void animalShelterShouldNotCreateRecord() throws NullPointerException {
 		Owner owner = this.ownerService.findOwnerByUsername("Etereo"); //No existe
 		Owner animalshelter = this.ownerService.findOwnerById(11);

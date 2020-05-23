@@ -58,8 +58,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michael Isvy
  * @author Dave Syer
  */
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class OwnerServiceTests {
 
 	@Autowired
@@ -78,6 +78,7 @@ class OwnerServiceTests {
 	}
 
 	@Test
+	@Transactional
 	void shouldFindOwnersByLastName() {
 		Collection<Owner> owners = this.ownerService.findOwnerByLastName("Davis");
 		Assertions.assertThat(owners.size()).isEqualTo(2);
@@ -87,6 +88,7 @@ class OwnerServiceTests {
 	}
 
 	@Test
+	@Transactional
 	void shouldFindSingleOwnerWithPet() {
 		Owner owner = this.ownerService.findOwnerById(1);
 		Assertions.assertThat(owner.getLastName()).startsWith("Franklin");

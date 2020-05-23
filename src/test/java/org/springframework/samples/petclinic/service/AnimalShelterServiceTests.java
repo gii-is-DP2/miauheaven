@@ -16,9 +16,10 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AnimalShelterServiceTests {
 
 	@Autowired
@@ -34,6 +35,7 @@ public class AnimalShelterServiceTests {
 	// ---------------------------------------------------------------- HU.8 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void animalShelterShouldAceptApplication() {
 		Questionnaire res = null;
 		Pet pet = this.questionnaireService.findPetById(14);
@@ -59,6 +61,7 @@ public class AnimalShelterServiceTests {
 	}
 
 	@Test //-
+	@Transactional
     public void animalShelterShouldNotAceptApplication() {
         Questionnaire res = null;
         Pet pet = this.questionnaireService.findPetById(15);

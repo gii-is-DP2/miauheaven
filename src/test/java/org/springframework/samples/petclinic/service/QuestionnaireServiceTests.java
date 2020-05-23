@@ -21,9 +21,10 @@ import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorEx
 import org.springframework.samples.petclinic.service.exceptions.UnrelatedPetException;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class QuestionnaireServiceTests {
 
 	@Autowired
@@ -36,6 +37,7 @@ class QuestionnaireServiceTests {
 
 
 	@Test
+	@Transactional
 	public void findAllByPetId() {
 		Collection<Questionnaire> questionnaires = this.questService.findQuestionnaireByPetId(14);
 		for (Questionnaire q : questionnaires) {
@@ -50,6 +52,7 @@ class QuestionnaireServiceTests {
 	//HU.5
 	//Positive Case
 	@Test
+	@Transactional
 	void shouldFindMyApplicationsByPet() {
 		//We get an animalshelter from the repository
 		List<Animalshelter> animalshelters = (List<Animalshelter>) this.animalshelterService.findAnimalshelters();
@@ -62,6 +65,7 @@ class QuestionnaireServiceTests {
 
 	//Negative
 	@Test
+	@Transactional
 	void shouldNotFindMyApplicationsByPet() {
 		//We get an animalshelter from the repository
 		List<Animalshelter> animalshelters = (List<Animalshelter>) this.animalshelterService.findAnimalshelters();

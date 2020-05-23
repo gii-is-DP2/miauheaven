@@ -32,6 +32,7 @@ import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Integration test of the Service and the Repository layer.
@@ -63,8 +64,8 @@ import org.springframework.stereotype.Service;
  * @author Dave Syer
  */
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class VetServiceTests {
 
 	@Autowired
@@ -78,6 +79,7 @@ class VetServiceTests {
 
 
 	@Test
+	@Transactional
 	public void findVetByUsername() {
 		Vet vet = this.vetService.findVetByUsername("vet1");
 		Assertions.assertThat(vet.getFirstName()).isNotNull();
@@ -86,6 +88,7 @@ class VetServiceTests {
 	}
 
 	@Test
+	@Transactional
 	void shouldFindVets() {
 		Collection<Vet> vets = this.vetService.findVets();
 
@@ -100,6 +103,7 @@ class VetServiceTests {
 	//Negative Case
 	/* With this Test you can see that if you obtain all appointments, you get old appointments */
 	@Test
+	@Transactional
 	void shouldFindAllMyAppointments() {
 		Collection<Vet> vets = this.vetService.findVets();
 		Vet vet = EntityUtils.getById(vets, Vet.class, 1);
@@ -117,6 +121,7 @@ class VetServiceTests {
 	//Positive Case
 	/* With this Test you can see that if you obtain your next appointments, so all must be in the future */
 	@Test
+	@Transactional
 	void shouldFindMyNextAppointments() {
 		Collection<Vet> vets = this.vetService.findVets();
 		Vet vet = EntityUtils.getById(vets, Vet.class, 1);
@@ -131,7 +136,7 @@ class VetServiceTests {
 	// ---------------------------------------------------------------- HU.18 ----------------------------------------------------------------------------------------------------
 
 	@Test //-
-
+	@Transactional
 	void testNotSeePet() throws Exception {
 		Collection<Pet> pets = (Collection<Pet>) this.petService.findAllPets();
 		Assertions.assertThat(this.petService.findPetById(pets.size() + 1)).isNull();

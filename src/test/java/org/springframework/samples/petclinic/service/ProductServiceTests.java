@@ -13,9 +13,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Product;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ProductServiceTests {
 
 	@Autowired
@@ -25,6 +26,7 @@ public class ProductServiceTests {
 	// ---------------------------------------------------------------- HU.28 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void ShouldEditProduct() {
 		Product product = this.productService.findProductById(1);
 		String newName = "Esto es un producto de prueba";
@@ -42,6 +44,7 @@ public class ProductServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void ShoulNotdEditProduct() {
 		String newName = "";
 		Double newPrice = null;

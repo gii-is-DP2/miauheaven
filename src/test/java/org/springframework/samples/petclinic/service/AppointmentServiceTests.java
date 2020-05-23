@@ -21,9 +21,10 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.service.exceptions.PetNotRegistredException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class AppointmentServiceTests {
 
 	@Autowired
@@ -53,6 +54,7 @@ public class AppointmentServiceTests {
 	// ---------------------------------------------------------------- HU.14 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void animalShelterShouldCreateAppointment() {
 		//Se crea el appointment sin problema
 		Owner animalshelter = this.animalshelterService.findOwnerByUsername("shelter1");
@@ -82,6 +84,7 @@ public class AppointmentServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void animalShelterShouldNotCreateAppointment() throws PetNotRegistredException {
 		//Vemos que ninguna mascota corresponde a la que se le asocia
 		Owner animalshelter = this.animalshelterService.findOwnerByUsername("shelter1");
@@ -113,6 +116,7 @@ public class AppointmentServiceTests {
 	// ---------------------------------------------------------------- HU.16 ----------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	public void animalShelterShouldCreateUrgentAppointment() {
 		//Creamos con normalidad la cita siendo urgente
 		Owner animalshelter = this.animalshelterService.findOwnerByUsername("shelter1");
@@ -142,6 +146,7 @@ public class AppointmentServiceTests {
 	}
 
 	@Test //-
+	@Transactional
 	public void animalShelterShouldNotCreateUrgentAppointment() {
 		//Intentamos guardar un appointment sin especificar si es urgente o no
 		Owner animalshelter = this.animalshelterService.findOwnerByUsername("shelter1");
