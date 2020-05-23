@@ -91,7 +91,7 @@ class VetControllerE2ETests {
 
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/vets/notification/{notificationId}", VetControllerE2ETests.TEST_NOTIFICATION_ID)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title", Matchers.is("¡Bienvenidos veterinarios!"))))
-			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 13, 32)))))
+			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 12, 32)))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message", Matchers.is("Quiero daros la bienvenida a todos los veterinarios"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target", Matchers.is("veterinarian")))).andExpect(MockMvcResultMatchers.view().name("vets/notification/notificationShow"));
 	}

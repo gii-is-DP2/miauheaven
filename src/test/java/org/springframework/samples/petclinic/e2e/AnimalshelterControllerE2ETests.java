@@ -142,7 +142,7 @@ class AnimalshelterControllerE2ETests {
 
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/animalshelter/notification/{notificationId}", AnimalshelterControllerE2ETests.TEST_NOTIFICATION_ID)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title", Matchers.is("¡Bienvenidas protectoras!"))))
-			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 13, 32)))))
+			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 12, 32)))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message", Matchers.is("Quiero daros la bienvenida a todas las protectoras"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target", Matchers.is("animal_shelter")))).andExpect(MockMvcResultMatchers.view().name("animalshelter/notification/notificationShow"));
 	}
