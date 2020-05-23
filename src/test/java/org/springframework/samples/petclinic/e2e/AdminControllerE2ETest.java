@@ -13,6 +13,7 @@ import org.springframework.samples.petclinic.web.OwnerController;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -28,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @DirtiesContext
-//@TestPropertySource(locations = "classpath:application-mysql.properties")
+@TestPropertySource(locations = "classpath:application-mysql.properties")
 class AdminControllerE2ETest {
 
 	private static final int	TEST_ADMIN_ID			= 1;

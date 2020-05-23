@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,7 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
 @AutoConfigureMockMvc
 @DirtiesContext
-//@TestPropertySource(locations = "classpath:application-mysql.properties")
+@TestPropertySource(locations = "classpath:application-mysql.properties")
 class AnimalshelterControllerE2ETests {
 
 	private static final int	TEST_OWNER_ID			= 11;
@@ -141,8 +142,9 @@ class AnimalshelterControllerE2ETests {
 
 		this.mockMvc.perform(MockMvcRequestBuilders.get("/animalshelter/notification/{notificationId}", AnimalshelterControllerE2ETests.TEST_NOTIFICATION_ID)).andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title", Matchers.is("¡Bienvenidas protectoras!"))))
-			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 12, 32)))))
+			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("date", Matchers.is(LocalDateTime.of(2013, 01, 04, 13, 32)))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message", Matchers.is("Quiero daros la bienvenida a todas las protectoras"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("target", Matchers.is("animal_shelter")))).andExpect(MockMvcResultMatchers.view().name("animalshelter/notification/notificationShow"));
 	}
 }
+

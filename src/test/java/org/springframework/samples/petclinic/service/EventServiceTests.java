@@ -16,19 +16,23 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Event;
+import org.springframework.samples.petclinic.repository.EventRepository;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class EventServiceTests {
 
 	@Autowired
 	protected EventService eventService;
-
+	@Autowired
+	protected EventRepository eventRepository;
 
 	@Test
+	@Transactional
 	void shouldFindEvents() {
 		final Collection<Event> events = this.eventService.findEvents();
 
@@ -43,6 +47,8 @@ public class EventServiceTests {
 	@Transactional
 	public void shouldInsertEvent() {
 		Collection<Event> events = this.eventService.findEvents();
+		Event ev = this.eventService.findEventById(1);
+		
 		final int found = events.size();
 
 		final Event event = new Event();
@@ -51,15 +57,17 @@ public class EventServiceTests {
 		event.setDescription("Prueba");
 		;
 		event.setName("Prueba");
-
+		event.setAnimalshelter(ev.getAnimalshelter());
 		this.eventService.saveEvent(event);
 		Assertions.assertThat(event.getId().longValue()).isNotEqualTo(0);
 
 		events = this.eventService.findEvents();
 		Assertions.assertThat(events.size()).isEqualTo(found + 1);
+		this.eventRepository.deleteById(event.getId());
 	}
 
 	@Test
+	@Transactional
 	public void shouldNotInsertEvent() {
 		final Event event = new Event();
 		event.setDate(LocalDate.now());
@@ -68,6 +76,7 @@ public class EventServiceTests {
 		assertThrows(ConstraintViolationException.class, () -> {
 			this.eventService.saveEvent(event);
 		});
+	//	this.eventRepository.deleteById(event.getId());
 	}
 
 	//Prueba HU.04 editar eventos caso positivo
@@ -105,20 +114,24 @@ public class EventServiceTests {
 	// ----------------------------------------------------------------- HU.25 ---------------------------------------------------------------------------------------------------
 
 	@Test //+
+	@Transactional
 	void adminSeeEvents() {
 
 		Collection<Event> events = this.eventService.findEvents();
 		for (Event i : events) {
 			Animalshelter a = i.getAnimalshelter();
+			System.out.println(i.getDate());
+			System.out.println(a);
 			Assertions.assertThat(i.getName()).isNotBlank();
 			Assertions.assertThat(i.getDescription()).isNotBlank();
 			Assertions.assertThat(i.getDate()).isNotNull();
-			//Assertions.assertThat(a).isNotNull();
+			Assertions.assertThat(a).isNotNull();
 		}
 
 	}
 
 	@Test //-
+	@Transactional
 	void adminDontSeeNotnexistentEvent() {
 		Collection<Event> events = this.eventService.findEvents();
 		Event evento = this.eventService.findEventById(events.size() + 1);
@@ -127,3 +140,4 @@ public class EventServiceTests {
 	}
 
 }
+
