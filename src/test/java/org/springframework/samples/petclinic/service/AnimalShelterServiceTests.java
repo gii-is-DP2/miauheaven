@@ -45,12 +45,12 @@ public class AnimalShelterServiceTests {
 		Integer cantidadInicial = shelters1.size();
 		
 		User user = new User();
-		user.setUsername("username");
+		user.setUsername("username2");
 		user.setPassword("123456789");
 		user.setEnabled(true);
 
 		Owner owner = new Owner();
-		owner.setFirstName("Name");
+		owner.setFirstName("Name2");
 		owner.setLastName("LastName");
 		owner.setAddress("Adress");
 		owner.setCity("city");
