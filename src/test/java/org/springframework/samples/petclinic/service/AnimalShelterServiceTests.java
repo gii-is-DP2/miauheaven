@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Questionnaire;
+import org.springframework.samples.petclinic.model.User;
 import org.springframework.samples.petclinic.service.exceptions.UmbralInferiorException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +32,44 @@ public class AnimalShelterServiceTests {
 
 	@Autowired
 	private QuestionnaireService	questionnaireService;
+	
+	@Autowired
+	private AnimalshelterService animalshelterService;
+	
+
+	@Test //-
+	@Transactional
+    public void testSaveAnimalshelter() {
+		
+		Collection<Animalshelter> shelters1 = this.animalshelterService.findAnimalshelters();
+		Integer cantidadInicial = shelters1.size();
+		
+		User user = new User();
+		user.setUsername("username2");
+		user.setPassword("123456789");
+		user.setEnabled(true);
+
+		Owner owner = new Owner();
+		owner.setFirstName("Name2");
+		owner.setLastName("LastName");
+		owner.setAddress("Adress");
+		owner.setCity("city");
+		owner.setTelephone("672554879");
+		owner.setUser(user);
+		
+		Animalshelter shelter = new Animalshelter();
+		shelter.setCif("12345679B");
+		shelter.setName("shelterName");
+		shelter.setPlace("place");
+		shelter.setOwner(owner);
+		
+		this.animalshelterService.save(shelter);
+		
+		Collection<Animalshelter> shelters2 = this.animalshelterService.findAnimalshelters();
+		Integer cantidadFinal = shelters2.size();
+
+		Assertions.assertThat(cantidadInicial == cantidadFinal - 1);
+	}
 
 
 	// ---------------------------------------------------------------- HU.8 ----------------------------------------------------------------------------------------------------

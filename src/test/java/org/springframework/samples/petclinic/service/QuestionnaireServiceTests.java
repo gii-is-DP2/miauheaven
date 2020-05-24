@@ -48,6 +48,26 @@ class QuestionnaireServiceTests {
 
 		}
 	}
+	
+	
+	@Test
+	@Transactional
+	void testFindMyQuestionnaireByPetId() {
+		Questionnaire quest= this.questService.findOneById(1);
+		Collection<Questionnaire> questsByPetId = this.questService.findQuestionnaireByPetId(quest.getPet().getId());
+		Assertions.assertThat(questsByPetId).isNotEmpty();
+		for(Questionnaire i: questsByPetId) {
+			Assertions.assertThat(i.getConvivencia()).isNotBlank();
+			Assertions.assertThat(i.getHorasLibres()).isNotBlank();
+			Assertions.assertThat(i.getIngresos()).isNotBlank();
+			Assertions.assertThat(i.getName()).isNotBlank();
+			Assertions.assertThat(i.getVivienda()).isNotBlank();
+			Assertions.assertThat(i.getPuntuacion()).isNotNull();
+			Assertions.assertThat(i.getOwner()).isNotNull();
+			Assertions.assertThat(i.getPet()).isNotNull();
+		}
+	}
+	
 
 	//HU.5
 	//Positive Case
@@ -84,5 +104,7 @@ class QuestionnaireServiceTests {
 	            questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
 	        });
 	}
+	
+	
 
 }
