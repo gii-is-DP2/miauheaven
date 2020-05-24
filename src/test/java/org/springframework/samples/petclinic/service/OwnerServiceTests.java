@@ -137,4 +137,32 @@ class OwnerServiceTests {
 		Assertions.assertThat(owner.getLastName()).isEqualTo(newLastName);
 	}
 
+	@Test
+	@Transactional
+	void shoulSaveOwner() {
+		Collection<Owner> owners = (Collection<Owner>) this.ownerService.findAllOwner();
+		Integer cantidadInicial = owners.size();
+
+		User user = new User();
+		user.setUsername("username");
+		user.setPassword("123456789");
+		user.setEnabled(true);
+
+		Owner owner = new Owner();
+		owner.setFirstName("Name");
+		owner.setLastName("LastName");
+		owner.setAddress("Adress");
+		owner.setCity("city");
+		owner.setTelephone("672554879");
+		owner.setUser(user);
+
+		this.ownerService.saveOwner(owner);
+
+		Collection<Owner> owners2 = (Collection<Owner>) this.ownerService.findAllOwner();
+		Integer cantidadFinal = owners2.size();
+
+		Assertions.assertThat(cantidadInicial == cantidadFinal - 1);
+
+	}
+
 }

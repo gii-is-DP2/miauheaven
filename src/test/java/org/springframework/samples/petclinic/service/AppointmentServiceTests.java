@@ -4,6 +4,9 @@ package org.springframework.samples.petclinic.service;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Collection;
 import java.util.HashSet;
 
 import javax.validation.ConstraintViolationException;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Appointment;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -38,6 +42,38 @@ public class AppointmentServiceTests {
 
 	@Autowired
 	private AppointmentService		appointmentService;
+	
+	@Test
+	@Transactional
+	public void testSaveAppointment() {
+		Vet vet = this.vetService.findVetById(1);
+		Pet pet = this.petService.findPetById(1);
+		Owner owner = pet.getOwner();
+		
+		Collection<Appointment> appointments1 = (Collection<Appointment>) this.appointmentService.findAll();
+		Integer cantidadInicial = appointments1.size();
+		Appointment nueva = new Appointment();
+		
+		
+		nueva.setDate(LocalDate.now());
+		nueva.setCause("Causa");
+		nueva.setUrgent(false);
+		nueva.setOwner(owner);
+		nueva.setPet(pet);
+		nueva.setVet(vet);
+		
+		try {
+			this.appointmentService.saveAppointment(nueva);
+		} catch (DataAccessException | PetNotRegistredException e) {
+			e.printStackTrace();
+		}
+		
+		Collection<Appointment> appointments2 = (Collection<Appointment>) this.appointmentService.findAll();
+		Integer cantidadFinal = appointments2.size();
+		
+		Assertions.assertThat(cantidadInicial == cantidadFinal - 1);
+		
+	}
 
 
 	@Test
