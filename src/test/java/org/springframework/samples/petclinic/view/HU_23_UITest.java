@@ -72,8 +72,12 @@ public class HU_23_UITest {
 		this.driver.findElement(By.xpath("//div[@id='ui-datepicker-div']/div/a[2]/span")).click();
 		this.driver.findElement(By.xpath("//div[@id='ui-datepicker-div']/div/a[2]/span")).click();
 		this.driver.findElement(By.linkText("3")).click();
+		try {
+			Thread.sleep(5000);
+		} catch (Exception ex) {
+		}
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		Assert.assertEquals("2021-02-03", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
+		Assert.assertEquals("AnimalFestival", this.driver.findElement(By.xpath("//tr[2]/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a/strong")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
