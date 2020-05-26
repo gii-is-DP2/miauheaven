@@ -6,7 +6,7 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.jdbc.Predef._
 
-class rendimiento8 extends Simulation {
+class rendimiento08 extends Simulation {
 
 	val httpProtocol = http
 		.baseUrl("http://www.dp2.com")
@@ -33,46 +33,61 @@ class rendimiento8 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-	val scn = scenario("rendimiento8")
-		.exec(http("Home")
+	object Home{
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
 		.pause(6)
-		// Home
-		.exec(http("Login")
+	}
+
+	object Login{
+		val login = exec(http("Login")
 			.get("/login")
 			.headers(headers_0)
 			.resources(http("request_2")
 			.get("/favicon.ico")
-			.headers(headers_2)))
-		.pause(11)
-		// Login
-		.exec(http("Logged")
+			.headers(headers_2))
+			.check(css("input[name=_csrf]","value").saveAs("stoken")))
+			pause(5)
+			.exec(http("Logged")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "shelter1")
 			.formParam("password", "shelter1")
-			.formParam("_csrf", "b2e0d617-ae6d-40cd-be02-cbe1b1b3822b"))
+			.formParam("_csrf", "${stoken}"))
 		.pause(10)
-		// Logged
-		.exec(http("My animal shelter")
+	}
+
+	object AnimalShelter{
+		val animalShelter = exec(http("My animal shelter")
 			.get("/owners/myAnimalShelter")
 			.headers(headers_0))
 		.pause(9)
-		// My animal shelter
-		.exec(http("See applications")
+	}
+
+	object SeeAplications{
+		val seeAplications = exec(http("See applications")
 			.get("/owners/adoptList/questionnaire/14?ownerId=11")
 			.headers(headers_0))
 		.pause(19)
-		// See applications
-		.exec(http("See application")
+	}
+
+	object SeeOneApplication{
+		val seeOneApplication = exec(http("See application")
 			.get("/owners/adoptList/questionnaire/show/1")
 			.headers(headers_0))
 		.pause(18)
-		// See application
+	}
 
-	setUp(scn.inject(rampUsers(11500) during (100 seconds)))
+	val scn = scenario("rendimiento08").exec(
+										Home.home,
+										Login.login,
+										AnimalShelter.animalShelter,
+										SeeAplications.seeAplications,
+										SeeOneApplication.seeOneApplication
+	)
+
+	setUp(scn.inject(rampUsers(10500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),
