@@ -29,43 +29,54 @@ class rendimiento25 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("Home")
-		.exec(http("request_0")
+	object Home{
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
-		.pause(4)
-		// Home
-		.exec(http("Login")
+		.pause(6)
+	}
+
+	object Login{
+		val login = exec(http("Login")
 			.get("/login")
-			.headers(headers_0))
-		.pause(188 milliseconds)
-		.exec(http("request_2")
+			.headers(headers_0)
+			.resources(http("request_2")
 			.get("/favicon.ico")
 			.headers(headers_2))
-		.pause(8)
-		// Login
-		.exec(http("Logged")
+			.check(css("input[name=_csrf]","value").saveAs("stoken")))
+			pause(5)
+			.exec(http("Logged")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
-			.formParam("_csrf", "2390f862-a083-484d-a82a-6afe011eeb94"))
-		.pause(13)
-		// Logged
-		.exec(http("Events for admin")
+			.formParam("_csrf", "${stoken}"))
+		.pause(10)
+	}
+
+	object EventsForAdmin{
+		val eventsForAdmin = exec(http("Events for admin")
 			.get("/admin/events")
 			.headers(headers_0))
 		.pause(15)
-		// Events for admin
-		.exec(http("Event details")
+	}
+
+	object SeeEvent{
+		val seeEvent = exec(http("Event details")
 			.get("/events/1")
 			.headers(headers_0))
 		.pause(8)
-		// Event details
+	}
 
-	setUp(scn.inject(rampUsers(16500) during (100 seconds)))
+
+	val scn = scenario("Home").exec(
+								Home.home,
+								Login.login,
+								EventsForAdmin.eventsForAdmin,
+								SeeEvent.seeEvent
+	)
+
+	setUp(scn.inject(rampUsers(14500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),

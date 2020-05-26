@@ -29,42 +29,54 @@ class rendimiento19 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("rendimiento19")
-		.exec(http("Home")
+	object Home{
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
 		.pause(6)
-		// Home
-		.exec(http("Login")
+	}
+
+	object Login{
+		val login = exec(http("Login")
 			.get("/login")
 			.headers(headers_0)
 			.resources(http("request_2")
 			.get("/favicon.ico")
-			.headers(headers_2)))
-		.pause(5)
-		// Login
-		.exec(http("Logged")
+			.headers(headers_2))
+			.check(css("input[name=_csrf]","value").saveAs("stoken")))
+			pause(5)
+			.exec(http("Logged")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
-			.formParam("_csrf", "574bfe09-3fe6-4211-ad99-d5b5f671b07f"))
-		.pause(8)
-		// Logged
-		.exec(http("See pet for admin")
+			.formParam("_csrf", "${stoken}"))
+		.pause(10)
+	}
+
+	object PetsForAdmin{
+		val petsForAdmin = exec(http("See pet for admin")
 			.get("/admin/pets")
 			.headers(headers_0))
 		.pause(2)
-		// Pets for admin
-		.exec(http("See pet information")
+	}
+
+	object SeePetInformation{
+		val seePetInformation = exec(http("See pet information")
 			.get("/admin/pets/1")
 			.headers(headers_0))
 		.pause(9)
-		// See pet information
+	}
 
-	setUp(scn.inject(rampUsers(10000) during (100 seconds)))
+	val scn = scenario("rendimiento19").exec(
+										Home.home,
+										Login.login,
+										PetsForAdmin.petsForAdmin,
+										SeePetInformation.seePetInformation
+
+	)
+
+	setUp(scn.inject(rampUsers(14500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),

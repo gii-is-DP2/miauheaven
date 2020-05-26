@@ -29,37 +29,45 @@ class rendimiento10 extends Simulation {
 		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
 
-
-
-	val scn = scenario("rendimiento10")
-		.exec(http("Home")
+	object Home{
+		val home = exec(http("Home")
 			.get("/")
 			.headers(headers_0))
-		.pause(9)
-		// Home
-		.exec(http("Login")
+		.pause(6)
+	}
+
+	object Login{
+		val login = exec(http("Login")
 			.get("/login")
 			.headers(headers_0)
 			.resources(http("request_2")
 			.get("/favicon.ico")
-			.headers(headers_2)))
-		.pause(12)
-		// Login
-		.exec(http("Logged")
+			.headers(headers_2))
+			.check(css("input[name=_csrf]","value").saveAs("stoken")))
+			pause(5)
+			.exec(http("Logged")
 			.post("/login")
 			.headers(headers_3)
 			.formParam("username", "admin1")
 			.formParam("password", "4dm1n")
-			.formParam("_csrf", "bc3becef-bb83-46bd-9a88-4a6600c9233a"))
-		.pause(6)
-		// Logged
-		.exec(http("See result of questionnaires")
+			.formParam("_csrf", "${stoken}"))
+		.pause(10)
+	}
+
+	object Questtionaires{
+		val questionnaires = exec(http("See result of questionnaires")
 			.get("/admin/questionnaires")
 			.headers(headers_0))
 		.pause(6)
-		// See result of questionnaires
+	}
 
-	setUp(scn.inject(rampUsers(15500) during (100 seconds)))
+	val scn = scenario("rendimiento10").exec(
+										Home.home,
+										Login.login,
+										Questtionaires.questionnaires
+	)
+
+	setUp(scn.inject(rampUsers(14500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),
