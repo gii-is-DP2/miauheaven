@@ -16,10 +16,6 @@
 
 package org.springframework.samples.petclinic.web;
 
-import java.time.LocalDate;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,10 +86,7 @@ public class AppointmentController {
 
 	@PostMapping(value = "/owners/{ownerId}/pets/{petId}/appointment/new")
 	public String processNewAppointmentForm(@Valid final Appointment appointment, final BindingResult result, @PathVariable("petId") final int petId, @PathVariable("ownerId") final int ownerId, final ModelMap model) {
-		List<Appointment> apps = (List<Appointment>) this.appointmentService.findAll();
-		List<LocalDate> dates = apps.stream().map(x -> x.getDate()).collect(Collectors.toList());
-		System.out.println(result);
-		if (result.hasErrors() || dates.contains(appointment.getDate())) {
+		if (result.hasErrors()) {
 			model.put("appointment", appointment);
 			if (appointment.getUrgent() == null) {
 				result.rejectValue("date", "not defined", "Caracter de la cita no definido");
