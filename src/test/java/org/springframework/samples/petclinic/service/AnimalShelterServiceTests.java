@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Animalshelter;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
@@ -126,6 +127,23 @@ public class AnimalShelterServiceTests {
             ownerService.saveOwnerQuest(owner,umbral, puntuacion);
         });
     }
+	
+	@Test
+	@Transactional
+	public void shouldFindAnimalShelterByOwnerId() {
+		Animalshelter as = this.animalshelterService.findAnimalshelterByOwnerId(12);
+		Assertions.assertThat(as).isNotNull();
+		Assertions.assertThat(as.getName()).isEqualTo("Arca Sevilla");
+		Assertions.assertThat(as.getCif()).isEqualTo("87654321B");
+		Assertions.assertThat(as.getId()).isEqualTo(2);
+	}
+	
+	@Test
+	@Transactional
+	public void shouldNotFindAnimalShelterByOwnerId() {
+		Animalshelter as = 	this.animalshelterService.findAnimalshelterByOwnerId(1);
+		Assertions.assertThat(as).isEqualTo(null);
+	}
 
 
 }
