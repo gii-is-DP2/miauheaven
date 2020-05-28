@@ -143,7 +143,6 @@ public class AnimalShelterServiceTests {
 	public void shouldNotFindAnimalShelterByOwnerId() {
 		Animalshelter as = 	this.animalshelterService.findAnimalshelterByOwnerId(1);
 		Assertions.assertThat(as).isEqualTo(null);
-
 	}
 
 
