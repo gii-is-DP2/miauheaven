@@ -16,13 +16,18 @@ class rendimiento04 extends Simulation {
 		.acceptLanguageHeader("es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3")
 		.userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:76.0) Gecko/20100101 Firefox/76.0")
 
-	val headers_0 = Map("Upgrade-Insecure-Requests" -> "1")
-
-	val headers_2 = Map(
-		"Origin" -> "http://www.dp2.com",
+	val headers_0 = Map(
+		"Proxy-Connection" -> "keep-alive",
 		"Upgrade-Insecure-Requests" -> "1")
+		
+	val headers_2 = Map(
+		"Accept" -> "image/webp,image/apng,image/*,*/*;q=0.8",
+		"Proxy-Connection" -> "keep-alive")
 
-	val headers_9 = Map("Accept" -> "image/webp,*/*")
+	val headers_3 = Map(
+		"Origin" -> "http://www.dp2.com",
+		"Proxy-Connection" -> "keep-alive",
+		"Upgrade-Insecure-Requests" -> "1")
 
 	object Home{
 		val home = exec(http("Home")
