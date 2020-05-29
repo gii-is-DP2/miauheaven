@@ -109,5 +109,10 @@ class rendimiento04 extends Simulation {
 		.exec(Home.home, Login.login, Logged.logged, ShowEvent.showEvent, SeeMoreEvent.seeMoreEvent, EditEvent.editEvent, UpdateEvent.updateEvent, NewEvent.newEvent, CreateEvent.createEvent)
 		
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	setUp(scn.inject(rampUsers(7500) during (100 seconds)))
+	.protocols(httpProtocol)
+	.assertions(
+		global.responseTime.max.lt(5000),
+		global.responseTime.mean.lt(1000),
+		global.successfulRequests.percent.gt(95))
 }

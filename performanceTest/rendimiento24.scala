@@ -82,5 +82,10 @@ object CreateRecord{
 	val scn = scenario("rendimiento24").exec(Home.home, Login.login, Logged.logged, MyAnimalshelter.myAnimalshelter, Records.records, AddRecord.addRecord, CreateRecord.createRecord)
 		
 
-	setUp(scn.inject(atOnceUsers(1))).protocols(httpProtocol)
+	setUp(scn.inject(rampUsers(7000) during (100 seconds)))
+	.protocols(httpProtocol)
+	.assertions(
+		global.responseTime.max.lt(5000),
+		global.responseTime.mean.lt(1000),
+		global.successfulRequests.percent.gt(95))
 }
