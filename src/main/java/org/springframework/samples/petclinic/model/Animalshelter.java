@@ -19,6 +19,7 @@ package org.springframework.samples.petclinic.model;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
@@ -51,7 +52,7 @@ public class Animalshelter extends BaseEntity {
 	@NotEmpty
 	private String	place;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Owner	owner;
 
 }
