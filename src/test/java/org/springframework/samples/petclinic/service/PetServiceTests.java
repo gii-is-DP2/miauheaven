@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolationException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -36,9 +39,11 @@ import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Visit;
+import org.springframework.samples.petclinic.repository.AnimalshelterRepository;
 import org.springframework.samples.petclinic.service.exceptions.DuplicatedPetNameException;
 import org.springframework.samples.petclinic.util.EntityUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -72,7 +77,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @DataJpaTest(includeFilters = @ComponentScan.Filter(Service.class))
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PetServiceTests {        
+class PetServiceTests {  
+	  @Autowired
+		protected AnimalshelterRepository animalshelterRepository;
         @Autowired
 	protected PetService petService;
         
@@ -240,65 +247,66 @@ class PetServiceTests {
 	
 
 	//HU.6
-	//Positive Case
-	@Test 
-	@Transactional
-	void shouldInsertPetByAnimalShelter() {
-		//We get an animalshelter from the repository
-	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
-	Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
-	Integer oldtam=animalshelter.getOwner().getPets().size();
+		//Positive Case
+		@Test 
+		@DirtiesContext
+		void shouldInsertPetByAnimalShelter() throws  DuplicatedPetNameException {
+			//We get an animalshelter from the repository
+		List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+		Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
+		Integer oldtam=animalshelter.getOwner().getPets().size();
 
-	
-	//We create a pet, add it to the animalshelter and save it
-	Pet pet= new Pet();
-	pet.setName("peach");
-	Collection<PetType> types = this.petService.findPetTypes();
-	pet.setType(EntityUtils.getById(types, PetType.class, 2));
-	pet.setBirthDate(LocalDate.now());
-	pet.setGenre("female");
-	
-	animalshelter.getOwner().addPet(pet);
-	this.animalshelterService.save(animalshelter);
-	
-	//We recover the same animalshelter and try if it save it correctly
-	List<Animalshelter> Newanimalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
-	Animalshelter Newanimalshelter = EntityUtils.getById(Newanimalshelters, Animalshelter.class, 1);
-	
-	Integer newtam= Newanimalshelter.getOwner().getPets().size();
+		//We create a pet, add it to the animalshelter and save it
+		Pet pet= new Pet();
+		pet.setName("Peach");
+		Collection<PetType> types = this.petService.findPetTypes();
+		pet.setType(EntityUtils.getById(types, PetType.class, 2));
+		pet.setBirthDate(LocalDate.now());
+		pet.setGenre("female");
+		pet.changeOwner(animalshelter.getOwner());
+		this.petService.savePet(pet);
+		animalshelter.getOwner().addPet(pet);
+		this.animalshelterService.save(animalshelter);
+		
+		//We recover the same animalshelter and try if it save it correctly
+		List<Animalshelter> Newanimalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+		Animalshelter Newanimalshelter = EntityUtils.getById(Newanimalshelters, Animalshelter.class, 1);
+		
+		Integer newtam= Newanimalshelter.getOwner().getPets().size();
 
-     assertThat(oldtam).isLessThan(newtam);
-	
-	}
+	     assertThat(oldtam).isLessThan(newtam);
+	      this.animalshelterRepository.deleteById(Newanimalshelter.getId());
+		
+		}
 
-	//Negative Case
+		//Negative Case
+		@Test
+		@DirtiesContext
+		void shouldnotInsertPetByAnimalShelter() throws  DuplicatedPetNameException  {
+			//We get an animalshelter from the repository
+		List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
+		Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
+
+		
+		//We create a pet, add it to the animalshelter and try to save it
+		Pet pet= new Pet();
+		pet.setName("Dayi");
+		Collection<PetType> types = this.petService.findPetTypes();
+		pet.setType(EntityUtils.getById(types, PetType.class, 2));
+		pet.changeOwner(animalshelter.getOwner());
+		 assertThrows(ConstraintViolationException.class, () -> {
+	       this.petService.save(pet);
+	   });
+	   
+		}
+
 	@Test
-	@Transactional
-	void shouldnotInsertPetByAnimalShelter() throws Exception {
-		//We get an animalshelter from the repository
-	List<Animalshelter> animalshelters=(List<Animalshelter>) this.animalshelterService.findAnimalshelters();
-	Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
-
-	
-	//We create a pet, add it to the animalshelter and try to save it
-	Pet pet= new Pet();
-	pet.setName("peach");
-	Collection<PetType> types = this.petService.findPetTypes();
-	pet.setType(EntityUtils.getById(types, PetType.class, 2));
-	pet.setBirthDate(LocalDate.now());
-	pet.setGenre("female");
-	
-	animalshelter.getOwner().addPet(pet);
-   this.animalshelterService.save(animalshelter);
+	@DirtiesContext
+	void shouldFindPetsToAdopt() throws Exception {
+		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
+	Integer size=this.animalshelterService.findAnimalshelters().stream().map(x->x.getOwner()).map(x->x.getPets()).distinct().collect(Collectors.toList()).size(); 
+		assertThat(toAdopt.size()).isEqualTo(size);
 	}
-
-//	@Test
-//	void shouldFindPetsToAdopt() throws Exception {
-//		Collection<Pet> toAdopt = this.petService.findAdoptionPets();
-//		Integer size=this.animalshelterService.findAnimalshelters().stream().map(x->x.getOwner()).map(x->x.getPets()).distinct().collect(Collectors.toList()).size(); 
-//		Integer adoptSize = toAdopt.size();
-//		assertThat(toAdopt.size()).isEqualTo(size);
-//	}
 	
 	@Test
 	@Transactional
