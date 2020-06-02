@@ -19,7 +19,6 @@ package org.springframework.samples.petclinic.web;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -72,18 +71,6 @@ public class PetController {
 	public Owner findOwner(@PathVariable("ownerId") final int ownerId) {
 		return this.ownerService.findOwnerById(ownerId);
 	}
-
-	/*
-	 * @ModelAttribute("pet")
-	 * public Pet findPet(@PathVariable("petId") Integer petId) {
-	 * Pet result=null;
-	 * if(petId!=null)
-	 * result=this.clinicService.findPetById(petId);
-	 * else
-	 * result=new Pet();
-	 * return result;
-	 * }
-	 */
 
 	@InitBinder("owner")
 	public void initOwnerBinder(final WebDataBinder dataBinder) {
