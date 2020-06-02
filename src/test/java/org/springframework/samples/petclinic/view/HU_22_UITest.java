@@ -52,7 +52,7 @@ public class HU_22_UITest {
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[5]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
 		Assert.assertEquals("AnimalFest", this.driver.findElement(By.xpath("//table[@id='eventsTable']/tbody/tr/td")).getText());
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
 		this.driver.findElement(By.linkText("Logout")).click();
@@ -70,7 +70,7 @@ public class HU_22_UITest {
 		this.driver.findElement(By.id("password")).clear();
 		this.driver.findElement(By.id("password")).sendKeys("0wn3r");
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
-		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[5]/a/span[2]")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[6]/a/span[2]")).click();
 		Assert.assertEquals("AnimalFest", this.driver.findElement(By.xpath("//table[@id='eventsTable']/tbody/tr/td")).getText());
 		this.driver.get("http://localhost:" + this.port + "/events/2");
 		Assert.assertEquals("EventoPasado", this.driver.findElement(By.xpath("//b")).getText());
