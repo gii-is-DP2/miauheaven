@@ -58,7 +58,7 @@ public class HU_16_UITest {
 		this.driver.findElement(By.xpath("//div[@id='ui-datepicker-div']/div/a[2]/span")).click();
 		this.driver.findElement(By.xpath("//div[@id='ui-datepicker-div']/div/a[2]/span")).click();
 		this.driver.findElement(By.xpath("//div[@id='ui-datepicker-div']/div/a[2]/span")).click();
-		this.driver.findElement(By.xpath("//a[contains(text(),'31')]")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'20')]")).click();
 		this.driver.findElement(By.id("cause")).click();
 		this.driver.findElement(By.id("cause")).clear();
 		this.driver.findElement(By.id("cause")).sendKeys("No anda bien");
@@ -86,7 +86,7 @@ public class HU_16_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//a[contains(@href, '/vets/appointment')]")).click();
 		Assert.assertEquals("Pichú Animales Shelter", this.driver.findElement(By.xpath("//td")).getText());
-		Assert.assertEquals("2020-08-31", this.driver.findElement(By.xpath("//td[3]")).getText());
+		Assert.assertEquals("2020-09-20", this.driver.findElement(By.xpath("//td[3]")).getText());
 		Assert.assertEquals("true", this.driver.findElement(By.xpath("//td[4]")).getText());
 	}
 	@Test

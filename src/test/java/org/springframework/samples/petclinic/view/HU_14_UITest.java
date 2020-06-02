@@ -92,9 +92,11 @@ public class HU_14_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[7]/a/span[2]")).click();
 		Assert.assertEquals("Pichú Animales Shelter", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td")).getText());
-		Assert.assertEquals("2021-02-28", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[3]")).getText());
+		Assert.assertEquals("2021-03-28", this.driver.findElement(By.xpath("//table[@id='appointmentsTable']/tbody/tr/td[3]")).getText());
 
 	}
+	//En este test se ha tomado un escenario negativo en el que se deja un campo vacío
+	//y por tanto falla, ya que el mencionado en el documento no puedes realizarlo en la web
 	@Test
 	public void testNegative() throws Exception {
 		this.driver.get("http://localhost:" + this.port);

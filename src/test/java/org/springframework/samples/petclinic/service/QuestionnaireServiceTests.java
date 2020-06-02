@@ -69,7 +69,7 @@ class QuestionnaireServiceTests {
 	}
 	
 
-	//HU.5
+	//---------------------------------------------------------------- HU.5---------------------------------------------------------------- 
 	//Positive Case
 	@Test
 	@Transactional
@@ -92,14 +92,7 @@ class QuestionnaireServiceTests {
 		Animalshelter animalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 1);
 		Animalshelter OtherAnimalshelter = EntityUtils.getById(animalshelters, Animalshelter.class, 2);
 		Pet pet = animalshelter.getOwner().getPets().get(0);
-		//List<Questionnaire> quests;
-//		try {
-//		 this.questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
-//			//We see if the collection of questionnaires is empty or not, in this case should not be empty by the initial data.
-//			//Assertions.assertThat(quests.isEmpty()).isEqualTo(true);
-//		} catch (UnrelatedPetException e) {
-//			Logger.getLogger(QuestionnaireServiceTests.class.getName()).log(Level.SEVERE, null, e);
-//		}
+//We see that if we try to obtain the quest from other owner, trigger the exception
 		 assertThrows(UnrelatedPetException.class, () -> {
 	            questService.findMyQuestionnaireByPetId(OtherAnimalshelter.getId(), pet.getId());
 	        });
