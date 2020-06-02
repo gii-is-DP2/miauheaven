@@ -10,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +25,8 @@ public class OwnerControllerE2ETest {
 	private static final int	TEST_OWNER_ID			= 1;
 
 	private static final int	TEST_NOTIFICATION_ID	= 1;
+
+	private static final int	TEST_PRODUCT_ID			= 1;
 
 	@Autowired
 	private MockMvc				mockMvc;
@@ -168,6 +169,28 @@ public class OwnerControllerE2ETest {
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("title", Matchers.is("¡Bienvenidos propietarios de animales!"))))
 			.andExpect(MockMvcResultMatchers.model().attribute("notification", Matchers.hasProperty("message", Matchers.is("Quiero daros la bienvenida a todos los propietarios de animales"))))
 			.andExpect(MockMvcResultMatchers.view().name("owners/notification/notificationShow"));
+	}
+
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
+	})
+	@Test
+	void testProductList() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/product/List")).andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.model().attributeExists("products"))
+			.andExpect(MockMvcResultMatchers.view().name("product/productList"));
+	}
+
+	@WithMockUser(username = "owner1", authorities = {
+		"owner"
+	})
+
+	@Test
+	void testProductShow() throws Exception {
+		this.mockMvc.perform(MockMvcRequestBuilders.get("/product/{productId}", OwnerControllerE2ETest.TEST_PRODUCT_ID)).andExpect(MockMvcResultMatchers.model().attribute("product", Matchers.hasProperty("name", Matchers.is("Comida para perros"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("product", Matchers.hasProperty("description", Matchers.is("La mejor comida para alimentar a nuestros compañeros caninos"))))
+			.andExpect(MockMvcResultMatchers.model().attribute("product", Matchers.hasProperty("price", Matchers.is(12.2)))).andExpect(MockMvcResultMatchers.model().attribute("product", Matchers.hasProperty("stock", Matchers.is(true))))
+			.andExpect(MockMvcResultMatchers.model().attribute("product", Matchers.hasProperty("image", Matchers.is("https://www.petpremium.com/wp-content/uploads/2012/10/5-healthy-dog-foods-430x226.jpg"))))
+			.andExpect(MockMvcResultMatchers.view().name("product/productShow"));
 	}
 
 }
