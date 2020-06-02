@@ -25,11 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.model.Owner;
 import org.springframework.samples.petclinic.model.Pet;
+import org.springframework.samples.petclinic.model.Product;
 import org.springframework.samples.petclinic.model.Questionnaire;
 import org.springframework.samples.petclinic.service.AuthoritiesService;
 import org.springframework.samples.petclinic.service.NotificationService;
 import org.springframework.samples.petclinic.service.OwnerService;
 import org.springframework.samples.petclinic.service.PetService;
+import org.springframework.samples.petclinic.service.ProductService;
 import org.springframework.samples.petclinic.service.QuestionnaireService;
 import org.springframework.samples.petclinic.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -56,19 +58,24 @@ public class OwnerController {
 	private static final String			NOTIFICATION_LIST					= "owners/notification/notificationList";
 	private static final String			NOTIFICATION_SHOW					= "owners/notification/notificationShow";
 	private static final String			ADOPTION_PET_LIST					= "owners/pet/adoptionPetList";
+	private static final String			PRODUCT_LIST						= "product/productList";
+	private static final String			PRODUCT_SHOW						= "product/productShow";
 
 	private final OwnerService			ownerService;
 	private final NotificationService	notificationService;
 	private final PetService			petService;
 	private final QuestionnaireService	questService;
+	private final ProductService		productService;
 
 
 	@Autowired
-	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService) {
+	public OwnerController(final OwnerService ownerService, final QuestionnaireService questService, final UserService userService, final AuthoritiesService authoritiesService, final NotificationService notificationService, final PetService petService,
+		final ProductService productService) {
 		this.ownerService = ownerService;
 		this.notificationService = notificationService;
 		this.petService = petService;
 		this.questService = questService;
+		this.productService = productService;
 
 	}
 
@@ -203,6 +210,20 @@ public class OwnerController {
 		} else {
 			return "redirect:/oups";
 		}
+	}
+
+	@GetMapping(value = "product/List")
+	public String productList(final Map<String, Object> model) {
+		Collection<Product> products = this.productService.findAll();
+		model.put("products", products);
+		return OwnerController.PRODUCT_LIST;
+	}
+
+	@GetMapping(value = "product/{productId}")
+	public String productShow(final Map<String, Object> model, @PathVariable("productId") final int productId) {
+		Product product = this.productService.findProductById(productId);
+		model.put("product", product);
+		return OwnerController.PRODUCT_SHOW;
 	}
 
 }
