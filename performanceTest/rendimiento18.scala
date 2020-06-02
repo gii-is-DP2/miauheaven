@@ -53,7 +53,7 @@ object ListOnePet{
 		.exec(Home.home,Login.login,ListPets.listPets,ListOnePet.listOnePet)
 
 
-	setUp(scn.inject(rampUsers(10000) during (100 seconds)))
+	setUp(scn.inject(rampUsers(8500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),

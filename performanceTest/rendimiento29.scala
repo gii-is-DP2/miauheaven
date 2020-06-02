@@ -64,7 +64,7 @@ object ListOneProduct{
 		.exec(Home.home,Login.login,ListProducts.listProducts,ListOneProduct.listOneProduct)
 
 
-	setUp(scn.inject(rampUsers(10000) during (100 seconds)))
+	setUp(scn.inject(rampUsers(9500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),

@@ -64,7 +64,7 @@ object NewNotification{
 
 	val scn = scenario("rendimiento09")
 		.exec(Home.home, Login.login, ListNotifications.listNotifications, NewNotification.newNotification)
-	setUp(scn.inject(rampUsers(4000) during (100 seconds)))
+	setUp(scn.inject(rampUsers(750) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),

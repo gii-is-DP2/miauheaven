@@ -111,7 +111,7 @@ object CreateProduct{
 		.exec(Home.home,Login.login,ListProducts.listProducts,CreateProduct.createProduct)
 
 
-	setUp(scn.inject(rampUsers(10000) during (100 seconds)))
+	setUp(scn.inject(rampUsers(2500) during (100 seconds)))
 	.protocols(httpProtocol)
 	.assertions(
 		global.responseTime.max.lt(5000),
