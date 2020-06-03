@@ -64,13 +64,32 @@ public class HU_05_UITest {
 		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
 	}
 
+	@Test
+	public void testPruebaCaso5Negativo() throws Exception {
+		this.driver.get("http://www.dp2.com/");
+		this.driver.findElement(By.xpath("//a[contains(text(),'Login')]")).click();
+		this.driver.findElement(By.id("username")).clear();
+		this.driver.findElement(By.id("username")).sendKeys("shelter2");
+		this.driver.findElement(By.xpath("//div")).click();
+		this.driver.findElement(By.id("password")).clear();
+		this.driver.findElement(By.id("password")).sendKeys("shelter2");
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul/li[4]/a/span[2]")).click();
+		Assert.assertEquals("See applications", this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).getText());
+		this.driver.findElement(By.xpath("//a[contains(text(),'See applications')]")).click();
+		this.driver.get("http://www.dp2.com/owners/adoptList/questionnaire/14?ownerId=11");
+		Assert.assertEquals("Something happened...", this.driver.findElement(By.xpath("//h2")).getText());
+		this.driver.findElement(By.xpath("//div[@id='main-navbar']/ul[2]/li/a")).click();
+		this.driver.findElement(By.xpath("//a[contains(text(),'Logout')]")).click();
+		this.driver.findElement(By.xpath("//button[@type='submit']")).click();
+	}
+
 	@AfterEach
 	public void tearDown() throws Exception {
 		this.driver.quit();
 		final String verificationErrorString = this.verificationErrors.toString();
-		if (!"".equals(verificationErrorString)) {
+		if (!"".equals(verificationErrorString))
 			Assert.fail(verificationErrorString);
-		}
 	}
 
 	private boolean isElementPresent(final By by) {
@@ -95,11 +114,10 @@ public class HU_05_UITest {
 		try {
 			final Alert alert = this.driver.switchTo().alert();
 			final String alertText = alert.getText();
-			if (this.acceptNextAlert) {
+			if (this.acceptNextAlert)
 				alert.accept();
-			} else {
+			else
 				alert.dismiss();
-			}
 			return alertText;
 		} finally {
 			this.acceptNextAlert = true;
