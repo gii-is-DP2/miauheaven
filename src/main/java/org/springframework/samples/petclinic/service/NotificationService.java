@@ -2,6 +2,8 @@
 package org.springframework.samples.petclinic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.DataAccessException;
 import org.springframework.samples.petclinic.model.Notification;
 import org.springframework.samples.petclinic.repository.NotificationRepository;
@@ -20,11 +22,13 @@ public class NotificationService {
 	}
 
 	@Transactional
+	@CacheEvict(cacheNames="findAll", allEntries=true)
 	public void save(final Notification notification) {
 		this.repository.save(notification);
 	}
 
 	@Transactional(readOnly = true)
+	@Cacheable("findAll")
 	public Iterable<Notification> findAll() throws DataAccessException {
 		return this.repository.findAll();
 	}
@@ -50,6 +54,7 @@ public class NotificationService {
 	}
 
 	@Transactional
+
 	public void delete(final Notification notification) {
 		this.repository.delete(notification);
 	}
